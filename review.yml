@@ -1,0 +1,358 @@
+aid: swisscom
+name: Swisscom
+review:
+  question: >-
+    Does Swisscom, Switzerland's incumbent mobile network operator, publish a real
+    self-serve developer portal, downloadable OpenAPI specifications, and any callable
+    CAMARA / GSMA Open Gateway network API?
+  answer: partial
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: Switzerland
+  tier: mno-carrier
+findings:
+  summary: |
+    Swisscom is a split case. It runs a genuine, current, first-party API marketplace —
+    the Swisscom Digital Marketplace at https://digital.swisscom.com (HTTP 200, JSON-LD
+    self-identifies as "Swisscom APIs Portal") — with ten productive API products in the
+    public catalog, served from a live API gateway at https://api.swisscom.com that
+    answers structured JSON 401s on every product path. That is more than most European
+    incumbents publish. But the marketplace is a storefront: product pages describe the
+    APIs in prose, and the API reference, credentials and any Swagger/OpenAPI document
+    sit behind a Swisscom login (the marketplace backend advertises support for
+    "Swagger 2 and OpenAPI 3 (JSON or YAML)" documentation uploads, none of which are
+    reachable anonymously). Several products additionally require a signed service
+    contract before subscription (Swiss AI Platform states this explicitly).
+
+    Two real machine-readable specifications were harvested anonymously, both from the
+    trust-services side of the house rather than the network side: the Swisscom Sign
+    Integration API (OpenAPI 3.1.0, v2.19.0, 10 paths) served directly at
+    https://sign.swisscom.ch/system/api-docs behind an actively maintained Docusaurus +
+    Scalar docs site with release notes through 2026-06; and the All-in Signing Service
+    ETSI REST interface (OpenAPI 3.0.1, v3, 1 path) published on the public
+    SwisscomTrustServices GitHub organisation.
+
+    The legacy developer programme is dead or redirected. developer.swisscom.ch and
+    developers.swisscom.ch do not resolve. developer.swisscom.com 302s to a cloud-native
+    consulting marketing page at swisscom.ch/cloudnative/. docs.developer.swisscom.com
+    is still up but documents the public Cloud Foundry Application Cloud, which Swisscom
+    decommissioned on 2020-12-01, and its "Swisscom APIs" list points at
+    docs-api.scapp.io, which is dead (404). The swisscom-developer GitHub org holds six
+    SDK/example repos last updated 2014-2018. The Messaging and Voice APIs are still
+    documented only as raml2html-rendered HTML in the github.com/swisscom-api/doc wiki,
+    last touched 2024-10-19, whose "API specifications (external)" links point at the
+    long-defunct rawgit.com.
+
+    On the sector's defining signal, CAMARA: Swisscom is one of the 21 founding
+    signatories of the GSMA Open Gateway Memorandum of Understanding announced at MWC
+    Barcelona in February 2023. Nothing has been made callable. There is no
+    opengateway.swisscom.ch/.com, no developers.opengateway.swisscom.*, no camara or
+    networkapi subdomain (all fail to resolve), no CAMARA API in the ten-product
+    marketplace catalog, and no CAMARA-shaped path on api.swisscom.com. The commitment
+    is real and documented; the implementation is not visible from outside. Swisscom's
+    Phone Number Validation product is a proprietary SMS-OTP 2FA API and is explicitly
+    NOT CAMARA Number Verification; its Heatmaps product is proprietary Mobility
+    Insights population density and is not CAMARA Population Density Data. Where
+    network-derived identity signals have reached developers, they have done so through
+    a third party: IPification announced in March 2021 that its one-click phone
+    verification, SIM-swap detection and KYC services were deployed inside the Swisscom
+    network. That is the sector pattern — the operator owns the signal, someone else
+    owns the developer relationship.
+  developerPortal:
+    url: https://digital.swisscom.com/
+    httpStatus: 200
+    verdict: >-
+      Real first-party API marketplace with a public product catalog, but every API
+      reference, key and specification is behind a Swisscom login and several products
+      require a signed contract. Storefront, not open documentation.
+    gated: true
+    productCount: 10
+    catalogEndpoint: https://digital-marketplace-production-api.icp.swisscom.com/api/products
+    catalogNote: >-
+      The marketplace backend returns the product catalog anonymously when an
+      Origin: https://digital.swisscom.com header is sent; without it every call
+      returns 500 INTERNAL_SERVER_ERROR.
+  probes:
+  - url: https://digital.swisscom.com/
+    status: 200
+    note: Swisscom Digital Marketplace / "Swisscom APIs Portal". Real, current.
+  - url: https://api.swisscom.com/
+    status: 404
+    note: >-
+      Live API gateway. Returns structured JSON {"status":"404","code":"NOT_FOUND"}.
+      Product paths return {"status":"401","code":"INVALID_AUTHENTICATION_CREDENTIALS"}.
+  - url: https://api.swisscom.com/messaging/v1/sms
+    status: 401
+    note: Real, auth-gated messaging endpoint.
+  - url: https://api.swisscom.com/voice/v1/voip
+    status: 401
+    note: Legacy voice endpoint still answering.
+  - url: https://sign.swisscom.ch/docs
+    status: 200
+    note: Actively maintained Swisscom Sign API docs (Docusaurus 3.10.1 + Scalar 1.46.4).
+  - url: https://sign.swisscom.ch/system/api-docs
+    status: 200
+    note: Downloadable OpenAPI 3.1.0 for the Swisscom Sign Integration API.
+  - url: https://sms.icp.swisscom.com/
+    status: 200
+    note: Live Swisscom Messaging dashboard (SMS / MFA / Campaigns).
+  - url: https://docs.developer.swisscom.com/
+    status: 200
+    note: Legacy Cloud Foundry Application Cloud docs; the PaaS was decommissioned 2020-12-01.
+  - url: https://developer.swisscom.com/
+    status: 200
+    note: Redirects to https://www.swisscom.ch/cloudnative/ — a consulting marketing page, not a portal.
+  - url: https://developer.swisscom.ch/
+    status: 000
+    note: Does not resolve.
+  - url: https://developers.swisscom.ch/
+    status: 000
+    note: Does not resolve.
+  - url: https://opengateway.swisscom.ch/
+    status: 000
+    note: Does not resolve. No Open Gateway portal.
+  - url: https://developers.opengateway.swisscom.ch/
+    status: 000
+    note: Does not resolve (the Telefonica pattern is absent).
+  - url: https://camara.swisscom.com/
+    status: 000
+    note: Does not resolve.
+  - url: https://networkapi.swisscom.com/
+    status: 000
+    note: Does not resolve.
+  - url: https://developer.validator.swisscom.com/
+    status: 401
+    note: Business Identity Validator developer site is an authentication wall.
+  - url: https://ais.swisscom.com/AIS-Server/rs/v1.0/sign
+    status: 405
+    note: Real All-in Signing Service REST endpoint (POST only).
+  - url: https://trustservices.swisscom.com/
+    status: 200
+    note: Trust Services product site; integration guides are in the partner area.
+  - url: https://docs.swisscom.ch/
+    status: 200
+    note: Microsoft 365 product documentation, not APIs.
+  - url: https://docs-api.scapp.io/
+    status: 404
+    note: The "Swisscom APIs" list on docs.developer.swisscom.com points here. Dead.
+  - url: https://www.swisscom.ch/.well-known/security.txt
+    status: 200
+    note: RFC 9116 security.txt with CSIRT and bug bounty contacts.
+  camara:
+    posture: >-
+      GSMA Open Gateway founding signatory with nothing callable — a commitment, not an
+      implementation.
+    openGatewayMember: true
+    openGatewayEvidence: >-
+      Swisscom is named in the list of 21 mobile operator groups that signed the GSMA
+      Open Gateway Memorandum of Understanding announced at MWC Barcelona, February 2023
+      (America Movil, AT&T, Axiata, Bharti Airtel, China Mobile, Deutsche Telekom,
+      e& Group, KDDI, KT, Liberty Global, MTN, Orange, Singtel, Swisscom, STC,
+      Telefonica, Telenor, Telstra, TIM, Verizon, Vodafone).
+      Source: https://www.mwcbarcelona.com/articles/gsma-open-gateway
+    camaraAPIsFound: []
+    camaraPortal: none
+    aduna: >-
+      No evidence found that Swisscom reaches the market through Aduna. Swisscom is not
+      among the Aduna owners (AT&T, Bharti Airtel, Deutsche Telekom, Ericsson, KDDI,
+      Orange, Reliance Jio, Singtel, Telefonica, Telstra, T-Mobile, Verizon, Vodafone).
+    channelToDevelopers: >-
+      Direct for messaging, mobility data, signing, AI and BSS products via
+      digital.swisscom.com. For network-derived identity signals, historically through a
+      third party: IPification announced (2021-03-31, BusinessWire) that its one-click
+      phone verification, SIM-swap detection and KYC services were deployed within the
+      Swisscom network.
+    negativeFindings:
+    - No CAMARA API appears in the ten-product Swisscom Digital Marketplace catalog.
+    - No Open Gateway or network-API subdomain resolves under swisscom.ch or swisscom.com.
+    - >-
+      Probes of CAMARA-shaped paths on api.swisscom.com (/sim-swap/v0/check,
+      /number-verification/v0/verify, /location-verification/v0/verify,
+      /device-status/v0/roaming, /quality-on-demand/v0/sessions, /camara) all return 404.
+    - >-
+      Swisscom Phone Number Validation is SMS-OTP 2FA, not CAMARA Number Verification.
+      Swisscom Heatmaps is proprietary Mobility Insights, not CAMARA Population Density
+      Data. Neither should be counted as CAMARA.
+  tmForum:
+    conformanceFound: false
+    note: >-
+      No TM Forum Open API conformance certification (TMF620, TMF622, TMF641 or any
+      other) was found published for Swisscom. Its Smart Catalogs for NATEL go product is
+      a real BSS-shaped provisioning/inventory/reporting API (activations, number
+      portability, options, SIM and eSIM ordering, PUK, real-time eSIM activation) but is
+      presented as a proprietary Swisscom API with no claimed TM Forum conformance.
+  threeGPP:
+    nefOrScef: not found
+    networkSlicing: not found
+    edgeMec: not found
+    note: >-
+      No NEF or SCEF exposure surface, no 5G network-slicing API and no edge/MEC API were
+      found published by Swisscom.
+  auth:
+    schemes:
+    - >-
+      OAuth 2.0 client credentials — Swisscom Sign Integration API, token endpoint
+      https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token,
+      scopes sswp:process:create, sswp:process:read, sswp:process:read:all.
+    - >-
+      OAuth 2.0 client credentials — Mobility Insights APIs, token endpoint
+      https://consent.swisscom.com/o/oauth2/token, versioned with an scs-version header.
+    - >-
+      OAuth 2.0 authorization code and implicit — legacy Messaging and Voice APIs via
+      https://consent.swisscom.com/c/oauth2/auth, with read-/write- prefixed scopes
+      (read-basicprofile, read-phone, read-email, read-voip-callforwardings,
+      write-voip-callforwardings).
+    - Client ID header ("apiKey") — legacy Messaging SMS and Token Validation APIs.
+    - API key — Swiss AI Platform inference endpoints (OpenAI-compatible clients).
+    ciba:
+      present: true
+      context: >-
+        CIBA is NOT present as a CAMARA network-authorization mechanism. It appears in
+        two unrelated trust-services places: the Swisscom Sign Keycloak realm advertises
+        urn:openid:params:grant-type:ciba and a backchannel_authentication_endpoint at
+        https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/ext/ciba/auth
+        (a Keycloak capability, not a network API), and Swisscom Trust Services publishes
+        a reference signer at SwisscomTrustServices/mab-reference-signer that uses PAR or
+        CIBA to authorize signing journeys via OIDC. Do not read this as CAMARA CIBA.
+    wellKnown:
+    - url: https://sign.swisscom.ch/realms/swisscom-public/.well-known/openid-configuration
+      status: 200
+      note: Keycloak realm swisscom-public. Grants include client_credentials, authorization_code, device_code, token-exchange and CIBA.
+    - url: https://api.swisscom.com/.well-known/openid-configuration
+      status: 404
+    - url: https://api.swisscom.com/.well-known/oauth-authorization-server
+      status: 404
+    - url: https://consent.swisscom.com/.well-known/openid-configuration
+      status: 404
+  webhooks:
+    present: partial
+    note: >-
+      The legacy Messaging SMS API accepts a customer-supplied callbackUrl and issues a
+      PUT delivery notification to it — a real webhook, documented in the raml2html
+      output. No AsyncAPI document, no event catalog and no webhooks block in either
+      harvested OpenAPI (the Swisscom Sign 3.1 document declares no webhooks; its
+      documented pattern is status polling).
+  graphql:
+    present: false
+    note: No public GraphQL endpoint or SDL was found.
+  grpc:
+    present: false
+    note: No published .proto files were found.
+  postman:
+    present: true
+    collections:
+    - https://github.com/SwisscomTrustServices/AIS-Postman-Samples
+    - https://www.postman.com/swisscom-dev/workspace/swisscom-api/overview
+  sdks:
+    firstParty:
+    - repo: https://github.com/swisscom-developer/sms-client-python
+      note: Python SMS client. Last updated 2017-10-06. Abandoned.
+    - repo: https://github.com/swisscom-developer/sms-client-lib-java
+      note: Java SMS client. Last updated 2015-04-04. Abandoned.
+    - repo: https://github.com/swisscom-developer/API-java-libraries
+      note: Java API libraries. Last updated 2018-07-30. Abandoned.
+    - repo: https://github.com/SwisscomTrustServices/pdfbox-ais-client
+      note: Java PDFBox client for All-in Signing Service. Maintained.
+    - repo: https://github.com/SwisscomTrustServices/itext7-ais-client
+      note: Java iText7 client for All-in Signing Service. Maintained.
+    - repo: https://github.com/SwisscomTrustServices/itext-dotnet-ais-client
+      note: .NET iText client for All-in Signing Service. Maintained.
+    packageRegistries: >-
+      No first-party Swisscom API SDK packages were confirmed on npm, PyPI, Maven Central
+      or NuGet during this review; the signing clients are distributed as GitHub source.
+  specsHarvested:
+  - file: openapi/swisscom-sign-integration-api-openapi.json
+    sourceURL: https://sign.swisscom.ch/system/api-docs
+    httpStatus: 200
+    fetched: '2026-07-25'
+    format: OpenAPI 3.1.0
+    title: Swisscom Sign Integration API
+    version: 2.19.0
+    paths: 10
+    server: https://sign.swisscom.ch/system
+    verbatim: true
+  - file: openapi/swisscom-all-in-signing-service-openapi.yml
+    sourceURL: https://raw.githubusercontent.com/SwisscomTrustServices/AIS/master/OpenAPI%20ETSI%20interface%20documentation.yaml
+    httpStatus: 200
+    fetched: '2026-07-25'
+    format: OpenAPI 3.0.1
+    title: All-in Signing Service REST Application
+    version: '3'
+    paths: 1
+    verbatim: true
+  specsNotAvailable:
+  - >-
+    Messaging SMS, Messaging Token Validation, Voice VoIP and Voice Mail are documented
+    only as raml2html-generated HTML in the github.com/swisscom-api/doc wiki. The RAML
+    sources are not published; GET /voice/v1/voip?raml is documented as returning the
+    RAML in plain text but returns 401 anonymously. No spec was harvested and none was
+    derived — deriving one would have meant inventing it.
+  - >-
+    The Swisscom Digital Marketplace supports Swagger 2 / OpenAPI 3 documentation
+    uploads per its own backend error strings, but no product documentation endpoint is
+    reachable without a Swisscom login.
+  - >-
+    Swisscom Trust Services publishes WSDL and WADL service descriptions under
+    SwisscomTrustServices/AIS/services. These are real machine-readable artifacts but are
+    not OpenAPI and were not converted.
+  transports:
+  - protocol: REST
+    scheme: https
+    baseURL: https://api.swisscom.com
+    documented: true
+    note: Messaging, Voice, Mobility Insights and Swiss AI Platform products.
+  - protocol: REST
+    scheme: https
+    baseURL: https://sign.swisscom.ch/system
+    documented: true
+    note: Swisscom Sign Integration API. OpenAPI 3.1 published.
+  - protocol: REST
+    scheme: https
+    baseURL: https://ais.swisscom.com/AIS-Server/rs/v1.0
+    documented: true
+    note: All-in Signing Service. Confirmed 405 on GET, POST only.
+  - protocol: SOAP
+    scheme: https
+    documented: true
+    note: All-in Signing Service also ships WSDL descriptions on GitHub.
+  - protocol: Webhook
+    scheme: https
+    documented: true
+    note: Customer-supplied callbackUrl receives PUT delivery notifications from Messaging SMS.
+  - protocol: GraphQL
+    documented: false
+  - protocol: WebSocket
+    documented: false
+  - protocol: gRPC
+    documented: false
+sources:
+- url: https://digital.swisscom.com/
+  type: DeveloperPortal
+  note: Swisscom Digital Marketplace, JSON-LD name "Swisscom APIs Portal". 10 productive products.
+- url: https://sign.swisscom.ch/docs
+  type: Documentation
+  note: Swisscom Sign API docs, release notes through 2026-06.
+- url: https://sign.swisscom.ch/system/api-docs
+  type: OpenAPI
+  note: OpenAPI 3.1.0, harvested verbatim.
+- url: https://github.com/SwisscomTrustServices/AIS
+  type: OpenAPI
+  note: ETSI interface OpenAPI 3.0.1, harvested verbatim.
+- url: https://github.com/swisscom-api/doc/wiki
+  type: APIReference
+  note: raml2html HTML for Messaging and Voice. Last updated 2024-10-19.
+- url: https://docs.developer.swisscom.com/
+  type: Documentation
+  note: Legacy Cloud Foundry Application Cloud docs. PaaS decommissioned 2020-12-01.
+- url: https://www.mwcbarcelona.com/articles/gsma-open-gateway
+  type: Reference
+  note: Names Swisscom among the 21 founding GSMA Open Gateway MoU signatories, February 2023.
+- url: https://www.businesswire.com/news/home/20210331005513/en/IPification-Passwordless-One-Click-Mobile-Identity-Solutions-Now-Available-to-Swisscom-Subscribers
+  type: Reference
+  note: IPification mobile identity, SIM-swap detection and KYC deployed inside the Swisscom network.
+- url: https://github.com/swisscom/mip/blob/master/query_swisscom_heatmaps_api.py
+  type: SampleCode
+  note: Confirms Mobility Insights base URL and OAuth2 client-credentials token endpoint.
+- url: https://www.swisscom.ch/.well-known/security.txt
+  type: Security
+  note: CSIRT and bug bounty contacts, expires 2026-12-31.

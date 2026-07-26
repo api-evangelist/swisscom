@@ -1,0 +1,331 @@
+aid: swisscom
+url: https://raw.githubusercontent.com/api-evangelist/swisscom/refs/heads/main/apis.yml
+name: Swisscom
+kind: company
+description: >-
+  Swisscom is Switzerland's largest telecommunications provider and the incumbent
+  mobile network operator, fixed-line carrier and IT services company for the Swiss
+  market, majority-owned by the Swiss Confederation and also operating Fastweb in
+  Italy. In the telecom value chain it is a facilities-based MNO that owns the radio
+  access and core network, sells mobile, broadband, TV and enterprise IT, and monetises
+  network-derived data. Its API posture is unusual for a European incumbent: alongside
+  the expected partner-gated enterprise surface it runs a genuine first-party API
+  marketplace at digital.swisscom.com listing ten productive API products (SMS, SMS
+  token 2FA, inbound SMS, mobility heatmaps, dwell times, origin-destination, NATEL go
+  smart catalogs, AI inference endpoints and a business identity validator) served from
+  a live api.swisscom.com gateway, plus a separately maintained, actively released
+  Swisscom Sign Integration API with a downloadable OpenAPI 3.1 document. The catch is
+  that every API reference, key and spec beyond Swisscom Sign sits behind a Swisscom
+  login and, for several products, a signed service contract — the marketplace is a
+  storefront, not open documentation. On network APIs Swisscom was one of the 21
+  founding signatories of the GSMA Open Gateway Memorandum of Understanding in February
+  2023, but it publishes no CAMARA API, no Open Gateway developer portal and no
+  callable network-API endpoint; developers who want SIM-swap or phone-verification
+  signals from the Swisscom network have historically reached them through third-party
+  channels such as IPification rather than from Swisscom directly. Its legacy developer
+  programme (developer.swisscom.com, the Cloud Foundry Application Cloud, the
+  swisscom-developer GitHub SDKs) is dead or redirected, and the older Messaging and
+  Voice APIs are still documented only as RAML-rendered HTML in a GitHub wiki.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Telecommunications
+- Switzerland
+- Mobile Network Operator
+- Broadband
+- Network APIs
+- Open Gateway
+- Messaging
+- SMS
+- Voice
+- Identity Verification
+- Mobility Data
+- Digital Signatures
+- eSIM
+- Artificial Intelligence
+created: '2026-07-25'
+modified: '2026-07-25'
+specificationVersion: '0.19'
+apis:
+- aid: swisscom:swisscom-sign-integration-api
+  name: Swisscom Sign Integration API
+  description: >-
+    REST API that lets backend systems create, configure, release and monitor digital
+    signature processes end to end — create a process, attach PDF documents, invite
+    signers, release it, poll status and download the signed documents and the audit
+    record. Secured with OAuth 2.0 client credentials against a Swisscom Keycloak realm
+    with fine-grained sswp:process:* scopes. This is the only Swisscom API found with a
+    publicly downloadable machine-readable specification.
+  humanURL: https://sign.swisscom.ch/docs/api
+  baseURL: https://sign.swisscom.ch/system
+  tags:
+  - Digital Signatures
+  - eSignature
+  - Documents
+  - Trust Services
+  properties:
+  - type: Documentation
+    url: https://sign.swisscom.ch/docs/guide/getting-started
+  - type: APIReference
+    url: https://sign.swisscom.ch/docs/api
+  - type: OpenAPI
+    url: openapi/swisscom-sign-integration-api-openapi.json
+  - type: Authentication
+    url: https://sign.swisscom.ch/docs/guide/authentication
+- aid: swisscom:swisscom-all-in-signing-service-api
+  name: Swisscom All-in Signing Service (AIS) API
+  description: >-
+    The Swisscom Trust Services All-in Signing Service REST interface for creating
+    AdES signatures and seals under eIDAS and ZertES, following the ETSI TS 119 432
+    remote signature creation profile. Swisscom Trust Services publishes an OpenAPI 3.0
+    description of the ETSI interface, plus WSDL/WADL service descriptions, Postman
+    collections and iText/PDFBox client libraries, on its public GitHub organisation;
+    the full integration guides remain in the partner area.
+  humanURL: https://github.com/SwisscomTrustServices/AIS
+  baseURL: https://ais.swisscom.com/AIS-Server/rs/v1.0
+  tags:
+  - Digital Signatures
+  - Seals
+  - eIDAS
+  - ZertES
+  - Trust Services
+  properties:
+  - type: Documentation
+    url: https://trustservices.swisscom.com/en/esignature-hub/downloads-and-documents
+  - type: APIReference
+    url: https://github.com/SwisscomTrustServices/AIS
+  - type: OpenAPI
+    url: openapi/swisscom-all-in-signing-service-openapi.yml
+  - type: PostmanCollection
+    url: https://github.com/SwisscomTrustServices/AIS-Postman-Samples
+  - type: GitHubOrganization
+    url: https://github.com/SwisscomTrustServices
+- aid: swisscom:swisscom-text-messaging-api
+  name: Swisscom Text Messaging (SMS) API
+  description: >-
+    Application-to-person SMS sending over the Swisscom messaging infrastructure with
+    onward delivery to 260+ operators globally, including delivery-notification
+    callbacks to a customer-supplied callbackUrl. Sold as the Text Messaging (SMS)
+    product on the Swisscom Digital Marketplace; by default sending is restricted to
+    Switzerland with a configurable monthly cost limit.
+  humanURL: https://digital.swisscom.com/products/text-messaging
+  baseURL: https://api.swisscom.com/messaging/v1/sms
+  tags:
+  - Messaging
+  - SMS
+  - A2P
+  - CPaaS
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/text-messaging
+  - type: APIReference
+    url: https://github.com/swisscom-api/doc/wiki
+  - type: Dashboard
+    url: https://sms.icp.swisscom.com/
+- aid: swisscom:swisscom-phone-number-validation-api
+  name: Swisscom Phone Number Validation API
+  description: >-
+    Two-factor authentication API that starts an SMS token validation flow against an
+    MSISDN and then verifies the token the user received. This is Swisscom's own
+    SMS-OTP product, not the CAMARA Number Verification network API — it verifies
+    possession of a handset by delivering a code, it does not perform network-based
+    number verification.
+  humanURL: https://digital.swisscom.com/products/phone-number-validation
+  baseURL: https://api.swisscom.com/messaging/v1/tokenvalidation
+  tags:
+  - Identity Verification
+  - Two-Factor Authentication
+  - SMS
+  - OTP
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/phone-number-validation
+  - type: APIReference
+    url: https://github.com/swisscom-api/doc/wiki
+- aid: swisscom:swisscom-receive-sms-api
+  name: Swisscom Receive SMS API
+  description: >-
+    Inbound SMS API that exposes message inboxes so applications can receive texts from
+    customers and build two-way messaging flows, alerting and device control alongside
+    the outbound Text Messaging product.
+  humanURL: https://digital.swisscom.com/products/receive-sms
+  baseURL: https://api.swisscom.com/messaging/sms/inboxes
+  tags:
+  - Messaging
+  - SMS
+  - Inbound
+  - CPaaS
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/receive-sms
+  - type: Dashboard
+    url: https://sms.icp.swisscom.com/
+- aid: swisscom:swisscom-heatmaps-api
+  name: Swisscom Heatmaps API
+  description: >-
+    Mobility Insights API returning estimated population density per 100m x 100m tile
+    per hour across the whole of Switzerland, from yesterday back two years on a rolling
+    window, with socio-demographic splits by gender and age band. OAuth 2.0
+    client-credentials, versioned with an scs-version header. A free demo plan and a
+    public Python client sample are published.
+  humanURL: https://digital.swisscom.com/products/heatmaps
+  baseURL: https://api.swisscom.com/layer/heatmaps/demo
+  tags:
+  - Mobility Data
+  - Population Density
+  - Geospatial
+  - Analytics
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/heatmaps
+  - type: SampleCode
+    url: https://github.com/swisscom/mip/blob/master/query_swisscom_heatmaps_api.py
+  - type: Plans
+    url: https://digital.swisscom.com/products/heatmaps/plans
+- aid: swisscom:swisscom-dwell-times-api
+  name: Swisscom Dwell Times API
+  description: >-
+    Mobility Insights API returning a frequency distribution of observed dwell times
+    per 500m x 500m tile per day across Switzerland, bucketed from 0-5 minutes up to
+    8-24 hours, for any day within a rolling two-year window.
+  humanURL: https://digital.swisscom.com/products/dwelltimes
+  tags:
+  - Mobility Data
+  - Geospatial
+  - Analytics
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/dwelltimes
+- aid: swisscom:swisscom-origin-destination-api
+  name: Swisscom Origin Destination API
+  description: >-
+    Mobility Insights API estimating the number of trips people make between two Swiss
+    regions for weekdays and weekends over a full calendar month, including the share
+    made by train, queryable by 1km tile, postal code or NPVM passenger transport zone.
+  humanURL: https://digital.swisscom.com/products/origin-destination
+  tags:
+  - Mobility Data
+  - Transport
+  - Geospatial
+  - Analytics
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/origin-destination
+- aid: swisscom:swisscom-smart-catalogs-natel-go-api
+  name: Swisscom Smart Catalogs for NATEL go API
+  description: >-
+    Business/wholesale provisioning API covering the full NATEL go mobile subscription
+    procurement lifecycle — activations, number portability, option and roaming
+    configuration, SIM and eSIM ordering with real-time activation and PUK retrieval,
+    inventory and reporting — so enterprise customers and partners can automate
+    Swisscom mobile estate management from their own systems.
+  humanURL: https://digital.swisscom.com/products/smartcatalogs-natelgo
+  tags:
+  - BSS
+  - Provisioning
+  - eSIM
+  - Mobile Subscriptions
+  - B2B
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/smartcatalogs-natelgo
+- aid: swisscom:swiss-ai-platform-inference-api
+  name: Swiss AI Platform Inference Endpoints API
+  description: >-
+    OpenAI-compatible inference endpoints for chat, multimodal, audio, embedding,
+    reasoning and guardrail models hosted by Swisscom on NVIDIA SuperPod infrastructure
+    in Switzerland, including Meta Llama, OpenAI GPT OSS, NVIDIA models and the Apertus
+    70B model developed by ETH Zurich and EPFL. API-key authenticated; business
+    customers only and a signed service contract is required before subscribing.
+  humanURL: https://digital.swisscom.com/products/swiss-ai-platform
+  baseURL: https://api.swisscom.com/layer/swiss-ai-platform
+  tags:
+  - Artificial Intelligence
+  - LLM
+  - Inference
+  - Sovereign Cloud
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/swiss-ai-platform
+- aid: swisscom:swisscom-business-identity-validator-api
+  name: Swisscom Business Identity Validator API
+  description: >-
+    REST API that looks up legal entities and their authorised signatories against Swiss
+    federal and cantonal commercial registries and selected EU business registers, for
+    KYB onboarding, compliance and data-quality checks. Its developer documentation site
+    at developer.validator.swisscom.com is behind an authentication wall.
+  humanURL: https://digital.swisscom.com/products/business-identity-validator
+  tags:
+  - Identity Verification
+  - KYB
+  - Compliance
+  - Business Registry
+  properties:
+  - type: Documentation
+    url: https://digital.swisscom.com/products/business-identity-validator
+  - type: APIReference
+    url: https://developer.validator.swisscom.com
+- aid: swisscom:swisscom-voice-voip-api
+  name: Swisscom Voice VoIP API
+  description: >-
+    Legacy Voice API cluster for controlling a Swisscom VoIP subscriber — placing and
+    listing calls, managing call forwardings, simultaneous ringing and phonebooks, and
+    subscribing to VoIP events. Secured by OAuth 2.0 with read/write scopes such as
+    read-voip-callforwardings and write-voip-callforwardings. Documented only as
+    RAML-rendered HTML in a GitHub wiki last touched in 2024; the gateway still answers
+    with a 401.
+  humanURL: https://github.com/swisscom-api/doc/wiki
+  baseURL: https://api.swisscom.com/voice/v1/voip
+  tags:
+  - Voice
+  - VoIP
+  - Telephony
+  properties:
+  - type: Documentation
+    url: https://github.com/swisscom-api/doc
+  - type: APIReference
+    url: https://github.com/swisscom-api/doc/wiki
+- aid: swisscom:swisscom-voice-mail-api
+  name: Swisscom Voice Mail API
+  description: >-
+    Legacy Voice API for listing and retrieving recent voicemail messages for a Swisscom
+    MSISDN, secured by OAuth 2.0 client-credentials or authorization-code grants.
+    Documented as RAML-rendered HTML in the same GitHub wiki.
+  humanURL: https://github.com/swisscom-api/doc/wiki
+  baseURL: https://api.swisscom.com/voice/v1/voicemail
+  tags:
+  - Voice
+  - Voicemail
+  - Telephony
+  properties:
+  - type: Documentation
+    url: https://github.com/swisscom-api/doc
+  - type: APIReference
+    url: https://github.com/swisscom-api/doc/wiki
+common:
+- type: Website
+  url: https://www.swisscom.ch/
+- type: DeveloperPortal
+  url: https://digital.swisscom.com/
+- type: Documentation
+  url: https://sign.swisscom.ch/docs/
+- type: Authentication
+  url: https://digital.swisscom.com/resources/use-your-api-keys/oaut-introduction
+- type: GitHubOrganization
+  url: https://github.com/swisscom
+- type: GitHubOrganization
+  url: https://github.com/SwisscomTrustServices
+- type: GitHubOrganization
+  url: https://github.com/swisscom-api
+- type: LinkedIn
+  url: https://www.linkedin.com/company/swisscom
+- type: VulnerabilityDisclosure
+  url: https://github.com/swisscom/bugbounty
+- type: SecurityTxt
+  url: https://www.swisscom.ch/.well-known/security.txt
+- type: TermsOfService
+  url: https://digital.swisscom.com/terms
+- type: OpenIDConfiguration
+  url: https://sign.swisscom.ch/realms/swisscom-public/.well-known/openid-configuration
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
