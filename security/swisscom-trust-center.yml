@@ -1,0 +1,44 @@
+generated: '2026-07-25'
+method: searched
+probe: true
+probe_result: >-
+  0-working/probe-security-programs.py found no trust.swisscom.ch / security.swisscom.com / .../trust
+  page meeting its two-keyword threshold. The certification surface below was found by hand on the
+  Swisscom Trust Services documentation and downloads page.
+url: https://trustservices.swisscom.com/en/esignature-hub/downloads-and-documents
+scope: >-
+  Swisscom Trust Services (the signing/identification platform behind the All-in Signing Service and
+  Swisscom Sign). Swisscom Group does not publish a general SaaS-style trust center for its API
+  estate; the accreditation documents below are the published compliance evidence.
+supervisory_auditor: KPMG
+certifications:
+- name: Qualified certification service provider under ZertES
+  scheme: ZertES
+  document: Certificate of conformity as a qualified certification service provider from the supervisory authority KPMG (PDF)
+- name: Qualified trust service provider under eIDAS
+  scheme: eIDAS (EU Regulation 910/2014)
+  document: Certificate of conformity as a qualified trust service provider from the supervisory authority KPMG (PDF)
+- name: Remote signature issuance conformity under ZertES
+  scheme: ZertES
+  document: Certificate on the conformity of the remote signature from the supervisory authority KPMG (PDF)
+list_memberships:
+- name: EU/EEA trusted list
+- name: OFCOM list of providers of certification services in Switzerland
+- name: Adobe Approved Trust List (AATL)
+  url: https://helpx.adobe.com/acrobat/kb/approved-trust-list1.html
+not_published:
+- SOC 2 Type I/II
+- ISO 27001 / 27017 / 27018
+- PCI DSS
+- HIPAA
+- FedRAMP
+- CSA STAR
+related_pages:
+  service_status: https://trustservices.swisscom.com/en/support/developer-section/service-status
+  repository: https://trustservices.swisscom.com/en/esignature-hub/developers-section/repository
+  privacy_policy: https://trustservices.swisscom.com/en/privacypolicy
+  gtc: https://trustservices.swisscom.com/hubfs/Website%20Files/Documents/GTC-STS/English/GTC_STS-en.pdf
+  imprint: https://trustservices.swisscom.com/en/imprint
+evidence:
+- source: https://trustservices.swisscom.com/en/esignature-hub/downloads-and-documents
+  keywords: [certificate of conformity, qualified trust service provider, eIDAS, ZertES, KPMG, EU/EEA trusted list, Adobe Approved Trust List]

@@ -1,0 +1,57 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://sign.swisscom.ch/docs/guide/release-notes ; https://sign.swisscom.ch/system/api-docs ;
+  https://trustservices.swisscom.com/en/support/developer-section/service-status ;
+  https://github.com/swisscom-api/doc/wiki
+versioning:
+  scheme: semver-product
+  current: 2.17.0
+  docs: https://sign.swisscom.ch/docs/guide/release-notes
+  note: >-
+    The Swisscom Sign Integration API is versioned as a product (semver, "Related API version" per
+    release note) rather than in the URI — every operation lives under the unversioned
+    /api/process path on https://sign.swisscom.ch/system. The api.swisscom.com marketplace
+    gateway versions in the URI path instead (/messaging/v1/..., /voice/v1/...), and the Heatmaps
+    product versions with an scs-version request header. The All-in Signing Service uses a URI
+    path version (/AIS-Server/rs/v1.0) with the OpenAPI document declaring version 3.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: >-
+    No RFC 8594 Sunset/Deprecation header support and no written deprecation or breaking-change
+    policy was found on any Swisscom API surface. Deprecations are announced ad hoc in the Swisscom
+    Sign release notes with a hard date (for example the portal app-login phase-out effective
+    1 March 2026). No operation in either published OpenAPI carries deprecated: true. Historically
+    the legacy developer programme (developer.swisscom.com, the Cloud Foundry Application Cloud,
+    the swisscom-developer GitHub SDKs) was retired without a public sunset notice, and the
+    Messaging/Voice API wiki has not been touched since 2016.
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime target is published for any Swisscom API; enterprise terms sit behind a signed service contract.
+status_page: https://trustservices.swisscom.com/en/support/developer-section/service-status
+status_page_scope: >-
+  Swisscom Trust Services "Service Status & Log" — covers the signing/identification platform
+  behind the All-in Signing Service and Swisscom Sign. No status page was found for the
+  api.swisscom.com gateway, the Digital Marketplace products or the legacy Voice APIs.
+support:
+  help_center: https://trustservices.swisscom.com/en/support
+  hotline: '0800 829 444'
+  developer_support_email: developer-support@swisscom.com
+  legacy_channel: stackoverflow.com with the #swisscomdev tag (per the swisscom-api onboarding wiki)
+maturity:
+  active:
+  - Swisscom Sign Integration API (releases through June 2026)
+  - Swisscom All-in Signing Service (AIS)
+  - Digital Marketplace products on api.swisscom.com
+  dormant:
+  - Swisscom Voice VoIP API (RAML wiki, last substantive update 2016; gateway answers 401)
+  - Swisscom Voice Mail API
+  - Legacy Messaging (SmartMessaging) wiki documentation
+  retired:
+  - developer.swisscom.com developer programme
+  - Swisscom Application Cloud (Cloud Foundry) developer SDKs under the swisscom-developer org

@@ -1,0 +1,77 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://github.com/SwisscomTrustServices/pdfbox-ais-client ;
+  https://github.com/SwisscomTrustServices/pdfbox-ais-client/blob/main/docs/use-the-AIS-client-via-CLI.md ;
+  https://github.com/SwisscomTrustServices/itext7-ais-client ;
+  https://github.com/SwisscomTrustServices/AIS/tree/master/shell
+scope: >-
+  Swisscom ships no CLI for the Swisscom Sign Integration API, the Digital Marketplace products or
+  the legacy Voice/Messaging APIs. The only first-party command-line surface belongs to Swisscom
+  Trust Services and drives the All-in Signing Service (AIS).
+clis:
+- name: AIS Client (PDFBox)
+  binary: ./bin/ais-client.sh
+  api: Swisscom All-in Signing Service (AIS)
+  repository: https://github.com/SwisscomTrustServices/pdfbox-ais-client
+  docs: https://github.com/SwisscomTrustServices/pdfbox-ais-client/blob/main/docs/use-the-AIS-client-via-CLI.md
+  official: true
+  packaging: >-
+    Same artifact as the Java library — it runs either as a project dependency or as a standalone
+    command-line batch tool. Build from source with Maven or download the binary package from the
+    repository releases (see docs/build-or-download.md).
+  install_methods:
+  - build from source (Maven)
+  - download the release binary package from GitHub
+  configuration:
+    file: config.properties
+    bootstrap: ./bin/ais-client.sh -init
+    note: >-
+      -init writes a sample set of configuration files into the current folder; authentication
+      details (client certificate / claimed identity) are obtained under a Swisscom Trust Services
+      contract — see docs/get-authentication-details.md.
+  commands:
+  - flag: -init
+    description: Create sample configuration files in the current folder.
+  - flag: -input [FILE]
+    description: Source PDF file to sign; repeatable to batch multiple documents in one run.
+  - flag: -output [FILE]
+    description: Output PDF file. Only valid with a single input; use -suffix for batches.
+  - flag: -suffix [SUFFIX]
+    description: 'Suffix for output files, composed from the input file name. Default "signed-#time" where #time is replaced with hhMMss.'
+  - flag: -type [static|ondemand|ondemand-stepup|timestamp]
+    description: The type of signature to create.
+  - flag: -config [PROPERTIES FILE]
+    description: Properties file providing extra configuration. Defaults to config.properties.
+  - flag: -help
+    description: Print the help text.
+  - flag: -v / -vv / -vvv
+    description: Increasing log verbosity; -vvv includes HTTP and TLS traffic.
+  key_flows:
+  - name: Timestamp a PDF
+    command: ./bin/ais-client.sh -type timestamp -input local-sample-doc.pdf -output timestamp-output.pdf
+  - name: Batch timestamp several PDFs
+    command: ./bin/ais-client.sh -type timestamp -input doc1.pdf -input doc2.pdf -input doc3.pdf
+  - name: On Demand signature with Step Up
+    command: ./bin/ais-client.sh -type ondemand-stepup -input local-sample-doc.pdf -output signature-output.pdf
+- name: AIS Client (iText 7)
+  binary: ./bin/ais-client.sh
+  api: Swisscom All-in Signing Service (AIS)
+  repository: https://github.com/SwisscomTrustServices/itext7-ais-client
+  official: true
+  packaging: Same dual library/CLI packaging as the PDFBox client, using iText 7 for PDF processing instead of Apache PDFBox.
+- name: AIS shell scripts
+  api: Swisscom All-in Signing Service (AIS)
+  repository: https://github.com/SwisscomTrustServices/AIS/tree/master/shell
+  official: true
+  scripts:
+  - name: ais-sign.sh
+    description: Sign a document against the AIS SOAP/REST service from a shell.
+  - name: ais-timestamp.sh
+    description: Request a timestamp from the AIS service.
+  - name: ais-verify.sh
+    description: Verify a signed document.
+  note: >-
+    Reference shell tooling shipped alongside the WSDL/WADL service descriptions and the CA
+    certificates (ais-ca-signature.crt, ais-ca-ssl.crt) in the AIS repository.
+packages: packages/swisscom-packages.yml

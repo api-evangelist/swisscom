@@ -1,0 +1,94 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/swisscom-sign-integration-api-openapi.json
+docs: https://sign.swisscom.ch/docs/api
+api: Swisscom Sign Integration API
+format: custom-json
+rfc9457: false
+media_type: application/json
+envelope:
+  schema: Error
+  description: Error object returned in case of an unsuccessful request.
+  fields:
+  - name: id
+    type: string(uuid)
+    description: Unique identifier of this error for log correlation.
+  - name: timestamp
+    type: string(date-time)
+    description: Timestamp of the error (UTC, ISO 8601).
+  - name: name
+    type: string
+    description: Logical error name derived from the thrown exception class name (without the 'Exception' suffix).
+    example: OrganizationNotFound
+  - name: message
+    type: string
+    description: Human-readable explanation of the error.
+  - name: path
+    type: string
+    description: Path of the request that caused the error.
+  - name: httpStatus
+    type: integer
+    description: HTTP status code of the error.
+  - name: clientSubject
+    type: string
+    description: Short subject/title of the error for client display.
+  - name: clientBody
+    type: string
+    description: Detailed description of the error for client display.
+  note: >-
+    The error `name` is not drawn from a published enumeration — it is derived at runtime from the
+    server-side exception class, so the set of names is open. Only the shape is contractual.
+    No problem+json type URIs are published.
+problems:
+- status: 400
+  title: Invalid pagination or sort parameters
+  detail: Invalid pagination parameters (e.g. size > 20) or invalid sort direction.
+  body_schema: null
+  source_operations: [findAll]
+  remediation: Keep size at or below 20 and use the property,(asc|desc) sort form.
+- status: 401
+  title: Authorization information is missing or invalid
+  detail: The bearer token is absent, expired, or lacks the required sswp:process:* scope.
+  body_schema: null
+  source_operations: [findAll, create, setup, release, open, attach, getProcess, getStatus, getRecords, getFile, getFileContent]
+  remediation: Re-request an access token from the swisscom-public realm token endpoint with the scope the operation requires.
+- status: 403
+  title: Forbidden
+  detail: Caller not allowed to release this process.
+  body_schema: null
+  source_operations: [release]
+  remediation: Confirm the credential's organization_id owns the process, or that the caller is on the owning team.
+- status: 404
+  title: Process not found
+  detail: The referenced processId does not exist or is not visible to this organization.
+  body_schema: null
+  source_operations: [release, getProcess, getStatus]
+  remediation: Verify the processId returned by create; processes are scoped to the credential's organization.
+- status: 409
+  title: Conflict / general error
+  detail: >-
+    Occurs when there is a general error — for example reminders configured on release while all
+    notifications are suppressed, or the process is missing on a record lookup.
+  body_schema: Error
+  source_operations: [create, setup, release, open, attach, getProcess, getStatus, getRecords, getFile, getFileContent]
+  remediation: >-
+    Read `clientSubject`/`clientBody` for the display message and `name` for the logical cause; quote
+    the error `id` to Swisscom support for log correlation.
+- status: 410
+  title: File deleted
+  detail: The document process was archived and the file has been deleted.
+  body_schema: Error
+  source_operations: [getFile, getFileContent]
+  remediation: Download signed documents and the audit record before the process is archived; retrieval is not recoverable afterwards.
+- status: 412
+  title: File not downloadable in current state
+  detail: The file cannot be downloaded yet because the document is not in the appropriate state.
+  body_schema: Error
+  source_operations: [getFile, getFileContent]
+  remediation: Poll getStatus until the process reaches COMPLETED before downloading the signed output.
+success_codes_worth_noting:
+- status: 208
+  title: Already Reported
+  detail: Process was already released; participant URLs returned (permanently valid).
+  source_operations: [release]
+  note: Makes a repeated release safe — see conventions/swisscom-conventions.yml.

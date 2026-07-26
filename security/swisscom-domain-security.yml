@@ -1,0 +1,32 @@
+generated: '2026-07-25'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.swisscom.ch
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan  6 09:04:36 2027 GMT
+  hsts: null
+- host: sign.swisscom.ch
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  5 22:47:29 2026 GMT
+  hsts: null
+- host: ais.swisscom.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 12 08:51:41 2026 GMT
+  hsts: null
+domains:
+- domain: swisscom.ch
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: swisscom.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

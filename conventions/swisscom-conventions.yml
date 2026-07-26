@@ -1,0 +1,166 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://sign.swisscom.ch/docs/guide/concepts ; https://sign.swisscom.ch/docs/guide/authentication ;
+  openapi/swisscom-sign-integration-api-openapi.json ; https://github.com/swisscom-api/doc/wiki/error-response-codes ;
+  https://github.com/swisscom-api/doc/wiki/oauth-scopes.html
+scope: >-
+  Cross-cutting request/response semantics. Swisscom does not run one API programme — the
+  conventions below are recorded per surface because the Swisscom Sign platform, the
+  api.swisscom.com marketplace gateway and the ETSI-profile All-in Signing Service each carry
+  their own contract.
+surfaces:
+- surface: swisscom-sign-integration-api
+  base_url: https://sign.swisscom.ch/system
+  spec: openapi/swisscom-sign-integration-api-openapi.json
+  authentication:
+    style: oauth2-client-credentials
+    header: 'Authorization: Bearer <access_token>'
+    token_endpoint: https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token
+    issuer: https://sign.swisscom.ch/realms/swisscom-public
+    jwks_uri: https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/certs
+    audience: swisscom-sign-api
+    tenancy_claim: organization_id
+    scopes: [sswp:process:create, sswp:process:read, sswp:process:read:all]
+    docs: https://sign.swisscom.ch/docs/guide/authentication
+    guidance: >-
+      Swisscom explicitly recommends calling the API from your own backend so client credentials
+      stay server-side; the browser-based API explorer is a test tool only.
+    detail: authentication/swisscom-authentication.yml
+  idempotency:
+    key_header: null
+    key_parameter: null
+    supported: partial
+    evidence:
+      - >-
+        POST /api/process/{processId}/release returns 208 Already Reported when the process was
+        already released, and returns the same permanently-valid participant URLs — a repeat
+        release is safe.
+    not_supported:
+      - >-
+        POST /api/process has no idempotency key; a repeated call creates an additional process.
+      - >-
+        POST /api/process/{processId}/attach has no idempotency key; a repeated call attaches the
+        document again.
+    note: >-
+      Swisscom publishes no idempotency-key mechanism on any API. Retry safety must be handled by
+      the caller (store the returned processId before retrying create).
+  pagination:
+    style: page-number
+    parameters:
+      page: zero-based page index (default 0, minimum 0)
+      size: page size (default 20, minimum 1; values above 20 are rejected with 400)
+      sort: 'property,(asc|desc) — repeatable; default createdDate,DESC'
+    response_fields:
+      envelope: ProcessPage
+      metadata: page (PageMetadata)
+      metadata_fields: [totalElements, totalPages, size, number]
+    applies_to: [findAll]
+  filtering:
+    operation: findAll
+    parameters:
+      status: CREATED | PENDING | COMPLETED | EXPIRED
+      teamId: UUID of the owning team
+      validUntilWithin: ISO 8601 duration window on validUntil (for example P30D, PT12H)
+  field_expansion: null
+  metadata:
+    mechanism: Property objects on the process (free-form key/value)
+    partner_attribution: partnerId on POST /api/process
+    team_assignment: teamId on POST /api/process
+  request_tracing:
+    request_id_header: null
+    correlation: >-
+      No request-id header is documented. Errors carry an `id` (UUID) in the error body described as
+      the "unique identifier of this error for log correlation" — quote it to Swisscom support.
+  durations:
+    format: ISO 8601
+    used_by: [validUntil expiry windows, notification.reminder.interval, notification.reminder.beforeExpiry, validUntilWithin]
+    bounds: reminder durations must be between P1D and P30D
+  versioning:
+    style: product-semver, unversioned URI path
+    detail: lifecycle/swisscom-lifecycle.yml
+  error_envelope:
+    format: custom-json
+    problem_json: false
+    media_type: application/json
+    schema: Error
+    fields: [id, timestamp, name, message, path, httpStatus, clientSubject, clientBody]
+    client_display_fields: [clientSubject, clientBody]
+    catalog: errors/swisscom-problem-types.yml
+  rate_limit_signaling:
+    headers: []
+    documented: false
+    note: No rate-limit headers or quota documentation were found for the Swisscom Sign Integration API.
+  content:
+    request_media_types: [application/json, multipart/form-data]
+    document_transfer: >-
+      Documents are exchanged Base64-encoded in JSON (GET /file/{fileId}) or as raw binary
+      (GET /file/{fileId}/content). Maximum upload size is 40 MB (raised from 10 MB in June 2026).
+- surface: api.swisscom.com-marketplace-gateway
+  base_url: https://api.swisscom.com
+  spec: null
+  authentication:
+    style: mixed
+    modes:
+    - client_id header (Text Messaging, Phone Number Validation, Added-value SMS short-ID lookups)
+    - oauth2 client credentials (Heatmaps, Mobility Insights products)
+    - oauth2 authorization code / implicit (legacy Voice APIs, user-consented resources)
+    - api key (Swiss AI Platform inference endpoints)
+    authorization_endpoint: https://consent.swisscom.com/c/oauth2/auth
+    token_endpoint: https://consent.swisscom.com/o/oauth2/token
+    docs: https://digital.swisscom.com/resources/use-your-api-keys/oaut-introduction
+    legacy_docs: https://github.com/swisscom-api/doc/wiki/oauth-overview.html
+  scope_convention:
+    pattern: '<action>-<resource>'
+    actions: [read, write]
+    examples: [read-basicprofile, read-phone, read-email, read-voip-callforwardings, write-voip-callforwardings]
+    delimiter: space-separated in the OAuth scope parameter
+    docs: https://github.com/swisscom-api/doc/wiki/oauth-scopes.html
+  versioning:
+    style: uri-path
+    examples: ['/messaging/v1/...', '/voice/v1/...']
+    header_variant: 'Heatmaps and the other Mobility Insights products take an scs-version request header'
+  error_envelope:
+    format: custom-json
+    problem_json: false
+    fields: [uuid, status, code, message, detail]
+    required_fields: [status, code, message]
+    catalog: errors/swisscom-error-codes.yml
+    docs: https://github.com/swisscom-api/doc/wiki/error-response-codes
+  rate_limit_signaling:
+    headers: []
+    documented: false
+    quota_error: 429 EXPIRED_QUOTA — "Your quota for this service has been exhausted."
+    note: >-
+      Quota exhaustion is surfaced as an error code, not as rate-limit headers. Marketplace plans
+      carry per-plan quotas; the Text Messaging product also enforces a configurable monthly cost
+      limit and defaults to Switzerland-only sending.
+  callbacks:
+    supported: true
+    detail: asyncapi/swisscom-messaging-webhooks.yml
+- surface: all-in-signing-service
+  base_url: https://ais.swisscom.com/AIS-Server/rs/v1.0
+  spec: openapi/swisscom-all-in-signing-service-openapi.yml
+  authentication:
+    style: mutual-tls
+    note: >-
+      Client-certificate authentication issued under a signed Swisscom Trust Services contract; the
+      request itself carries a SAD (signature activation data) token for the signer's authorisation.
+  profile: ETSI TS 119 432 remote signature creation profile
+  request_shape:
+    correlation_field: requestID echoed back as responseID
+    digest_based: >-
+      Callers send document digests (hashAlgorithmOID + base64 hashes), never the document itself;
+      the service returns the detached SignatureObject plus OCSP/CRL validation info.
+  error_envelope:
+    format: custom-json
+    problem_json: false
+    schema: ErrorResponse
+    status_ranges: ['4XX', '5XX']
+cross_links:
+  authentication: authentication/swisscom-authentication.yml
+  scopes: scopes/swisscom-scopes.yml
+  errors: [errors/swisscom-problem-types.yml, errors/swisscom-error-codes.yml]
+  lifecycle: lifecycle/swisscom-lifecycle.yml
+  sandbox: sandbox/swisscom-sandbox.yml
+  webhooks: asyncapi/swisscom-messaging-webhooks.yml

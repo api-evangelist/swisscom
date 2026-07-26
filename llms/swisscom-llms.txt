@@ -1,0 +1,84 @@
+# Swisscom
+
+> Swisscom is Switzerland's largest telecommunications provider and incumbent mobile network operator, fixed-line carrier and IT services company, majority-owned by the Swiss Confederation. Its public API surface splits three ways: a genuinely open, actively released digital-signature API (Swisscom Sign) with a live OpenAPI 3.1 contract and a self-service test environment; a login-gated Digital Marketplace of ten productive API products served from api.swisscom.com; and Swisscom Trust Services, an eIDAS/ZertES-accredited qualified trust service provider whose ETSI TS 119 432 All-in Signing Service is documented with OpenAPI, WSDL/WADL, Postman samples and open-source client libraries on GitHub.
+
+Generated: 2026-07-25 by the API Evangelist enrichment pipeline (method: generated — Swisscom publishes no llms.txt on any host; /llms.txt returned 404 or an SPA shell on www.swisscom.ch, digital.swisscom.com, sign.swisscom.ch, api.swisscom.com, ais.swisscom.com and trustservices.swisscom.com).
+
+## What is actually callable
+
+- [Swisscom Sign Integration API](https://sign.swisscom.ch/docs/api): OAuth 2.0 client-credentials REST API for end-to-end digital signing. Live OpenAPI 3.1 contract at https://sign.swisscom.ch/system/api-docs. Self-service test environment at https://test.sign.swisscom.ch. This is the only Swisscom API you can sign up for and call without a sales conversation.
+- [Swisscom All-in Signing Service (AIS)](https://github.com/SwisscomTrustServices/AIS): ETSI TS 119 432 remote signature creation over REST, mutual-TLS authenticated under a Trust Services contract. OpenAPI 3.0.1 + WSDL/WADL published on GitHub.
+- [Swisscom Digital Marketplace](https://digital.swisscom.com/): storefront for ten API products (Text Messaging, Phone Number Validation, Receive SMS, Heatmaps, Dwell Times, Origin Destination, Smart Catalogs for NATEL go, Swiss AI Platform inference, Business Identity Validator). Product pages are public; every API reference, key and spec sits behind a Swisscom login, and several products additionally require a signed service contract.
+- [Legacy Voice and Messaging APIs](https://github.com/swisscom-api/doc/wiki): documented only as RAML-rendered HTML in a GitHub wiki. The gateway still answers with 401; treat these as dormant.
+
+## What does not exist
+
+- No CAMARA / GSMA Open Gateway API. Swisscom was one of the 21 founding signatories of the Open Gateway MoU (February 2023) but publishes no CAMARA definition, no Open Gateway developer portal and no callable network-API endpoint.
+- No MCP server, hosted or stdio, for any Swisscom API.
+- No AsyncAPI document. One webhook exists: SMS delivery notification to a per-message `callbackUrl`.
+- No GraphQL surface.
+- No idempotency key on any API.
+- No public SLA, uptime target, deprecation policy or Sunset/Deprecation header support.
+
+## APIs
+
+- [Swisscom Sign Integration API](https://sign.swisscom.ch/docs/api): create, configure, release and monitor signing processes. Base URL https://sign.swisscom.ch/system
+- [Swisscom All-in Signing Service (AIS) API](https://github.com/SwisscomTrustServices/AIS): AdES signatures and seals under eIDAS and ZertES. Base URL https://ais.swisscom.com/AIS-Server/rs/v1.0
+- [Swisscom Text Messaging (SMS) API](https://digital.swisscom.com/products/text-messaging): A2P SMS with delivery-notification callbacks. Base URL https://api.swisscom.com/messaging/v1/sms
+- [Swisscom Phone Number Validation API](https://digital.swisscom.com/products/phone-number-validation): SMS-OTP two-factor validation. Base URL https://api.swisscom.com/messaging/v1/tokenvalidation
+- [Swisscom Receive SMS API](https://digital.swisscom.com/products/receive-sms): inbound SMS inboxes. Base URL https://api.swisscom.com/messaging/sms/inboxes
+- [Swisscom Heatmaps API](https://digital.swisscom.com/products/heatmaps): population density per 100m tile per hour across Switzerland. Base URL https://api.swisscom.com/layer/heatmaps/demo
+- [Swisscom Dwell Times API](https://digital.swisscom.com/products/dwelltimes): dwell-time frequency distribution per 500m tile per day.
+- [Swisscom Origin Destination API](https://digital.swisscom.com/products/origin-destination): estimated trips between Swiss regions, including train share.
+- [Swisscom Smart Catalogs for NATEL go API](https://digital.swisscom.com/products/smartcatalogs-natelgo): NATEL go subscription provisioning, portability, SIM/eSIM ordering.
+- [Swiss AI Platform Inference Endpoints API](https://digital.swisscom.com/products/swiss-ai-platform): OpenAI-compatible inference on Swiss-hosted NVIDIA SuperPod infrastructure.
+- [Swisscom Business Identity Validator API](https://digital.swisscom.com/products/business-identity-validator): Swiss and EU commercial-registry lookups for KYB.
+- [Swisscom Voice VoIP API](https://github.com/swisscom-api/doc/wiki): legacy VoIP control. Base URL https://api.swisscom.com/voice/v1/voip
+- [Swisscom Voice Mail API](https://github.com/swisscom-api/doc/wiki): legacy voicemail retrieval. Base URL https://api.swisscom.com/voice/v1/voicemail
+
+## Specs
+
+- [Swisscom Sign Integration API OpenAPI 3.1](https://sign.swisscom.ch/system/api-docs): 11 operations over /api/process, harvested to openapi/swisscom-sign-integration-api-openapi.json
+- [All-in Signing Service OpenAPI 3.0.1](https://github.com/SwisscomTrustServices/AIS/blob/master/OpenAPI%20ETSI%20interface%20documentation.yaml): signDoc, harvested to openapi/swisscom-all-in-signing-service-openapi.yml
+- [AIS WSDL](https://github.com/SwisscomTrustServices/AIS/blob/master/services/wsdl/aisService.wsdl) and [AIS WADL](https://github.com/SwisscomTrustServices/AIS/blob/master/services/wadl/aisService.wadl)
+- [Keycloak OIDC discovery for Swisscom Sign](https://sign.swisscom.ch/realms/swisscom-public/.well-known/openid-configuration)
+
+## Authentication
+
+- Swisscom Sign: OAuth 2.0 client credentials against the Keycloak realm https://sign.swisscom.ch/realms/swisscom-public. Token endpoint https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token. Scopes: `sswp:process:create`, `sswp:process:read`, `sswp:process:read:all`. Audience `swisscom-sign-api`, tenancy claim `organization_id`. Credentials are generated in the cockpit under API Credentials. Swisscom explicitly recommends calling from your own backend rather than the browser API explorer.
+- All-in Signing Service: mutual TLS with a client certificate issued under contract, plus a SAD token in the request.
+- api.swisscom.com marketplace: mixed — a `client_id` header for the messaging products, OAuth 2.0 client credentials for the Mobility Insights products, authorization-code/implicit via https://consent.swisscom.com for the legacy Voice APIs, and API keys for the Swiss AI Platform. Legacy scope convention is `<read|write>-<resource>`, e.g. `read-voip-callforwardings`.
+- Docs: https://sign.swisscom.ch/docs/guide/authentication and https://digital.swisscom.com/resources/use-your-api-keys/oaut-introduction
+
+## Conventions
+
+- Pagination (Swisscom Sign, GET /api/process): `page` (zero-based), `size` (default 20, max 20 — larger values return 400), `sort` as `property,(asc|desc)`, default `createdDate,DESC`. Response is a `ProcessPage` with a `page` object carrying totalElements/totalPages/size/number.
+- Durations are ISO 8601 throughout (`validUntilWithin=P30D`, `notification.reminder.interval=P3D`, `beforeExpiry: ["P5D","P1D"]`, bounded P1D..P30D).
+- Errors are custom JSON, not RFC 9457. Swisscom Sign returns `{id, timestamp, name, message, path, httpStatus, clientSubject, clientBody}`; the api.swisscom.com gateway returns `{uuid, status, code, message, detail}` with codes such as `INVALID_REQUEST`, `INVALID_AUTHENTICATION_CREDENTIALS`, `EXPIRED_QUOTA`.
+- Retry safety: only `POST /api/process/{processId}/release` is repeat-safe (208 Already Reported, same participant URLs). `create` and `attach` are not — persist the returned `processId` before retrying.
+- Documents are exchanged Base64 in JSON or as raw binary; maximum upload 40 MB.
+
+## Docs
+
+- [Swisscom Sign getting started](https://sign.swisscom.ch/docs/guide/getting-started)
+- [Swisscom Sign concepts and process lifecycle](https://sign.swisscom.ch/docs/guide/concepts)
+- [Swisscom Sign authentication](https://sign.swisscom.ch/docs/guide/authentication)
+- [Swisscom Sign test environment](https://sign.swisscom.ch/docs/guide/test-environment)
+- [Swisscom Sign release notes](https://sign.swisscom.ch/docs/guide/release-notes)
+- [Swisscom Digital Marketplace](https://digital.swisscom.com/)
+- [Legacy API wiki: OAuth, scopes, error codes, messaging, voice](https://github.com/swisscom-api/doc/wiki)
+- [Swisscom Trust Services documentation and downloads](https://trustservices.swisscom.com/en/esignature-hub/downloads-and-documents)
+- [Swisscom Trust Services developer section](https://trustservices.swisscom.com/en/support/developer-section)
+
+## Operations
+
+- Status page: [Swisscom Trust Services Service Status & Log](https://trustservices.swisscom.com/en/support/developer-section/service-status) — covers the signing/identification platform only.
+- Support: [Trust Services support](https://trustservices.swisscom.com/en/support), hotline 0800 829 444, developer-support@swisscom.com.
+- Security: [security.txt](https://www.swisscom.ch/.well-known/security.txt), CSIRT csirt@swisscom.com, bug bounty bug.bounty@swisscom.com, policy at https://github.com/swisscom/bugbounty.
+- Compliance: accredited qualified trust service provider under eIDAS and qualified certification service provider under ZertES, conformity certificates issued by the supervisory authority KPMG; listed on the EU/EEA trusted list, the OFCOM list and the Adobe Approved Trust List. No SOC 2 or ISO 27001 certificate is published.
+
+## Repositories
+
+- [SwisscomTrustServices](https://github.com/SwisscomTrustServices): AIS spec/WSDL/WADL, Postman samples, Java (PDFBox and iText 7), .NET and PHP clients, MAB reference signer.
+- [swisscom](https://github.com/swisscom): bug bounty policy, security.txt repository, cloud-native and platform tooling.
+- [swisscom-api/doc](https://github.com/swisscom-api/doc): legacy Messaging and Voice API wiki.

@@ -71,6 +71,16 @@ apis:
     url: openapi/swisscom-sign-integration-api-openapi.json
   - type: Authentication
     url: https://sign.swisscom.ch/docs/guide/authentication
+  - type: GettingStarted
+    url: https://sign.swisscom.ch/docs/guide/getting-started
+  - type: Overlay
+    url: overlays/swisscom-sign-integration-api-overlay.yaml
+  - type: ErrorCatalog
+    url: errors/swisscom-problem-types.yml
+  - type: Sandbox
+    url: sandbox/swisscom-sandbox.yml
+  - type: ChangeLog
+    url: https://sign.swisscom.ch/docs/guide/release-notes
 - aid: swisscom:swisscom-all-in-signing-service-api
   name: Swisscom All-in Signing Service (AIS) API
   description: >-
@@ -99,6 +109,12 @@ apis:
     url: https://github.com/SwisscomTrustServices/AIS-Postman-Samples
   - type: GitHubOrganization
     url: https://github.com/SwisscomTrustServices
+  - type: Overlay
+    url: overlays/swisscom-all-in-signing-service-overlay.yaml
+  - type: Postman
+    url: https://github.com/SwisscomTrustServices/AIS-Postman-Samples
+  - type: CLI
+    url: cli/swisscom-cli.yml
 - aid: swisscom:swisscom-text-messaging-api
   name: Swisscom Text Messaging (SMS) API
   description: >-
@@ -121,6 +137,10 @@ apis:
     url: https://github.com/swisscom-api/doc/wiki
   - type: Dashboard
     url: https://sms.icp.swisscom.com/
+  - type: Webhooks
+    url: asyncapi/swisscom-messaging-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/swisscom-error-codes.yml
 - aid: swisscom:swisscom-phone-number-validation-api
   name: Swisscom Phone Number Validation API
   description: >-
@@ -188,6 +208,7 @@ apis:
     per 500m x 500m tile per day across Switzerland, bucketed from 0-5 minutes up to
     8-24 hours, for any day within a rolling two-year window.
   humanURL: https://digital.swisscom.com/products/dwelltimes
+  baseURL: https://api.swisscom.com
   tags:
   - Mobility Data
   - Geospatial
@@ -202,6 +223,7 @@ apis:
     regions for weekdays and weekends over a full calendar month, including the share
     made by train, queryable by 1km tile, postal code or NPVM passenger transport zone.
   humanURL: https://digital.swisscom.com/products/origin-destination
+  baseURL: https://api.swisscom.com
   tags:
   - Mobility Data
   - Transport
@@ -219,6 +241,7 @@ apis:
     inventory and reporting — so enterprise customers and partners can automate
     Swisscom mobile estate management from their own systems.
   humanURL: https://digital.swisscom.com/products/smartcatalogs-natelgo
+  baseURL: https://api.swisscom.com
   tags:
   - BSS
   - Provisioning
@@ -254,6 +277,7 @@ apis:
     KYB onboarding, compliance and data-quality checks. Its developer documentation site
     at developer.validator.swisscom.com is behind an authentication wall.
   humanURL: https://digital.swisscom.com/products/business-identity-validator
+  baseURL: https://api.swisscom.com
   tags:
   - Identity Verification
   - KYB
@@ -264,6 +288,8 @@ apis:
     url: https://digital.swisscom.com/products/business-identity-validator
   - type: APIReference
     url: https://developer.validator.swisscom.com
+  - type: Website
+    url: https://trustservices.swisscom.com/en/products/validator/overview
 - aid: swisscom:swisscom-voice-voip-api
   name: Swisscom Voice VoIP API
   description: >-
@@ -302,6 +328,70 @@ apis:
   - type: APIReference
     url: https://github.com/swisscom-api/doc/wiki
 common:
+- type: Packages
+  url: packages/swisscom-packages.yml
+- type: SDKs
+  url: packages/swisscom-packages.yml
+- type: CLI
+  url: cli/swisscom-cli.yml
+- type: WellKnown
+  url: well-known/swisscom-well-known.yml
+- type: MCPServer
+  url: mcp/swisscom-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/swisscom-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/swisscom-llms.txt
+- type: Conventions
+  url: conventions/swisscom-conventions.yml
+- type: DataModel
+  url: data-model/swisscom-data-model.yml
+- type: ErrorCatalog
+  url: errors/swisscom-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/swisscom-lifecycle.yml
+- type: StatusPage
+  url: https://trustservices.swisscom.com/en/support/developer-section/service-status
+- type: ChangeLog
+  url: changelog/swisscom-changelog.yml
+- type: Sandbox
+  url: sandbox/swisscom-sandbox.yml
+- type: Webhooks
+  url: asyncapi/swisscom-messaging-webhooks.yml
+- type: Conformance
+  url: conformance/swisscom-conformance.yml
+- type: Compliance
+  url: https://trustservices.swisscom.com/en/esignature-hub/downloads-and-documents
+- type: TrustCenter
+  url: security/swisscom-trust-center.yml
+- type: Security
+  url: https://www.swisscom.ch/en/about/security/bug-bounty.html
+- type: Postman
+  url: https://github.com/SwisscomTrustServices/AIS-Postman-Samples
+- type: APIReference
+  url: https://sign.swisscom.ch/docs/api
+- type: GettingStarted
+  url: https://sign.swisscom.ch/docs/guide/getting-started
+- type: Support
+  url: https://trustservices.swisscom.com/en/support
+- type: Blog
+  url: https://trustservices.swisscom.com/en/esignature-hub/trust-blog
+- type: PrivacyPolicy
+  url: https://trustservices.swisscom.com/en/privacypolicy
+- type: SignUp
+  url: https://sign.swisscom.ch/cockpit/
+- type: AgenticAccess
+  url: agentic-access/swisscom-agentic-access.yml
+- type: VulnerabilityDisclosure
+  url: security/swisscom-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/swisscom-domain-security.yml
+- type: OAuthScopes
+  url: scopes/swisscom-scopes.yml
+- type: Authentication
+  url: authentication/swisscom-authentication.yml
 - type: Website
   url: https://www.swisscom.ch/
 - type: DeveloperPortal

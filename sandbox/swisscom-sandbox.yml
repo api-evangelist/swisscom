@@ -1,0 +1,62 @@
+generated: '2026-07-25'
+method: searched
+source: https://sign.swisscom.ch/docs/guide/test-environment
+scope: >-
+  Swisscom Sign Integration API. The Digital Marketplace publishes a free "demo" plan for the
+  Heatmaps product (baseURL .../layer/heatmaps/demo) but no documented sandbox credentials or test
+  fixtures; the All-in Signing Service test access is issued per partner contract and is not
+  publicly documented. Only Swisscom Sign publishes a self-service public test environment.
+environments:
+- name: test
+  web: https://test.sign.swisscom.ch
+  docs: https://test.sign.swisscom.ch/docs
+  api_base: https://test.sign.swisscom.ch/system
+  contract: https://test.sign.swisscom.ch/system/api-docs
+  swagger_ui: https://test.sign.swisscom.ch/system/swagger-ui/index.html
+  self_service: true
+  probed_status: 200
+- name: production
+  web: https://sign.swisscom.ch
+  docs: https://sign.swisscom.ch/docs
+  api_base: https://sign.swisscom.ch/system
+  contract: https://sign.swisscom.ch/system/api-docs
+  probed_status: 200
+separation:
+  model: separate hosts and separate credentials
+  note: >-
+    The test environment mimics the production UI and API but is limited in supported features,
+    performance and data persistence. Test credentials are generated separately in the test cockpit
+    (API Credentials tab, "generate client id and secret for TEST") — there are no prefixed
+    test-vs-live keys on a shared host.
+onboarding:
+  steps:
+  - Sign up at https://test.sign.swisscom.ch/ with a username, password and an email address you control (activation mail is sent).
+  - In the cockpit, subscribe to a plan — free when a testing credit card is used.
+  - Open the API Credentials tab and generate a client id and secret for TEST.
+  - Authenticate against the TEST OAuth2 token endpoint and call the API via the Swagger UI, the REST client or your own tooling.
+  test_payment_cards: https://docs.datatrans.ch/docs/testing-credentials#credit--debit-cards
+  test_payment_cards_note: >-
+    Swisscom Sign links out to the Datatrans (its payment provider) published testing credentials
+    rather than publishing its own test card numbers.
+limitations:
+- End-to-end signing in the test environment is restricted to the EES and AES/advanced signature levels.
+- QES is unavailable in test because it requires the mobile signing app, which is not publicly released for the test environment.
+magic_values:
+- surface: GwG online identification (Signer.verification, corporate tenants only)
+  field: Signer.lastName
+  applies_to: identification performed via the IDnow solution provided by Intrum only
+  values:
+  - value: X-MANUALTEST-HAPPYPATH
+    outcome: Identification succeeds.
+  - value: X-MANUALTEST-FRAUDIDENT
+    outcome: Identification is rejected as fraudulent.
+  - value: X-MANUALTEST-CHECKPENDING
+    outcome: Identification remains pending manual review.
+  default: >-
+    If lastName matches none of these values the test environment automatically runs the happy path —
+    identification succeeds without manual action.
+  note: >-
+    Published verbatim by Swisscom. This mechanism exists only in the test environment; it is not
+    available in production and cannot bypass identification on a real signing process.
+test_clocks: null
+fixture_tooling: null

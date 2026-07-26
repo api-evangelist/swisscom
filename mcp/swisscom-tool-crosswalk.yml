@@ -1,0 +1,102 @@
+generated: '2026-07-25'
+method: derived
+source: mcp/swisscom-mcp.yml, openapi/swisscom-sign-integration-api-openapi.json, openapi/swisscom-all-in-signing-service-openapi.yml
+notes: >-
+  Swisscom publishes no MCP server and no GraphQL surface. This crosswalk binds the CANDIDATE
+  MCP tool set in mcp/swisscom-mcp.yml to the real OpenAPI operationIds that would back it, so
+  each tool inherits a genuine input contract (the operation's parameters + requestBody) rather
+  than a guessed one. Confidence is high throughout because every tool was derived directly from
+  a single published operation — there is no live tools/list to reconcile against.
+surfaces:
+  openapi:
+  - file: openapi/swisscom-sign-integration-api-openapi.json
+    live: https://sign.swisscom.ch/system/api-docs
+    gated: false
+    operations: 11
+  - file: openapi/swisscom-all-in-signing-service-openapi.yml
+    live: https://github.com/SwisscomTrustServices/AIS
+    gated: false
+    operations: 1
+    note: Runtime endpoint ais.swisscom.com requires mutual TLS with a contracted client certificate.
+  graphql: null
+  mcp:
+    url: null
+    status: none-published
+    gated: null
+crosswalk:
+- tool: list_signature_processes
+  category: process-read
+  rest: [findAll]
+  binding: rest
+  confidence: high
+- tool: create_signature_process
+  category: process-write
+  rest: [create]
+  binding: rest
+  confidence: high
+- tool: attach_document
+  category: process-write
+  rest: [attach]
+  binding: rest
+  confidence: high
+- tool: release_signature_process
+  category: process-write
+  rest: [release]
+  binding: rest
+  confidence: high
+- tool: setup_signature_process_in_ui
+  category: process-write
+  rest: [setup]
+  binding: rest
+  confidence: high
+  note: Returns a UI handover URL; completes out of band in the Swisscom Sign web client.
+- tool: open_process_for_signer
+  category: process-read
+  rest: [open]
+  binding: rest
+  confidence: high
+  note: POST operation but scoped sswp:process:read — it mints a participant deep link, it does not mutate the process.
+- tool: get_signature_process
+  category: process-read
+  rest: [getProcess]
+  binding: rest
+  confidence: high
+- tool: get_signature_process_status
+  category: process-read
+  rest: [getStatus]
+  binding: rest
+  confidence: high
+- tool: get_signature_audit_record
+  category: process-read
+  rest: [getRecords]
+  binding: rest
+  confidence: high
+- tool: download_process_file
+  category: document
+  rest: [getFile]
+  binding: rest
+  confidence: high
+- tool: download_process_file_content
+  category: document
+  rest: [getFileContent]
+  binding: rest
+  confidence: high
+- tool: sign_document_ades
+  category: signature-creation
+  rest: [signDoc]
+  binding: rest
+  confidence: high
+  note: Different API and different auth model (mTLS, ETSI TS 119 432) from the Sign Integration API.
+mcp_only: []
+rest_only: []
+coverage:
+  tools_named: 12
+  tools_bound: 12
+  mcp_only: 0
+  rest_operations_total: 12
+  rest_operations_with_tool: 12
+  unmapped_products: >-
+    The api.swisscom.com marketplace products (Text Messaging, Phone Number Validation, Receive SMS,
+    Heatmaps, Dwell Times, Origin Destination, Smart Catalogs for NATEL go, Swiss AI Platform,
+    Business Identity Validator) and the legacy Voice APIs publish no machine-readable contract, so
+    no tool can be bound to them without fabricating an input schema.

@@ -1,0 +1,92 @@
+generated: '2026-07-25'
+method: searched
+source: https://github.com/swisscom-api/doc/wiki/error-response-codes
+api: api.swisscom.com gateway (Messaging / SmartMessaging, Token Validation, Added-value SMS, Voice)
+format: custom-json
+rfc9457: false
+envelope:
+  json_schema_draft: http://json-schema.org/draft-03/schema
+  fields:
+  - name: uuid
+    required: false
+    description: The UUID of the client software.
+  - name: status
+    required: true
+    description: The HTTP status code, e.g. 400.
+  - name: code
+    required: true
+    description: The error code, e.g. INVALID_PARAMETER.
+  - name: message
+    required: true
+    description: The error message.
+  - name: detail
+    required: false
+    description: The error detail.
+error_codes:
+- status: 400
+  code: INVALID_REQUEST
+  title: Bad Request. Invalid request.
+  message: The request could not be understood due to malformed syntax. Correct the request syntax and try again.
+  action: Fix the request syntax or payload and retry.
+- status: 401
+  code: INVALID_AUTHENTICATION_CREDENTIALS
+  title: Unauthorized. No permission to resource or invalid api key.
+  message: >-
+    Authentication credentials missing or incorrect. Check that you are using the correct
+    authentication method and that you have permission to the given resource and your app key is approved.
+  action: Verify the client_id header or OAuth bearer token and that the subscription is approved for this API.
+- status: 403
+  code: FORBIDDEN_RESOURCE
+  title: Forbidden. No permission for requested resource.
+  message: The server understood the request, but is refusing to fulfill it. Check that you have permission to the given resource.
+  action: Confirm the plan/subscription grants access to this resource and scope.
+- status: 404
+  code: INVALID_REQUEST_RESOURCE
+  title: Not Found. The server has not found anything matching the Request-URI.
+  message: The requested resource does not exist. Verify that the resource URI is correctly spelled.
+  action: Check the path and version segment (for example /messaging/v1/sms).
+- status: 405
+  code: INVALID_REQUEST_METHOD
+  title: Method Not Allowed.
+  message: The resource is not accessible via the given method. Check the documentation or the Allow header for allowed methods.
+  action: Use a method listed in the Allow response header.
+- status: 406
+  code: INVALID_HEADER_ACCEPT
+  title: Invalid Header Accept.
+  message: >-
+    The requested resource is only capable of generating content not acceptable according to the
+    Accept headers sent in the request. Make sure the request has an Accept header with a media type
+    supported by the API. Check the developer portal for supported media types.
+  action: Send Accept application/json.
+- status: 429
+  code: EXPIRED_QUOTA
+  title: Too Many Requests. Quota for this service has been exhausted.
+  message: Your quota for this service has been exhausted. Try again later or contact support at developer-support@swisscom.com.
+  action: Back off and retry later, or raise the plan quota on the Digital Marketplace.
+  retryable: true
+- status: 500
+  code: INTERNAL_SERVER_ERROR
+  title: Internal Server Error.
+  message: The server encountered an unexpected condition which prevented it from fulfilling the request. Try again later or contact support at developer-support@swisscom.com.
+  action: Retry with backoff; contact developer-support@swisscom.com with the uuid if it persists.
+  retryable: true
+- status: 503
+  code: UNAVAILABLE_SERVICE
+  title: Service Unavailable.
+  message: The server is currently unable to handle the request due to temporary overloading or maintenance. Try again later or contact support at developer-support@swisscom.com.
+  action: Retry with backoff; typically the back-end is unavailable.
+  retryable: true
+operations_returning_these:
+  documented_error_sets:
+  - operation: POST /messaging/v1/sms
+    statuses: [400, 401, 403, 404, 405, 406, 429, 500, 503]
+  - operation: GET /messaging/v1/sms/{messageId}
+    statuses: [401, 403, 404, 405, 500, 503]
+  - operation: GET /messaging/v1/shortname/shortids/{shortId}
+    statuses: [400, 401, 403, 404, 405, 406, 429, 500, 503]
+  - operation: GET /messaging/v1/shortname/providers/{providerName}
+    statuses: [400, 401, 403, 404, 405, 406, 429, 500, 503]
+note: >-
+  This registry is the gateway-wide error contract for the legacy api.swisscom.com surface as
+  published in the swisscom-api documentation wiki. It is distinct from the Swisscom Sign
+  Integration API error envelope captured in errors/swisscom-problem-types.yml.

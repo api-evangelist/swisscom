@@ -1,0 +1,105 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://github.com/SwisscomTrustServices ; https://www.nuget.org/packages/TrustServices.AIS.Net.Client ;
+  npm / PyPI / Maven Central / NuGet / pkg.go.dev / RubyGems / Packagist / crates.io registry searches
+notes: >-
+  Swisscom ships no client library for the Swisscom Sign Integration API, the api.swisscom.com
+  marketplace products (SMS, token validation, Heatmaps, Dwell Times, Origin Destination,
+  Smart Catalogs, Swiss AI Platform, Business Identity Validator) or the legacy Voice APIs.
+  Every first-party library found belongs to Swisscom Trust Services and targets the All-in
+  Signing Service (AIS). The Java clients are published as source + GitHub release JARs on
+  the SwisscomTrustServices organisation and were NOT found on Maven Central under any
+  com.swisscom* coordinate; only the .NET client is on a public registry (NuGet, authored by
+  "Swisscom Trust Services AG"). npm, PyPI, RubyGems, Packagist, crates.io and pkg.go.dev
+  returned no first-party Swisscom API client.
+packages:
+- language: dotnet
+  registry: nuget
+  name: TrustServices.AIS.Net.Client
+  version: 1.1.0
+  url: https://www.nuget.org/packages/TrustServices.AIS.Net.Client
+  install: dotnet add package TrustServices.AIS.Net.Client
+  repository: https://github.com/SwisscomTrustServices/itext-dotnet-ais-client
+  authors: Swisscom Trust Services AG
+  api: Swisscom All-in Signing Service (AIS)
+  description: .NET client for signing documents with the Swisscom Trust Services AIS API, built on iText.
+  official: true
+- language: java
+  registry: github-release
+  name: pdfbox-ais-client
+  url: https://github.com/SwisscomTrustServices/pdfbox-ais-client
+  install: build from source (Maven) or download the release JAR from GitHub
+  api: Swisscom All-in Signing Service (AIS)
+  description: >-
+    Java client library for the Swisscom All-in Signing Service supporting all PDF signature
+    types, using Apache PDFBox for PDF processing. Usable as a project dependency or as a
+    command-line batch tool.
+  official: true
+  on_maven_central: false
+- language: java
+  registry: github-release
+  name: itext7-ais-client
+  url: https://github.com/SwisscomTrustServices/itext7-ais-client
+  install: build from source (Maven) or download the release JAR from GitHub
+  api: Swisscom All-in Signing Service (AIS)
+  description: >-
+    Java client library for the Swisscom All-in Signing Service built on iText 7. Usable as a
+    project dependency or as a command-line batch tool.
+  official: true
+  on_maven_central: false
+- language: php
+  registry: github
+  name: SetaPDF-Signer-Addon-SwisscomAIS
+  url: https://github.com/SwisscomTrustServices/SetaPDF-Signer-Addon-SwisscomAIS
+  install: composer require setasign/setapdf-signer-addon-swisscomais (see repository README)
+  api: Swisscom All-in Signing Service (AIS)
+  description: SetaPDF-Signer signature module and batch processor for the Swisscom Signing Service.
+  official: true
+  note: Published under the Swisscom Trust Services organisation; the underlying SetaPDF component is third-party (Setasign).
+samples:
+- language: python
+  name: query_swisscom_heatmaps_api.py
+  url: https://github.com/swisscom/mip/blob/master/query_swisscom_heatmaps_api.py
+  api: Swisscom Heatmaps API
+  description: First-party Python sample that authenticates with OAuth 2.0 client credentials and queries the Heatmaps API.
+  official: true
+  package: false
+- language: java
+  name: mab-reference-signer
+  url: https://github.com/SwisscomTrustServices/mab-reference-signer
+  api: Swisscom All-in Signing Service (AIS)
+  description: Reference backend + UI demo for MAB signing journeys (PAR/CIBA, OIDC authorize, ETSI signDoc over mTLS, PDFBox embedding).
+  official: true
+  package: false
+- language: java
+  name: itext7-ais-springboot-testcase
+  url: https://github.com/SwisscomTrustServices/itext7-ais-springboot-testcase
+  api: Swisscom All-in Signing Service (AIS)
+  description: Spring Boot demo of iText7 AIS library usage.
+  official: true
+  package: false
+- language: javascript
+  name: ais-react-flask-client
+  url: https://github.com/SwisscomTrustServices/ais-react-flask-client
+  api: Swisscom All-in Signing Service (AIS)
+  description: React + Flask reference client for AIS.
+  official: true
+  package: false
+registries_checked:
+- registry: npm
+  result: no first-party Swisscom API client
+- registry: pypi
+  result: no first-party package (swisscom, swisscom-ais, swisscom-sign all 404)
+- registry: maven-central
+  result: no com.swisscom.ais coordinate; only unrelated com.swisscom.cloud.sb service-broker artifacts
+- registry: nuget
+  result: TrustServices.AIS.Net.Client (official)
+- registry: rubygems
+  result: none
+- registry: packagist
+  result: none
+- registry: crates.io
+  result: none
+- registry: pkg.go.dev
+  result: none

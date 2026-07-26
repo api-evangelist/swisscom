@@ -1,0 +1,73 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Swisscom All-in Signing Service (AIS)
+  version: 1.0.0
+extends: openapi/swisscom-all-in-signing-service-openapi.yml
+x-apievangelist:
+  generated: '2026-07-25'
+  method: generated
+  source: >-
+    Enhancements derived from this repository's enrichment artifacts and the published
+    SwisscomTrustServices/AIS repository. The harvested spec is never mutated.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: swisscom
+    x-apievangelist-api: swisscom-all-in-signing-service-api
+    x-apievangelist-profile: ETSI TS 119 432 remote signature creation profile
+    x-apievangelist-artifacts:
+      conformance: conformance/swisscom-conformance.yml
+      conventions: conventions/swisscom-conventions.yml
+      data_model: data-model/swisscom-data-model.yml
+      packages: packages/swisscom-packages.yml
+      cli: cli/swisscom-cli.yml
+      trust_center: security/swisscom-trust-center.yml
+    x-apievangelist-source-repository: https://github.com/SwisscomTrustServices/AIS
+    x-apievangelist-note: >-
+      The published document declares no servers[] and no securitySchemes. Both are documented
+      elsewhere: the productive endpoint is https://ais.swisscom.com/AIS-Server/rs/v1.0 and access is
+      authenticated with mutual TLS using a client certificate issued under a Swisscom Trust Services
+      contract.
+- target: $.info
+  update:
+    x-apievangelist-service-descriptions:
+      wsdl: https://github.com/SwisscomTrustServices/AIS/blob/master/services/wsdl/aisService.wsdl
+      wadl: https://github.com/SwisscomTrustServices/AIS/blob/master/services/wadl/aisService.wadl
+      catalog: https://github.com/SwisscomTrustServices/AIS/blob/master/services/catalog.xml
+      schemas:
+      - OASIS DSS core schema v1.0
+      - OASIS DSS asynchronous processing profile v1.0
+      - OASIS DSS timestamping profile v1.0
+      - Swisscom AIS profile schema v1.1
+      - SAML 1.1 assertion schema
+      - XML Signature core schema
+- target: $.servers
+  update:
+  - url: https://ais.swisscom.com/AIS-Server/rs/v1.0
+    description: >-
+      Productive AIS REST endpoint (API Evangelist addition — absent from the published document).
+      Requires mutual TLS with a contracted client certificate.
+- target: $.info
+  update:
+    x-apievangelist-async-pattern:
+      pending_endpoint: /AIS-Server/rs/v1.0/pending
+      description: >-
+        Long-running signature requests (step-up / on-demand with mobile authorisation) are collected
+        by polling the pending endpoint rather than by webhook callback.
+      source: https://github.com/SwisscomTrustServices/pdfbox-ais-client
+- target: $.paths['/signatures/signDoc'].post
+  update:
+    x-apievangelist-note: >-
+      Digest-based — callers submit hashAlgorithmOID plus base64 document hashes; the document never
+      leaves the caller. The response returns detached SignatureObject values plus OCSP/CRL
+      validation info for long-term validation.
+    x-apievangelist-correlation: requestID is echoed back as responseID.
+- target: $.info
+  update:
+    x-apievangelist-clients:
+      java_pdfbox: https://github.com/SwisscomTrustServices/pdfbox-ais-client
+      java_itext7: https://github.com/SwisscomTrustServices/itext7-ais-client
+      dotnet: https://www.nuget.org/packages/TrustServices.AIS.Net.Client
+      php_setapdf: https://github.com/SwisscomTrustServices/SetaPDF-Signer-Addon-SwisscomAIS
+      postman: https://github.com/SwisscomTrustServices/AIS-Postman-Samples
+      shell: https://github.com/SwisscomTrustServices/AIS/tree/master/shell

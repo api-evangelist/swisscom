@@ -1,0 +1,89 @@
+generated: '2026-07-25'
+method: searched
+source: live probes of every apis.yml host and OpenAPI servers[] host
+notes: >-
+  Swisscom publishes one group-wide RFC 9116 security.txt on www.swisscom.ch. The API
+  gateway (api.swisscom.com), the signing platform (sign.swisscom.ch), the AIS host
+  (ais.swisscom.com), the marketplace (digital.swisscom.com) and the Trust Services site
+  publish no /.well-known/ discovery surface of their own. The only machine-readable
+  discovery document on an API host is the Keycloak OIDC configuration for the
+  swisscom-public realm that fronts the Swisscom Sign Integration API — it is served from
+  the realm path, not from the host root.
+hosts:
+- host: https://www.swisscom.ch
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: swisscom-security.txt
+  - path: /.well-known/openid-configuration
+    status: 302
+  - path: /.well-known/oauth-authorization-server
+    status: 302
+  - path: /.well-known/api-catalog
+    status: 302
+  - path: /.well-known/ai-plugin.json
+    status: 302
+- host: https://sign.swisscom.ch
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /realms/swisscom-public/.well-known/openid-configuration
+    status: 200
+    file: swisscom-sign-openid-configuration.json
+    note: Keycloak realm discovery document for the Swisscom Sign Integration API
+- host: https://api.swisscom.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://ais.swisscom.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://digital.swisscom.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://trustservices.swisscom.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404

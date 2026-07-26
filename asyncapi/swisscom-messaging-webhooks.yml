@@ -1,0 +1,67 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://github.com/swisscom-api/doc/wiki/smart-messaging.html ;
+  https://digital.swisscom.com/products/text-messaging
+spec_type: none
+asyncapi_published: false
+note: >-
+  Swisscom publishes no AsyncAPI document for any surface. It does document one real callback
+  (webhook) surface — SMS delivery notification on the SmartMessaging / Text Messaging product —
+  which is captured verbatim below. The Swisscom Sign Integration API has no webhook or event
+  surface at all: integrators poll GET /api/process/{processId}/status. The legacy Voice VoIP API
+  documentation mentions subscribing to VoIP events, but the RAML-rendered wiki no longer exposes a
+  callable event contract and the gateway answers 401.
+webhooks:
+- name: sms-delivery-notification
+  api: Swisscom Text Messaging (SMS) API
+  product: https://digital.swisscom.com/products/text-messaging
+  docs: https://github.com/swisscom-api/doc/wiki/smart-messaging.html
+  subscription:
+    mechanism: per-message
+    field: callbackUrl
+    set_on: POST /messaging/v1/sms
+    description: >-
+      A valid callback URL (HTTP) for delivery notification. Supplied on each individual send
+      request — there is no account-level webhook endpoint registration.
+  delivery:
+    method: PUT
+    target: the caller-supplied callbackUrl
+    payload: none documented
+    identifier: >-
+      The message identifier is carried in the header.location of the notification call, which
+      contains the messageID.
+    trigger: fired for each SMS status change
+  follow_up:
+    operation: GET /messaging/v1/sms/{messageId}
+    description: Retrieve the current status of a message using the messageId received on the notification request.
+    response_fields:
+    - name: messageId
+      required: true
+    - name: status
+      required: true
+      example: '201'
+    - name: description
+      required: false
+      example: Delivered with delivery confirmation
+  security:
+    signature_verification: not documented
+    retry_policy: not documented
+    note: >-
+      Swisscom documents no signing, authentication or retry semantics for the callback. Treat the
+      notification as an untrusted trigger and re-read status from
+      GET /messaging/v1/sms/{messageId} before acting on it.
+  scope_note: >-
+    The Text Messaging product is restricted to Swiss customers by default and sending is limited to
+    Switzerland unless the plan is configured otherwise.
+event_surfaces_absent:
+- api: Swisscom Sign Integration API
+  reason: No webhooks or events; status is polled via getStatus.
+- api: Swisscom All-in Signing Service (AIS)
+  reason: >-
+    Synchronous request/response over the ETSI TS 119 432 profile; long-running signatures use a
+    pending/poll pattern (/AIS-Server/rs/v1.0/pending), not callbacks.
+- api: Swisscom Receive SMS API
+  reason: >-
+    Inbound SMS is exposed as message inboxes on the marketplace; no public callback contract is
+    documented outside the login-gated product area.

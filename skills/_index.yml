@@ -1,0 +1,27 @@
+generated: '2026-07-25'
+method: generated
+source: >-
+  openapi/swisscom-sign-integration-api-openapi.json, openapi/swisscom-all-in-signing-service-openapi.yml,
+  https://sign.swisscom.ch/docs/guide/concepts, https://sign.swisscom.ch/docs/guide/release-notes
+note: >-
+  Every step is grounded in an operationId that exists verbatim in the referenced spec. Skills are
+  authored only for the two Swisscom APIs with a published machine-readable contract — the
+  api.swisscom.com marketplace products and the legacy Voice APIs have no spec to ground steps in.
+  No provider-published Agent Skill or AGENTS.md was found on any Swisscom surface.
+skills:
+- file: swisscom-invite-and-sign.md
+  name: Invite a signer and complete a Swisscom Sign process
+  api: openapi/swisscom-sign-integration-api-openapi.json
+  operations: [create, attach, release, open, getStatus, getFile, getRecords]
+- file: swisscom-draft-and-hand-over-to-ui.md
+  name: Draft a Swisscom Sign process and hand it to the Swisscom UI
+  api: openapi/swisscom-sign-integration-api-openapi.json
+  operations: [create, attach, setup, getStatus]
+- file: swisscom-audit-and-reconcile-processes.md
+  name: Audit and reconcile Swisscom Sign processes
+  api: openapi/swisscom-sign-integration-api-openapi.json
+  operations: [findAll, getProcess, getStatus, getFile, getFileContent, getRecords]
+- file: swisscom-ais-sign-document-digests.md
+  name: Create an AdES signature with the Swisscom All-in Signing Service
+  api: openapi/swisscom-all-in-signing-service-openapi.yml
+  operations: [signDoc]

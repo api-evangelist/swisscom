@@ -1,0 +1,62 @@
+generated: '2026-07-25'
+method: searched
+source: openapi/swisscom-sign-integration-api-openapi.json
+docs: https://sign.swisscom.ch/docs/guide/authentication
+legacy_docs: https://github.com/swisscom-api/doc/wiki/oauth-scopes.html
+schemes:
+- name: SwisscomSignOAuth2
+  source: openapi/swisscom-sign-integration-api-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token
+  description: OAuth 2.0 Client Credentials flow for accessing the Swisscom Sign Integration
+    API.
+scopes:
+- scope: sswp:process:create
+  description: Create, configure, and submit a new signature process including documents, invitees,
+    and signature options.
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/swisscom-sign-integration-api-openapi.json
+- scope: sswp:process:read
+  description: Read process metadata or download associated documents.
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/swisscom-sign-integration-api-openapi.json
+- scope: sswp:process:read:all
+  description: Read metadata of all processes within the organization, with optional filtering.
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/swisscom-sign-integration-api-openapi.json
+issuer: https://sign.swisscom.ch/realms/swisscom-public
+jwks_uri: https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/certs
+audience: swisscom-sign-api
+tenancy_claim: organization_id
+scope_usage:
+- scope: sswp:process:create
+  operations: [create, setup, release, attach]
+- scope: sswp:process:read
+  operations: [open, getProcess, getStatus, getRecords, getFile, getFileContent]
+- scope: sswp:process:read:all
+  operations: [findAll]
+credential_issuance: >-
+  Client id and secret are generated per subscription in the Swisscom Sign cockpit under the API
+  Credentials tab; TEST and production credentials are issued separately on their respective hosts.
+other_surfaces:
+- surface: api.swisscom.com legacy gateway
+  docs: https://github.com/swisscom-api/doc/wiki/oauth-scopes.html
+  authorization_endpoint: https://consent.swisscom.com/c/oauth2/auth
+  token_endpoint: https://consent.swisscom.com/o/oauth2/token
+  convention: '<action>-<resource>, where action is read or write; space-delimited in the scope parameter'
+  published_examples:
+  - read-basicprofile
+  - read-phone
+  - read-email
+  - read-voip-callforwardings
+  - write-voip-callforwardings
+  note: >-
+    Documented in the swisscom-api wiki as examples, not as a complete scope registry. The full scope
+    list for the marketplace products sits behind the Swisscom login and is not machine-readable.

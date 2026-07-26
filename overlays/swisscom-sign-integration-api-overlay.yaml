@@ -1,0 +1,92 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Swisscom Sign Integration API
+  version: 1.0.0
+extends: openapi/swisscom-sign-integration-api-openapi.json
+x-apievangelist:
+  generated: '2026-07-25'
+  method: generated
+  source: >-
+    Enhancements derived from this repository's enrichment artifacts. The original spec is harvested
+    verbatim from https://sign.swisscom.ch/system/api-docs and is never mutated.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: swisscom
+    x-apievangelist-api: swisscom-sign-integration-api
+    x-apievangelist-artifacts:
+      authentication: authentication/swisscom-authentication.yml
+      scopes: scopes/swisscom-scopes.yml
+      conventions: conventions/swisscom-conventions.yml
+      errors: errors/swisscom-problem-types.yml
+      lifecycle: lifecycle/swisscom-lifecycle.yml
+      sandbox: sandbox/swisscom-sandbox.yml
+      changelog: changelog/swisscom-changelog.yml
+      data_model: data-model/swisscom-data-model.yml
+      conformance: conformance/swisscom-conformance.yml
+      agentic_access: agentic-access/swisscom-agentic-access.yml
+      mcp: mcp/swisscom-mcp.yml
+      tool_crosswalk: mcp/swisscom-tool-crosswalk.yml
+      skills: skills/_index.yml
+    x-apievangelist-live-contract: https://sign.swisscom.ch/system/api-docs
+    x-apievangelist-test-contract: https://test.sign.swisscom.ch/system/api-docs
+- target: $.servers
+  update:
+  - url: https://test.sign.swisscom.ch/system
+    description: >-
+      Public test environment (API Evangelist addition). Sign up at https://test.sign.swisscom.ch/,
+      subscribe to a plan and generate TEST client credentials in the cockpit. End-to-end signing is
+      limited to EES and AES levels. Documented at https://sign.swisscom.ch/docs/guide/test-environment
+      but absent from servers[] in the published spec.
+- target: $.info
+  update:
+    x-apievangelist-error-envelope:
+      media_type: application/json
+      schema: Error
+      rfc9457: false
+      note: >-
+        The Error schema is declared but only wired to a subset of failure responses. 400/401/403/404
+        on several operations declare no response body at all, so a client cannot rely on parsing an
+        Error object for every failure.
+- target: $.info
+  update:
+    x-apievangelist-idempotency:
+      key_header: null
+      supported: partial
+      note: >-
+        No idempotency key exists. POST /api/process/{processId}/release is safe to repeat — it returns
+        208 Already Reported with the same permanently-valid participant URLs. POST /api/process and
+        POST /api/process/{processId}/attach are NOT safe to repeat.
+- target: $.info
+  update:
+    x-apievangelist-rate-limits:
+      documented: false
+      headers: []
+      note: No rate-limit headers or published quotas were found for this API.
+- target: $.paths['/api/process'].get
+  update:
+    x-apievangelist-pagination:
+      style: page-number
+      max_size: 20
+      default_sort: createdDate,DESC
+      envelope: ProcessPage
+      metadata: page
+- target: $.paths['/api/process/{processId}/release'].post
+  update:
+    x-apievangelist-retry-safe: true
+    x-apievangelist-note: Returns 208 Already Reported when the process was already released.
+- target: $.paths['/api/process/{processId}/file/{fileId}'].get
+  update:
+    x-apievangelist-note: >-
+      Returns 410 once the process has been archived — download and persist signed documents and the
+      audit record before archiveOn is reached.
+- target: $.paths['/api/process/{processId}/file/{fileId}/content'].get
+  update:
+    x-apievangelist-note: >-
+      Binary sibling of getFile; same 410-after-archive and 412-not-yet-signed semantics.
+- target: $.components.securitySchemes.SwisscomSignOAuth2
+  update:
+    x-apievangelist-guidance: >-
+      Call from your own backend. Swisscom's own documentation warns that entering client_id and
+      client_secret in the browser-based API explorer exposes them to extensions, injected scripts
+      and shared-device browser state, and is not the recommended production pattern.

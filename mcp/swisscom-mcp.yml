@@ -1,0 +1,77 @@
+generated: '2026-07-25'
+method: derived
+status: candidate
+source: openapi/swisscom-sign-integration-api-openapi.json, openapi/swisscom-all-in-signing-service-openapi.yml
+search_notes: >-
+  No official or community Swisscom MCP server was found. Searched the Swisscom, Swisscom
+  Trust Services and swisscom-api GitHub organisations, the npm registry (@modelcontextprotocol
+  and "swisscom mcp"), the Swisscom Digital Marketplace and the Swisscom Sign docs — none
+  advertise a hosted or stdio MCP server, and no /mcp endpoint answers on sign.swisscom.ch,
+  api.swisscom.com or ais.swisscom.com. The tools below are a CANDIDATE surface derived one-to-one
+  from the published OpenAPI operations; each tool's real input schema is the backing operation's
+  parameters + requestBody in the referenced spec.
+server:
+  name: swisscom
+  transport: stdio
+  url: null
+tools:
+- name: list_signature_processes
+  description: List all signature processes for the organization, paginated and filterable by status, team and expiry window.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#findAll
+  scope: sswp:process:read:all
+- name: create_signature_process
+  description: Create a new signature process with invitees, signature options and authorization mode.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#create
+  scope: sswp:process:create
+- name: attach_document
+  description: Attach a PDF document to a CREATED process, with coordinate- or tag-based signature positions.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#attach
+  scope: sswp:process:create
+- name: release_signature_process
+  description: Release a fully prepared process and notify participants, optionally configuring reminders.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#release
+  scope: sswp:process:create
+- name: setup_signature_process_in_ui
+  description: Hand a draft process over to the Swisscom Sign UI for manual completion.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#setup
+  scope: sswp:process:create
+- name: open_process_for_signer
+  description: Generate a participant-specific access URL (deep link) for a released process.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#open
+  scope: sswp:process:read
+- name: get_signature_process
+  description: Retrieve the full process payload including signers, files and certificate match results.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#getProcess
+  scope: sswp:process:read
+- name: get_signature_process_status
+  description: Read the current lifecycle state of a process (CREATED, PENDING, COMPLETED, EXPIRED).
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#getStatus
+  scope: sswp:process:read
+- name: get_signature_audit_record
+  description: Fetch the auditing record trail for a process.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#getRecords
+  scope: sswp:process:read
+- name: download_process_file
+  description: Download an original or signed document as Base64 JSON.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#getFile
+  scope: sswp:process:read
+- name: download_process_file_content
+  description: Download an original or signed document as raw binary content.
+  source_operation: openapi/swisscom-sign-integration-api-openapi.json#getFileContent
+  scope: sswp:process:read
+- name: sign_document_ades
+  description: Request creation of AdES signatures/seals over document digests via the ETSI TS 119 432 All-in Signing Service interface.
+  source_operation: openapi/swisscom-all-in-signing-service-openapi.yml#signDoc
+  scope: null
+  note: AIS is mTLS-authenticated and contract-gated; not suitable for anonymous agent use.
+authentication:
+  type: oauth2
+  flow: clientCredentials
+  token_url: https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token
+  scopes:
+  - sswp:process:create
+  - sswp:process:read
+  - sswp:process:read:all
+  note: >-
+    Credentials are issued per subscription from the Swisscom Sign cockpit (API Credentials tab);
+    the AIS interface uses mutual TLS with a client certificate instead.

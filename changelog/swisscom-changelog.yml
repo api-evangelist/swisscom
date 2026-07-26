@@ -1,0 +1,99 @@
+generated: '2026-07-25'
+method: searched
+source: https://sign.swisscom.ch/docs/guide/release-notes
+scope: >-
+  Swisscom Sign Integration API. This is the only Swisscom API surface with a dated, public,
+  API-versioned changelog. The Digital Marketplace (digital.swisscom.com), the api.swisscom.com
+  gateway products and the legacy Voice/Messaging wiki publish no changelog; Swisscom Trust
+  Services publishes product news on its Trust Blog but no release notes for the AIS interface.
+scheme: semver
+version_signal: >-
+  Each release-note item names the "Related API version" of the Swisscom Sign Integration API in
+  which it shipped; portal-only changes are explicitly flagged as having no API impact.
+current_version: 2.17.0
+current_version_evidence: highest "Related API version" named in the June 2026 release notes
+cadence: irregular, roughly every 2-3 months
+breaking_changes_observed: false
+entries:
+- date: '2026-06'
+  url: https://sign.swisscom.ch/docs/guide/release-notes/2026-06
+  api_versions: ['2.15.0', '2.17.0']
+  breaking: false
+  highlights:
+  - change: Maximum document upload size increased from 10 MB to 40 MB
+    operations: [attach]
+    api_version: platform update (no specific API version)
+  - change: >-
+      Tag-based signature positioning — signature positions resolved at runtime by searching for a
+      tag string embedded in the PDF (locator: TAG, tags \s1\, \s2\, ...), with optional offsetX /
+      offsetY in PDF points (-200..200); coordinates no longer required
+    operations: [attach]
+    api_version: 2.15.0
+  - change: >-
+      Reminder configuration on release — notification.reminder supports a recurring interval and an
+      array of beforeExpiry offsets, both ISO 8601 durations between P1D and P30D; beforeExpiry
+      requires the process to carry validUntil
+    operations: [release]
+    api_version: 2.17.0
+- date: '2026-05'
+  url: https://sign.swisscom.ch/docs/guide/release-notes/2026-05
+  api_versions: ['2.13.0']
+  breaking: false
+  theme: Workflow capabilities for multi-party signing
+  highlights:
+  - change: Signing order — the next invitation is only sent once the previous signer completes; exposed as SignerStatus WAITING
+    operations: [getProcess]
+    api_version: 2.13.0
+  - change: Remove or replace a signer on a running process; exposed as SignerStatus REMOVED / REPLACED
+    api_version: 2.13.0
+  - change: Decline a signature with a mandatory reason; ends the process and notifies the initiator; SignerStatus DECLINED
+    api_version: 2.13.0
+  - change: Delegate (forward) a signature request to another person; the original signer surfaces as REPLACED
+    api_version: 2.13.0
+- date: '2026-03'
+  url: https://sign.swisscom.ch/docs/guide/release-notes/2026-03
+  api_versions: ['2.7.0', '2.8.0', '2.9.0', '2.11.0']
+  breaking: false
+  highlights:
+  - change: SSO for process release — authorization parameter value ACCOUNT skips the SMS/email delivery step for already-authenticated corporate users
+    operations: [create]
+    api_version: 2.7.0
+  - change: New GET /api/process endpoint returning a paginated, status-filterable list of the organization's processes
+    operations: [findAll]
+    api_version: 2.11.0
+  - change: Signer validation — certificateMatch field compares invited signer name against the certificate name (UNCHECKED / MATCH / MISMATCH)
+    operations: [getProcess]
+    api_version: null
+  - change: teamId parameter assigns a process to a team
+    operations: [create]
+    api_version: 2.9.0
+  - change: partnerId field attributes a process to a Swisscom partner
+    operations: [create]
+    api_version: 2.8.0
+  - change: App login phase-out — from 1 March 2026 portal login is only via Swisscom Login or a personal email/password account
+    api_version: portal feature (no API impact)
+- date: '2026-01'
+  url: https://sign.swisscom.ch/docs/guide/release-notes/2026-01
+  api_versions: ['2.5.0']
+  breaking: false
+  highlights:
+  - change: >-
+      Custom visual signature — stickerProvider on a FileSignaturePosition selects
+      CUSTOM_VISUAL_SIGNATURE_PROVIDER (user-drawn/uploaded) or the default VISUAL_SIGNATURE_PROVIDER
+    operations: [attach]
+    api_version: 2.5.0
+  - change: Swisscom Pay billing added alongside credit card for Swisscom Sign subscriptions
+    api_version: portal feature (no API impact)
+- date: '2025-10'
+  url: https://sign.swisscom.ch/docs/guide/release-notes/2025-10
+  api_versions: []
+  breaking: false
+  highlights:
+  - change: >-
+      All three signature standards supported — EES (simple), FES (advanced) and QES (qualified),
+      the latter two under both ZertES (Swiss) and eIDAS (EU); signature level is set per document
+    api_version: no specific API version
+  - change: Guest signing — invitees can sign without a Swisscom Sign account, with optional email/SMS OTP
+    api_version: platform feature (no specific API version)
+  - change: New login and account model — registration with email address and password alongside Swisscom Login and My Swisscom App
+    api_version: portal feature (no API impact)

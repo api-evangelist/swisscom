@@ -1,0 +1,199 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/swisscom-sign-integration-api-openapi.json, openapi/swisscom-all-in-signing-service-openapi.yml
+docs: https://sign.swisscom.ch/docs/guide/concepts
+note: >-
+  Derived mechanically from OpenAPI $ref links and id-reference fields. Swisscom publishes no object
+  reference with id prefixes; identifiers are plain UUIDs, not prefixed like Stripe object ids.
+  Only the two APIs with published specs are modelled — the api.swisscom.com marketplace products
+  expose no machine-readable schema.
+apis:
+- api: Swisscom Sign Integration API
+  spec: openapi/swisscom-sign-integration-api-openapi.json
+  root_entity: Process
+  identifier_format: uuid
+  entities:
+  - name: Process
+    description: >-
+      The root aggregate. Created in CREATED state, moves to PENDING on release, then COMPLETED or
+      EXPIRED. Carries signature level, initiator, invitees, team assignment, free-form properties,
+      validity window and archive dates.
+    key_fields: [id, status, signatureLevel, teamId, validUntil, createdDate, lastModifiedDate, archiveOn, archivedOn]
+    states: [CREATED, PENDING, COMPLETED, EXPIRED]
+    operations: [create, findAll, getProcess, getStatus, setup, release, open, attach]
+  - name: Participant
+    description: Polymorphic base for anyone attached to a process; discriminated by `type`.
+    subtypes: [Person, NonPerson]
+  - name: Person
+    description: A natural-person participant.
+  - name: NonPerson
+    description: A non-natural-person participant (organisation acting on a process).
+  - name: Signer
+    description: >-
+      An invited signer with contact attributes, role, identification/verification state, signature
+      lifecycle timestamps and the certificate name used for signer validation.
+    key_fields: [type, identification, externalIdentifier, firstName, lastName, email, mobile, role, status, signedOn, discontinuedOn, canceledOn, certificateName]
+    status_values_documented_in_release_notes: [WAITING, REMOVED, REPLACED, DECLINED]
+  - name: Invitees
+    description: Container for the signer set plus an optional personal message.
+    key_fields: [personalMessage]
+  - name: Verification
+    description: GwG online-identification record attached to a signer.
+    key_fields: [processId, verifiedOn, rejectedOn, payload, files, residentPermit]
+  - name: FileReference
+    description: A document tracked on the process, linking the initial upload to the last signed output.
+    key_fields: [externalIdentifier, initialFileId, lastSignedFileId]
+  - name: FileAttachment
+    description: An uploaded PDF (Base64 content + contentType) with its requested signature positions.
+    key_fields: [id, name, content, contentType, externalIdentifier]
+    limits: 'maximum upload size 40 MB (raised from 10 MB, June 2026)'
+  - name: FileSignaturePosition
+    description: A resolved signature placement on a page, with the sticker/visual-signature provider.
+    key_fields: [signer, pageNumber, positionX, positionY, stickerProvider]
+    sticker_providers: [VISUAL_SIGNATURE_PROVIDER, CUSTOM_VISUAL_SIGNATURE_PROVIDER]
+  - name: FileSignaturePositionInput
+    description: Requested placement, discriminated by `locator` into coordinate- or tag-based positioning.
+    subtypes: [CoordinateSignaturePosition, TagSignaturePosition]
+  - name: Property
+    description: Free-form key/value metadata on a process.
+    key_fields: [key, value]
+  - name: NotificationSettings
+    description: Locale, suppression and reminder configuration supplied on release.
+    key_fields: [locale, suppress]
+  - name: ReminderSettings
+    description: Recurring interval and fixed before-expiry reminder offsets, both ISO 8601 durations (P1D..P30D).
+    key_fields: [interval, beforeExpiry]
+  - name: ProcessAuthentication
+    description: Identity/namespace pair used when a process is opened or set up with SSO-style authentication.
+    key_fields: [identity, namespace]
+  - name: ReleasedParticipant
+    description: A participant returned by release, carrying the permanently-valid signing URL.
+    key_fields: [id, externalIdentifier, url]
+  - name: AuditRecord
+    description: One entry in the process audit trail.
+    key_fields: [id, createdDate, action, status, extras]
+  - name: PageMetadata
+    description: Stable pagination metadata on the process list.
+    key_fields: [totalElements, totalPages, size, number]
+  - name: Error
+    description: Error envelope — see errors/swisscom-problem-types.yml.
+  relationships:
+  - from: Process
+    to: Invitees
+    type: has_one
+    via: invitees
+  - from: Process
+    to: Signer
+    type: has_many
+    via: invitees.signers
+  - from: Process
+    to: Participant
+    type: has_one
+    via: initiator
+    note: Person or NonPerson
+  - from: Process
+    to: Property
+    type: has_many
+    via: properties
+  - from: Process
+    to: FileReference
+    type: has_many
+    via: fileReferences
+  - from: Process
+    to: Team
+    type: belongs_to
+    via: teamId
+    note: Team is referenced by id only; no team resource is exposed on this API.
+  - from: Invitees
+    to: Signer
+    type: has_many
+    via: signers
+  - from: Signer
+    to: Verification
+    type: has_one
+    via: verification
+  - from: FileReference
+    to: FileSignaturePosition
+    type: has_many
+    via: signaturePositions
+  - from: FileReference
+    to: FileAttachment
+    type: belongs_to
+    via: initialFileId
+  - from: FileReference
+    to: FileAttachment
+    type: belongs_to
+    via: lastSignedFileId
+  - from: FileAttachment
+    to: FileSignaturePositionInput
+    type: has_many
+    via: signaturePositions
+    note: CoordinateSignaturePosition or TagSignaturePosition, discriminated by locator
+  - from: FileSignaturePosition
+    to: Signer
+    type: belongs_to
+    via: signer
+  - from: ProcessPage
+    to: Process
+    type: has_many
+    via: content
+  - from: ProcessPage
+    to: PageMetadata
+    type: has_one
+    via: page
+  - from: ProcessReleaseRequest
+    to: NotificationSettings
+    type: has_one
+    via: notification
+  - from: NotificationSettings
+    to: ReminderSettings
+    type: has_one
+    via: reminder
+  - from: ReleaseResponse
+    to: ReleasedParticipant
+    type: has_many
+    via: participants
+  - from: AuditSuccessRecordResponse
+    to: AuditRecord
+    type: has_many
+    via: records
+  - from: ProcessSetupRequest
+    to: ProcessAuthentication
+    type: has_one
+    via: authentication
+  - from: ProcessOpenRequest
+    to: ProcessAuthentication
+    type: has_one
+    via: authentication
+- api: Swisscom All-in Signing Service (AIS)
+  spec: openapi/swisscom-all-in-signing-service-openapi.yml
+  root_entity: SignDocRequest
+  identifier_format: uuid (requestID / responseID correlation pair)
+  entities:
+  - name: SignDocRequest
+    description: >-
+      ETSI TS 119 432 signature creation request carrying the SAD, requestID, credentialID, profile,
+      signatureFormat, conformanceLevel and the document digests.
+  - name: DocumentDigests
+    description: hashAlgorithmOID plus the list of base64 document hashes to be signed.
+  - name: SignDocResponse
+    description: responseID, the returned SignatureObject list, and validation info.
+  - name: ValidationInfo
+    description: OCSP responses and CRLs supporting long-term validation of the signature.
+  - name: ErrorResponse
+    description: Error body returned for 4XX/5XX.
+  relationships:
+  - from: SignDocRequest
+    to: DocumentDigests
+    type: has_one
+    via: documentDigests
+  - from: SignDocResponse
+    to: ValidationInfo
+    type: has_one
+    via: validationInfo
+  - from: SignDocResponse
+    to: SignDocRequest
+    type: belongs_to
+    via: responseID
+    note: responseID echoes the caller's requestID.
+render: null
