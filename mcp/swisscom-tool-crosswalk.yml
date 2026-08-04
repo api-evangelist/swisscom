@@ -21,7 +21,8 @@ surfaces:
   graphql: null
   mcp:
     url: null
-    status: none-published
+    status: none
+    status_raw: none-published
     gated: null
 crosswalk:
 - tool: list_signature_processes
