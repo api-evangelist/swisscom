@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "All-in Signing Service REST Application",
+    "version": "3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "signatures",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request creation of AdES signatures",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/signatures/signDoc",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request creation of AdES signatures"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

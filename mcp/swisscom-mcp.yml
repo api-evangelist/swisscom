@@ -2,21 +2,20 @@ generated: '2026-07-25'
 method: derived
 status: candidate
 source: openapi/swisscom-sign-integration-api-openapi.json, openapi/swisscom-all-in-signing-service-openapi.yml
-search_notes: >-
-  No official or community Swisscom MCP server was found. Searched the Swisscom, Swisscom
-  Trust Services and swisscom-api GitHub organisations, the npm registry (@modelcontextprotocol
-  and "swisscom mcp"), the Swisscom Digital Marketplace and the Swisscom Sign docs — none
-  advertise a hosted or stdio MCP server, and no /mcp endpoint answers on sign.swisscom.ch,
-  api.swisscom.com or ais.swisscom.com. The tools below are a CANDIDATE surface derived one-to-one
-  from the published OpenAPI operations; each tool's real input schema is the backing operation's
-  parameters + requestBody in the referenced spec.
+search_notes: No official or community Swisscom MCP server was found. Searched the Swisscom, Swisscom
+  Trust Services and swisscom-api GitHub organisations, the npm registry (@modelcontextprotocol and "swisscom
+  mcp"), the Swisscom Digital Marketplace and the Swisscom Sign docs — none advertise a hosted or stdio
+  MCP server, and no /mcp endpoint answers on sign.swisscom.ch, api.swisscom.com or ais.swisscom.com.
+  The tools below are a CANDIDATE surface derived one-to-one from the published OpenAPI operations; each
+  tool's real input schema is the backing operation's parameters + requestBody in the referenced spec.
 server:
   name: swisscom
   transport: stdio
   url: null
 tools:
 - name: list_signature_processes
-  description: List all signature processes for the organization, paginated and filterable by status, team and expiry window.
+  description: List all signature processes for the organization, paginated and filterable by status,
+    team and expiry window.
   source_operation: openapi/swisscom-sign-integration-api-openapi.json#findAll
   scope: sswp:process:read:all
 - name: create_signature_process
@@ -60,7 +59,8 @@ tools:
   source_operation: openapi/swisscom-sign-integration-api-openapi.json#getFileContent
   scope: sswp:process:read
 - name: sign_document_ades
-  description: Request creation of AdES signatures/seals over document digests via the ETSI TS 119 432 All-in Signing Service interface.
+  description: Request creation of AdES signatures/seals over document digests via the ETSI TS 119 432
+    All-in Signing Service interface.
   source_operation: openapi/swisscom-all-in-signing-service-openapi.yml#signDoc
   scope: null
   note: AIS is mTLS-authenticated and contract-gated; not suitable for anonymous agent use.
@@ -72,6 +72,11 @@ authentication:
   - sswp:process:create
   - sswp:process:read
   - sswp:process:read:all
-  note: >-
-    Credentials are issued per subscription from the Swisscom Sign cockpit (API Credentials tab);
+  note: Credentials are issued per subscription from the Swisscom Sign cockpit (API Credentials tab);
     the AIS interface uses mutual TLS with a client certificate instead.
+deployment:
+  mode: none
+  verified: derived
+  tools: 12
+  checked: '2026-08-12'
+  source: catalog MCP census

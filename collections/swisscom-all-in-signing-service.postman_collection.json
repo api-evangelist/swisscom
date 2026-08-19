@@ -1,0 +1,210 @@
+{
+  "item": [
+    {
+      "id": "65e7b79e-3051-4c6b-8940-0d0835917184",
+      "name": "signatures",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "49fee0ee-ed69-4adb-a318-43b7094af0a2",
+          "name": "Request creation of AdES signatures",
+          "request": {
+            "name": "Request creation of AdES signatures",
+            "description": {},
+            "url": {
+              "path": [
+                "signatures",
+                "signDoc"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"SAD\": \"<string>\",\n  \"credentialID\": \"<string>\",\n  \"signatureFormat\": \"<string>\",\n  \"profile\": \"<string>\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"<string>\",\n    \"hashes\": [\n      \"<Base64>\",\n      \"<Base64>\"\n    ]\n  },\n  \"conformanceLevel\": \"AdES-B-B\",\n  \"requestID\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8b5adf75-4f49-4496-ac49-c8b6c584da22",
+              "name": "Result of the signature creation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signatures",
+                    "signDoc"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"SAD\": \"eyJh...Mmw\",\n  \"requestID\": \"fdf41e6a-382a-4512-afe9-fd2a9bab30d7\",\n  \"credentialID\": \"OnDemand-Qualified\",\n  \"profile\": \"http://uri.etsi.org/19432/v1.1.1#/creationprofile#\",\n  \"signatureFormat\": \"P\",\n  \"conformanceLevel\": \"AdES-B-LT\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"2.16.840.1.101.3.4.2.1\",\n    \"hashes\": [\n      \"HLNTuE2+zWOo+p1VfQdjdEjDC9xcLfVdqdHYX2gwTFM=\",\n      \"sHS3ei9wNyR/rGu5ghto/v0+h22wmdlD3TGxRyO/sgM=\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"validationInfo\": {\n    \"ocsp\": [\n      \"MII...AGk=\"\n    ],\n    \"crl\": [\n      \"MII...sNrI=\"\n    ]\n  },\n  \"responseID\": \"fdf41e6a-382a-4512-afe9-fd2a9bab30d7\",\n  \"SignatureObject\": [\n    \"MII2...23w4=\",\n    \"MII2...m5c=\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0ea823c-4db9-4969-8b7f-62e4678c1e40",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signatures",
+                    "signDoc"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"SAD\": \"eyJh...Mmw\",\n  \"requestID\": \"fdf41e6a-382a-4512-afe9-fd2a9bab30d7\",\n  \"credentialID\": \"OnDemand-Qualified\",\n  \"profile\": \"http://uri.etsi.org/19432/v1.1.1#/creationprofile#\",\n  \"signatureFormat\": \"P\",\n  \"conformanceLevel\": \"AdES-B-LT\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"2.16.840.1.101.3.4.2.1\",\n    \"hashes\": [\n      \"HLNTuE2+zWOo+p1VfQdjdEjDC9xcLfVdqdHYX2gwTFM=\",\n      \"sHS3ei9wNyR/rGu5ghto/v0+h22wmdlD3TGxRyO/sgM=\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_request\",\n  \"error_description\": \"Required parameter `SAD` is missing\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d825a566-1a70-4abd-8f1a-0b37be86d014",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signatures",
+                    "signDoc"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"SAD\": \"eyJh...Mmw\",\n  \"requestID\": \"fdf41e6a-382a-4512-afe9-fd2a9bab30d7\",\n  \"credentialID\": \"OnDemand-Qualified\",\n  \"profile\": \"http://uri.etsi.org/19432/v1.1.1#/creationprofile#\",\n  \"signatureFormat\": \"P\",\n  \"conformanceLevel\": \"AdES-B-LT\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"2.16.840.1.101.3.4.2.1\",\n    \"hashes\": [\n      \"HLNTuE2+zWOo+p1VfQdjdEjDC9xcLfVdqdHYX2gwTFM=\",\n      \"sHS3ei9wNyR/rGu5ghto/v0+h22wmdlD3TGxRyO/sgM=\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_request\",\n  \"error_description\": \"Required parameter `SAD` is missing\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b3682669-6629-4422-a624-4dfa00980589",
+    "name": "All-in Signing Service REST Application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "All-in Signing Service",
+      "type": "text/plain"
+    }
+  }
+}

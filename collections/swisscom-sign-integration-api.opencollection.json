@@ -1,0 +1,403 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Swisscom Sign Integration API",
+    "version": "2.19.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Process: read",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all processes (paginated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sign.swisscom.ch/system/api/process",
+            "params": [
+              {
+                "name": "status",
+                "value": "PENDING",
+                "type": "query",
+                "description": "Filter by status."
+              },
+              {
+                "name": "teamId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "query",
+                "description": "Filter by team ID."
+              },
+              {
+                "name": "validUntilWithin",
+                "value": "P30D",
+                "type": "query",
+                "description": "Filter by validUntil within the given ISO 8601 duration (e.g. P30D, PT12H)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Zero-based page index (0..N)"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The size of the page to be returned"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a paginated list of processes.\n\nSupports optional filtering by `status`, `teamId`, and `validUntilWithin` (ISO 8601 duration).\nThe page size is limited to a maximum of 20 items.\nSorting is strictly performed on 'createdDate', but the direction (ASC/DESC) can be defined.\n"
+        },
+        {
+          "info": {
+            "name": "Generate participant access URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/open/:personId",
+            "params": [
+              {
+                "name": "processId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "personId",
+                "value": "",
+                "type": "path",
+                "description": "The system-assigned identifier or the external reference from your system can be used to identify the person."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Generate an URL for a specific participant that can be used to open the process in the Swisscom Sign UI. Optional return URLs can be used to redirect the user back to the calling third party system. If an unreleased process is opened, an error is returned. For unreleased processes, /process/{processId}/setup can be used.\n\nPreconditions:\n* The service can only be used if the process has already been released via /processId/{processId}/release."
+        },
+        {
+          "info": {
+            "name": "Get process details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId",
+            "params": [
+              {
+                "name": "processId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "path",
+                "description": "Unique identifier of the process."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the full process object including participants, documents, properties,\nand current status.\n\nCan only be accessed if the process has been initiated and the caller is authorized.\n"
+        },
+        {
+          "info": {
+            "name": "Get process status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/status",
+            "params": [
+              {
+                "name": "processId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the current status of the process. Requires that the process exists and the caller is authorized."
+        },
+        {
+          "info": {
+            "name": "Get auditing records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/record",
+            "params": [
+              {
+                "name": "processId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "path",
+                "description": "Unique identifier of the process."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "This service can be used only with a valid process. All created auditing records are returned in descending order of creation date. Thus, the first record is the most recent."
+        },
+        {
+          "info": {
+            "name": "Download process file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/file/:fileId",
+            "params": [
+              {
+                "name": "processId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "path",
+                "description": "System-assigned process identifier (UUID)."
+              },
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the file within the process.\n\nCan be either:\n- The internal UUID assigned by the system\n- The externalIdentifier provided during upload\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a file that belongs to the specified process.\n\nPossible file types:\n- Attached original documents\n- Signed or partially signed documents (available as soon as at least one signer has signed)\n- Verification documents (if online verification was performed)\n\nFiles are only available until the process has been archived (archivedOn is set).\n"
+        },
+        {
+          "info": {
+            "name": "Download process file content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/file/:fileId/content",
+            "params": [
+              {
+                "name": "processId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "path",
+                "description": "System-assigned process identifier (UUID)."
+              },
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the file within the process.\n\nCan be either:\n- The internal UUID assigned by the system\n- The externalIdentifier provided during upload\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves the raw binary content of a file that belongs to the specified process.\n\nUnlike the parent resource, which returns the file as Base64 within a JSON document,\nthis endpoint streams the file content directly as binary data.\n\nPossible file types:\n- Attached original documents (PDF)\n- Signed or partially signed documents (PDF, available as soon as at least one signer has signed)\n- Verification documents (ZIP, if online verification was performed)\n\nThe Content-Type of the response reflects "
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Process: create",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a process",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sign.swisscom.ch/system/api/process",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new signing process.\n- Non-interactive (API release): Provide all required data (documents, signers, options) up front.\n- Setup (handover to Swisscom Sign UI): You can submit a minimal process and adjust metadata later in the UI.\n"
+        },
+        {
+          "info": {
+            "name": "Finalize process in Swisscom Sign UI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/setup",
+            "params": [
+              {
+                "name": "processId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "path",
+                "description": "Unique identifier of the process to finalize via UI."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Launches the Swisscom Sign web interface for the initiator to complete the process setup.\nThis includes defining visual elements and participant data.\n\nOnce setup is complete, the process is automatically released and notifications are handled by Swisscom Sign.\n\n**Preconditions:**\n- A process was created via `/process`.\n- The process has not yet been released.\n"
+        },
+        {
+          "info": {
+            "name": "Release process and notify participants",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/release",
+            "params": [
+              {
+                "name": "processId",
+                "value": "6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a",
+                "type": "path",
+                "description": "Unique identifier of the process to be released."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Releases a previously created and fully configured process. Personal access URLs are returned for each participant.\nThese can be used for asynchronous execution, typically via email.\n\nOptionally, you may include email parameters to notify participants directly.\nOptionally, you may configure automatic reminder emails for pending participants.\nOptionally, you may restrict the allowed signature methods (`APP`, `CLICK`, `OSS`, `PASSKEY`, `SMS`) via `signatureMethods`.\nIf omitted, the tenant defaults"
+        },
+        {
+          "info": {
+            "name": "Attach documents to process",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sign.swisscom.ch/system/api/process/:processId/attach",
+            "params": [
+              {
+                "name": "processId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the process to which the PDF will be attached."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Attaches one or more PDF files to the specified process. You may repeat this call up to a maximum of 100 files.\nOnly `application/pdf` is supported, and each file must not exceed 40MB in size.\n\n**Preconditions:**\n- The process status must be `CREATED`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
