@@ -59,6 +59,11 @@ apis:
   baseURL: https://sign.swisscom.ch/system
   tags:
   - Digital Signatures
+  - E-Signature
+  - Documents
+  - Trust Services
+  tags_raw:
+  - Digital Signatures
   - eSignature
   - Documents
   - Trust Services
