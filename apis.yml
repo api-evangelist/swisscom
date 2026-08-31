@@ -344,6 +344,8 @@ apis:
   humanURL: https://sign.swisscom.ch/docs/api
   baseURL: https://sign.swisscom.ch/system
   tags:
+  - Signatures
+  tags_raw:
   - signatures
   properties:
   - type: OpenAPI
