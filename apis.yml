@@ -38,6 +38,21 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  - scopes
+  - security
+  - sandbox
+  generated: '2026-09-02'
+  method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Telecommunications
@@ -389,8 +404,9 @@ common:
   url: cli/swisscom-cli.yml
 - type: WellKnown
   url: well-known/swisscom-well-known.yml
-- type: MCPServer
+- type: X-MCPServerCandidate
   url: mcp/swisscom-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
 - type: ToolCrosswalk
   url: mcp/swisscom-tool-crosswalk.yml
 - type: AgentSkill
