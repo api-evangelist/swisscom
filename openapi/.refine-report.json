@@ -1,0 +1,27 @@
+{
+  "provider": "swisscom",
+  "sources": [
+    "_original/swisscom-all-in-signing-service-openapi.yml",
+    "_original/swisscom-sign-integration-api-openapi.json"
+  ],
+  "outputs": [
+    "swisscom-signatures-api-openapi.yml",
+    "swisscom-process-create-api-openapi.yml",
+    "swisscom-process-read-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "swisscom-all-in-signing-service-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "swisscom-all-in-signing-service-openapi.yml: declared missing tag: signatures",
+    "swisscom-sign-integration-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "swisscom-process-create-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "swisscom-process-read-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "swisscom-signatures-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

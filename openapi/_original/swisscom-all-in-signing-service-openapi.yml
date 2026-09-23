@@ -7,6 +7,9 @@ info:
     name: Commercial
     url: ''
   version: '3'
+servers:
+- url: https://ais.swisscom.com/AIS-Server/rs/v1.0
+  description: Base URL declared by the provider in apis.yml (roadmap#122).
 paths:
   /signatures/signDoc:
     post:
