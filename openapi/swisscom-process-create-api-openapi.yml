@@ -479,6 +479,150 @@ paths:
         - sswp:process:create
 components:
   schemas:
+    FileSignaturePositionInput:
+      description: "Polymorphic signature position for the attach request (write-only).\n\nThe 'locator' field selects the concrete shape:\n  - COORDINATES (default): place the signature at an explicit page and coordinate.\n  - TAG: resolve the position at runtime by searching for a tag string in the PDF\n    (e.g. \\s1\\ for the first signer).\n\nWhen 'locator' is omitted the request is treated as COORDINATES.\n"
+      discriminator:
+        propertyName: locator
+        mapping:
+          COORDINATES: '#/components/schemas/CoordinateSignaturePosition'
+          TAG: '#/components/schemas/TagSignaturePosition'
+      properties:
+        locator:
+          type: string
+      required:
+      - locator
+    FileAttachResponse:
+      type: object
+      description: Response object returned when a file is attached to a process.
+      example:
+        fileId: 6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a
+      properties:
+        fileId:
+          type: string
+          format: uuid
+          description: System-assigned identifier of the attached file.
+          example: 6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a
+    Error:
+      type: object
+      description: Error object returned in case of an unsuccessful request.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of this error for log correlation.
+          example: b4a7e3c4-1234-4a12-9c3d-5df1f7b2c8f4
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the error (UTC, ISO 8601).
+          example: '2025-09-24T14:32:07Z'
+        name:
+          type: string
+          description: Logical error name derived from the thrown exception class name (without 'Exception' suffix).
+          example: OrganizationNotFound
+        message:
+          type: string
+          description: Human-readable explanation of the error.
+          example: The requested organization does not exist.
+        path:
+          type: string
+          description: Path of the request that caused the error.
+          example: /api/process
+        httpStatus:
+          type: integer
+          format: int32
+          description: HTTP status code of the error.
+          example: 409
+        clientSubject:
+          type: string
+          description: Short subject/title of the error for client display.
+          example: Organization not found
+        clientBody:
+          type: string
+          description: Detailed description of the error for client display.
+          example: The requested organization could not be located. Please verify the ID.
+    NonPerson:
+      allOf:
+      - $ref: '#/components/schemas/Participant'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: NON_PERSON
+            description: Discriminator value. Must be 'NON_PERSON'.
+            example: NON_PERSON
+          identification:
+            type: string
+            format: uuid
+            description: System-assigned identifier of this participant.
+            readOnly: true
+          externalIdentifier:
+            type: string
+            description: External reference from your system for correlation.
+            example: ext-crm
+            maxLength: 50
+            minLength: 0
+            pattern: '[a-zA-Z0-9._~-]+'
+          name:
+            type: string
+            description: Display name of the technical system.
+            example: Swisscom Sign Orchestrator
+            maxLength: 50
+            minLength: 0
+      description: Technical participant (non-human). The 'type' discriminator must be 'NON_PERSON'.
+      required:
+      - name
+      - type
+      title: NonPerson
+    ReminderSettings:
+      type: object
+      description: Automatic reminder configuration for pending participants.
+      properties:
+        interval:
+          type: string
+          description: 'Interval between recurring reminders as ISO 8601 duration. Minimum: P1D, Maximum: P30D.'
+          example: P3D
+        beforeExpiry:
+          type: array
+          description: One or more points in time before expiry at which to send a reminder, expressed as ISO 8601 durations. Each value must be between P1D and P30D.
+          example:
+          - P5D
+          - P1D
+          items:
+            type: string
+    ReleasedParticipant:
+      type: object
+      description: Participant-specific details returned on process release (e.g., permanent access URL).
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: System-assigned identifier of the participant.
+          example: 02c2f3cc-e263-40c9-b458-79c014a153a2
+          readOnly: true
+        externalIdentifier:
+          type: string
+          description: External reference of the participant as provided by the client system.
+          example: crm-4711
+          maxLength: 128
+          minLength: 0
+          pattern: '[a-zA-Z0-9._~-]+'
+          readOnly: true
+        url:
+          type: string
+          description: 'Permanent participant-specific URL to open the signing process.
+
+            The link can be embedded in e-mails or client applications.
+
+            When opened, the participant must still pass the regular
+
+            authorization/identification flow in the process.
+
+            '
+          example: https://test.sign.swisscom.ch/cockpit/process/21c2f3cc-e263-40c9-b458-79c014a153a1/person/02c2f3cc-e263-40c9-b458-79c014a153a2
+          maxLength: 2048
+          minLength: 0
+          readOnly: true
     NotificationSettings:
       type: object
       description: 'Controls email notification behavior for all participants.
@@ -542,6 +686,119 @@ components:
       required:
       - locale
       title: NotificationSettings
+    Participant:
+      description: Polymorphic participant. The 'type' discriminator selects the concrete shape.
+      discriminator:
+        propertyName: type
+        mapping:
+          NON_PERSON: '#/components/schemas/NonPerson'
+          PERSON: '#/components/schemas/Person'
+          SIGNER: '#/components/schemas/Signer'
+      properties:
+        type:
+          type: string
+      required:
+      - type
+    ProcessAuthentication:
+      type: object
+      description: 'INTERNAL ONLY: Authentication for the first-party namespace. Requests from other clients are ignored.'
+      properties:
+        identity:
+          type: string
+          format: uuid
+          description: Caller-side user identifier (UUID).
+          example: 69924099-a57a-44f8-8cf3-9324f4c93a92
+        namespace:
+          type: string
+          description: Logical namespace of the first-party application (restricted).
+          enum:
+          - MSA
+          - MSAINT
+          example: MSAINT
+      required:
+      - identity
+      - namespace
+    Person:
+      allOf:
+      - $ref: '#/components/schemas/Participant'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: PERSON
+            description: Discriminator value. Must be 'PERSON'.
+            example: PERSON
+          identification:
+            type: string
+            format: uuid
+            description: System-assigned identifier of this participant.
+            readOnly: true
+          externalIdentifier:
+            type: string
+            description: External reference from your system.
+            example: crm-4711
+            maxLength: 50
+            minLength: 0
+            pattern: '[a-zA-Z0-9._~-]+'
+          firstName:
+            type: string
+            description: First name.
+            example: John
+            maxLength: 64
+            minLength: 0
+          lastName:
+            type: string
+            description: Last name.
+            example: Doe
+            maxLength: 64
+            minLength: 0
+          email:
+            type: string
+            format: email
+            description: Email address (RFC 5322).
+            example: john.doe@example.com
+            maxLength: 254
+            minLength: 0
+          mobile:
+            type: string
+            description: Mobile number in E.164 format.
+            example: '+41791234567'
+            maxLength: 16
+      description: Human participant who does not sign. The 'type' discriminator must be 'PERSON'.
+      required:
+      - type
+      title: Person
+    FileReference:
+      type: object
+      description: Reference to an uploaded file with its versions and signature positions.
+      properties:
+        externalIdentifier:
+          type: string
+          description: External reference identifier provided by the client system for correlation.
+          example: contract-2025-Q1
+          maxLength: 50
+          minLength: 0
+          pattern: '[a-zA-Z0-9._~-]+'
+        initialFileId:
+          type: string
+          format: uuid
+          description: System-generated UUID of the initial file uploaded to the process.
+          example: 11111111-2222-3333-4444-555555555555
+        lastSignedFileId:
+          type: string
+          format: uuid
+          description: System-generated UUID of the last signed file (after the most recent signature).
+          example: 66666666-7777-8888-9999-aaaaaaaaaaaa
+        signaturePositions:
+          type: array
+          description: List of positions where signatures are placed in the file.
+          example:
+          - signer: 02c2f3cc-e263-40c9-b458-79c014a153a2
+            pageNumber: -1
+            positionX: 150
+            positionY: 300
+          items:
+            $ref: '#/components/schemas/FileSignaturePosition'
     Invitees:
       type: object
       description: 'Invitees represent the **additional** signers to be invited for this process.
@@ -568,6 +825,196 @@ components:
           items:
             $ref: '#/components/schemas/Signer'
             description: Additional signers to invite (excluding the initiator if the initiator also signs).
+    CoordinateSignaturePosition:
+      allOf:
+      - $ref: '#/components/schemas/FileSignaturePositionInput'
+      - type: object
+        properties:
+          signer:
+            type: string
+            description: Identifier of the signer (UUID or externalIdentifier).
+            example: 02c2f3cc-e263-40c9-b458-79c014a153a2
+            maxLength: 128
+            minLength: 0
+          locator:
+            type: string
+            description: Discriminator. Omit or set to 'COORDINATES'.
+            enum:
+            - COORDINATES
+            - TAG
+            example: COORDINATES
+          pageNumber:
+            type: integer
+            format: int32
+            description: 'Zero-based page index. Negative values count from the end: -1 = last page.'
+            example: -1
+          positionX:
+            type: integer
+            format: int32
+            description: X-coordinate in PDF points from the left edge of the page.
+            example: 150
+            minimum: 0
+          positionY:
+            type: integer
+            format: int32
+            description: Y-coordinate in PDF points from the top edge of the page.
+            example: 300
+            minimum: 0
+          stickerProvider:
+            type: string
+            description: 'Sticker renderer to use. Default: VISUAL_SIGNATURE_PROVIDER.'
+            enum:
+            - VISUAL_SIGNATURE_PROVIDER
+            - CUSTOM_VISUAL_SIGNATURE_PROVIDER
+            example: CUSTOM_VISUAL_SIGNATURE_PROVIDER
+      description: Signature position defined by explicit page and coordinates (PDF points). Default when 'locator' is absent.
+      required:
+      - pageNumber
+      - positionX
+      - positionY
+      - signer
+      title: CoordinateSignaturePosition
+    FileSignaturePosition:
+      type: object
+      description: Represents the position of a signature in a file attachment.
+      properties:
+        signer:
+          type: string
+          description: 'Identifier of the signer. Either:
+
+            - the internal `identification` (UUID as string), e.g. `02c2f3cc-e263-40c9-b458-79c014a153a2`
+
+            - or the `externalIdentifier` from your system (string, up to 128 characters)
+
+            '
+          example: 02c2f3cc-e263-40c9-b458-79c014a153a2
+          maxLength: 128
+          minLength: 0
+        pageNumber:
+          type: integer
+          format: int32
+          description: 'Zero-based index of the page. Negative values count backwards. Examples:
+
+            - `0` = first page
+
+            - `1` = second page
+
+            - `2` = third page
+
+            - ...
+
+            - `-2` = second to last page
+
+            - `-1` = last page
+
+            '
+          example: -1
+        positionX:
+          type: integer
+          format: int32
+          description: X-coordinate (in pixels) of the top-left corner of the signature field.
+          example: 150
+          minimum: 0
+        positionY:
+          type: integer
+          format: int32
+          description: Y-coordinate (in pixels) of the top-left corner of the signature field.
+          example: 300
+          minimum: 0
+        stickerProvider:
+          type: string
+          description: Specifies which sticker renderer to use for this signature position. Default is VISUAL_SIGNATURE_PROVIDER.
+          enum:
+          - VISUAL_SIGNATURE_PROVIDER
+          - CUSTOM_VISUAL_SIGNATURE_PROVIDER
+          example: CUSTOM_VISUAL_SIGNATURE_PROVIDER
+      required:
+      - pageNumber
+      - positionX
+      - positionY
+      - signer
+    Property:
+      type: object
+      description: 'A single property (key/value) that can be attached to the process.
+
+        Keys must be unique within the process.
+
+        '
+      example:
+        key: contractType
+        value: NDA
+      properties:
+        key:
+          type: string
+          description: Unique property key (case-sensitive).
+          example: contractType
+          maxLength: 64
+          minLength: 0
+        value:
+          type: string
+          description: Property value.
+          example: NDA
+          maxLength: 64
+          minLength: 0
+      required:
+      - key
+      - value
+    ProcessSetupResponse:
+      type: object
+      description: Represents the response for process setup.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: System-assigned process identifier.
+          example: 21c2f3cc-e263-40c9-b458-79c014a153a1
+        url:
+          type: string
+          description: URL to the Swisscom Sign UI for completing the setup of the process.
+          example: https://test.sign.swisscom.ch/cockpit/process/21c2f3cc-e263-40c9-b458-79c014a153a1
+    TagSignaturePosition:
+      allOf:
+      - $ref: '#/components/schemas/FileSignaturePositionInput'
+      - type: object
+        properties:
+          signer:
+            type: string
+            description: Identifier of the signer (UUID or externalIdentifier).
+            example: 02c2f3cc-e263-40c9-b458-79c014a153a2
+            maxLength: 128
+            minLength: 0
+          locator:
+            type: string
+            description: Discriminator. Must be 'TAG'.
+            enum:
+            - COORDINATES
+            - TAG
+            example: TAG
+          offsetX:
+            type: integer
+            format: int32
+            description: 'Optional X offset in PDF points applied to the resolved tag position. Positive = shift right, negative = shift left. Range: -200 to 200.'
+            example: 0
+            maximum: 200
+            minimum: -200
+          offsetY:
+            type: integer
+            format: int32
+            description: 'Optional Y offset in PDF points applied to the resolved tag position. Positive = shift down, negative = shift up. Range: -200 to 200.'
+            example: 0
+            maximum: 200
+            minimum: -200
+          stickerProvider:
+            type: string
+            description: 'Sticker renderer to use. Default: VISUAL_SIGNATURE_PROVIDER.'
+            enum:
+            - VISUAL_SIGNATURE_PROVIDER
+            - CUSTOM_VISUAL_SIGNATURE_PROVIDER
+            example: CUSTOM_VISUAL_SIGNATURE_PROVIDER
+      description: Signature position located by searching for a default tag string in the PDF (\s1\ for index 0, \s2\ for index 1, etc.). The tag marks the upper-left corner of the signature field.
+      required:
+      - signer
+      title: TagSignaturePosition
     Process:
       type: object
       description: 'A process represents an end-to-end signing flow with 1..n signers over 1..n documents.
@@ -716,265 +1163,127 @@ components:
           writeOnly: true
       required:
       - initiator
-    TagSignaturePosition:
-      allOf:
-      - $ref: '#/components/schemas/FileSignaturePositionInput'
-      - type: object
-        properties:
-          signer:
-            type: string
-            description: Identifier of the signer (UUID or externalIdentifier).
-            example: 02c2f3cc-e263-40c9-b458-79c014a153a2
-            maxLength: 128
-            minLength: 0
-          locator:
-            type: string
-            description: Discriminator. Must be 'TAG'.
-            enum:
-            - COORDINATES
-            - TAG
-            example: TAG
-          offsetX:
-            type: integer
-            format: int32
-            description: 'Optional X offset in PDF points applied to the resolved tag position. Positive = shift right, negative = shift left. Range: -200 to 200.'
-            example: 0
-            maximum: 200
-            minimum: -200
-          offsetY:
-            type: integer
-            format: int32
-            description: 'Optional Y offset in PDF points applied to the resolved tag position. Positive = shift down, negative = shift up. Range: -200 to 200.'
-            example: 0
-            maximum: 200
-            minimum: -200
-          stickerProvider:
-            type: string
-            description: 'Sticker renderer to use. Default: VISUAL_SIGNATURE_PROVIDER.'
-            enum:
-            - VISUAL_SIGNATURE_PROVIDER
-            - CUSTOM_VISUAL_SIGNATURE_PROVIDER
-            example: CUSTOM_VISUAL_SIGNATURE_PROVIDER
-      description: Signature position located by searching for a default tag string in the PDF (\s1\ for index 0, \s2\ for index 1, etc.). The tag marks the upper-left corner of the signature field.
-      required:
-      - signer
-      title: TagSignaturePosition
-    Error:
+    Signer:
       type: object
-      description: Error object returned in case of an unsuccessful request.
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique identifier of this error for log correlation.
-          example: b4a7e3c4-1234-4a12-9c3d-5df1f7b2c8f4
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp of the error (UTC, ISO 8601).
-          example: '2025-09-24T14:32:07Z'
-        name:
-          type: string
-          description: Logical error name derived from the thrown exception class name (without 'Exception' suffix).
-          example: OrganizationNotFound
-        message:
-          type: string
-          description: Human-readable explanation of the error.
-          example: The requested organization does not exist.
-        path:
-          type: string
-          description: Path of the request that caused the error.
-          example: /api/process
-        httpStatus:
-          type: integer
-          format: int32
-          description: HTTP status code of the error.
-          example: 409
-        clientSubject:
-          type: string
-          description: Short subject/title of the error for client display.
-          example: Organization not found
-        clientBody:
-          type: string
-          description: Detailed description of the error for client display.
-          example: The requested organization could not be located. Please verify the ID.
-    ProcessAuthentication:
-      type: object
-      description: 'INTERNAL ONLY: Authentication for the first-party namespace. Requests from other clients are ignored.'
-      properties:
-        identity:
-          type: string
-          format: uuid
-          description: Caller-side user identifier (UUID).
-          example: 69924099-a57a-44f8-8cf3-9324f4c93a92
-        namespace:
-          type: string
-          description: Logical namespace of the first-party application (restricted).
-          enum:
-          - MSA
-          - MSAINT
-          example: MSAINT
-      required:
-      - identity
-      - namespace
-    ReleasedParticipant:
-      type: object
-      description: Participant-specific details returned on process release (e.g., permanent access URL).
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: System-assigned identifier of the participant.
-          example: 02c2f3cc-e263-40c9-b458-79c014a153a2
-          readOnly: true
-        externalIdentifier:
-          type: string
-          description: External reference of the participant as provided by the client system.
-          example: crm-4711
-          maxLength: 128
-          minLength: 0
-          pattern: '[a-zA-Z0-9._~-]+'
-          readOnly: true
-        url:
-          type: string
-          description: 'Permanent participant-specific URL to open the signing process.
-
-            The link can be embedded in e-mails or client applications.
-
-            When opened, the participant must still pass the regular
-
-            authorization/identification flow in the process.
-
-            '
-          example: https://test.sign.swisscom.ch/cockpit/process/21c2f3cc-e263-40c9-b458-79c014a153a1/person/02c2f3cc-e263-40c9-b458-79c014a153a2
-          maxLength: 2048
-          minLength: 0
-          readOnly: true
-    CoordinateSignaturePosition:
-      allOf:
-      - $ref: '#/components/schemas/FileSignaturePositionInput'
-      - type: object
-        properties:
-          signer:
-            type: string
-            description: Identifier of the signer (UUID or externalIdentifier).
-            example: 02c2f3cc-e263-40c9-b458-79c014a153a2
-            maxLength: 128
-            minLength: 0
-          locator:
-            type: string
-            description: Discriminator. Omit or set to 'COORDINATES'.
-            enum:
-            - COORDINATES
-            - TAG
-            example: COORDINATES
-          pageNumber:
-            type: integer
-            format: int32
-            description: 'Zero-based page index. Negative values count from the end: -1 = last page.'
-            example: -1
-          positionX:
-            type: integer
-            format: int32
-            description: X-coordinate in PDF points from the left edge of the page.
-            example: 150
-            minimum: 0
-          positionY:
-            type: integer
-            format: int32
-            description: Y-coordinate in PDF points from the top edge of the page.
-            example: 300
-            minimum: 0
-          stickerProvider:
-            type: string
-            description: 'Sticker renderer to use. Default: VISUAL_SIGNATURE_PROVIDER.'
-            enum:
-            - VISUAL_SIGNATURE_PROVIDER
-            - CUSTOM_VISUAL_SIGNATURE_PROVIDER
-            example: CUSTOM_VISUAL_SIGNATURE_PROVIDER
-      description: Signature position defined by explicit page and coordinates (PDF points). Default when 'locator' is absent.
-      required:
-      - pageNumber
-      - positionX
-      - positionY
-      - signer
-      title: CoordinateSignaturePosition
-    Participant:
-      description: Polymorphic participant. The 'type' discriminator selects the concrete shape.
-      discriminator:
-        propertyName: type
-        mapping:
-          NON_PERSON: '#/components/schemas/NonPerson'
-          PERSON: '#/components/schemas/Person'
-          SIGNER: '#/components/schemas/Signer'
+      description: Human participant who signs. The 'type' discriminator must be 'SIGNER'.
       properties:
         type:
           type: string
-      required:
-      - type
-    Person:
-      allOf:
-      - $ref: '#/components/schemas/Participant'
-      - type: object
-        properties:
-          type:
-            type: string
-            default: PERSON
-            description: Discriminator value. Must be 'PERSON'.
-            example: PERSON
-          identification:
-            type: string
-            format: uuid
-            description: System-assigned identifier of this participant.
-            readOnly: true
-          externalIdentifier:
-            type: string
-            description: External reference from your system.
-            example: crm-4711
-            maxLength: 50
-            minLength: 0
-            pattern: '[a-zA-Z0-9._~-]+'
-          firstName:
-            type: string
-            description: First name.
-            example: John
-            maxLength: 64
-            minLength: 0
-          lastName:
-            type: string
-            description: Last name.
-            example: Doe
-            maxLength: 64
-            minLength: 0
-          email:
-            type: string
-            format: email
-            description: Email address (RFC 5322).
-            example: john.doe@example.com
-            maxLength: 254
-            minLength: 0
-          mobile:
-            type: string
-            description: Mobile number in E.164 format.
-            example: '+41791234567'
-            maxLength: 16
-      description: Human participant who does not sign. The 'type' discriminator must be 'PERSON'.
-      required:
-      - type
-      title: Person
-    ProcessSetupResponse:
-      type: object
-      description: Represents the response for process setup.
-      properties:
-        id:
+          default: SIGNER
+          description: Discriminator value. Must be 'SIGNER'.
+          example: SIGNER
+        identification:
           type: string
           format: uuid
-          description: System-assigned process identifier.
-          example: 21c2f3cc-e263-40c9-b458-79c014a153a1
-        url:
+          description: System-assigned identifier of this signer.
+          readOnly: true
+        externalIdentifier:
           type: string
-          description: URL to the Swisscom Sign UI for completing the setup of the process.
-          example: https://test.sign.swisscom.ch/cockpit/process/21c2f3cc-e263-40c9-b458-79c014a153a1
+          description: External reference from your system.
+          example: crm-4711
+          maxLength: 50
+          minLength: 0
+          pattern: '[a-zA-Z0-9._~-]+'
+        firstName:
+          type: string
+          description: First name.
+          example: John
+          maxLength: 64
+          minLength: 0
+        lastName:
+          type: string
+          description: Last name.
+          example: Doe
+          maxLength: 64
+          minLength: 0
+        email:
+          type: string
+          format: email
+          description: Email address (RFC 5322).
+          example: john.doe@example.com
+          maxLength: 254
+          minLength: 0
+        mobile:
+          type: string
+          description: 'Mobile number in E.164 format (no spaces or dashes).
+
+            - Authorization behavior: If a mobile number is provided, the fallback code authorization uses an SMS code.
+
+            - Signing behavior: If the number is a Swiss mobile (+41…), it will be preselected for ADVANCED signatures and cannot be changed in the UI.
+
+            '
+          example: '+41791234567'
+          maxLength: 16
+        role:
+          type: string
+          description: Role or function of the signer.
+          example: Chief Signing Officer (CSO)
+          maxLength: 256
+          minLength: 0
+        verification:
+          $ref: '#/components/schemas/Verification'
+          description: 'Optional online identity verification requirement (GwG).
+
+            If provided when creating the process, the signer must complete an online identification step before signing.
+
+            Verification results (payload/files/timestamps) are generated by the system and are read-only.
+
+
+            Only available for corporate tenants. Providing this attribute on a non-corporate tenant will cause the create
+
+            request to be rejected with a validation error.
+
+            '
+        status:
+          type: string
+          description: Current signer status.
+          enum:
+          - WAITING
+          - PENDING
+          - SIGNED
+          - CANCELED
+          - DECLINED
+          - REMOVED
+          - REPLACED
+          example: PENDING
+          readOnly: true
+        signedOn:
+          type: string
+          format: date-time
+          description: Timestamp when the signer completed signing (UTC). Only present if status is SIGNED.
+          example: '2025-09-24T14:32:07Z'
+          readOnly: true
+        discontinuedOn:
+          type: string
+          format: date-time
+          deprecated: true
+          description: 'Timestamp when the signer has been discontinued (UTC). Only present if status is `CANCELED`. Deprecated: use `canceledOn` instead.'
+          example: '2025-09-24T14:32:07Z'
+          readOnly: true
+        canceledOn:
+          type: string
+          format: date-time
+          description: Timestamp when the signer has been canceled (UTC). Only present if status is `CANCELED`.
+          example: '2025-09-24T14:32:07Z'
+          readOnly: true
+        certificateName:
+          type: string
+          description: Full name extracted from the signing certificate. This field is populated only after the signer has successfully signed the process.It is absent if the signer has not signed yet or if the signing was performed without authentication or using mobile OTP authentication.
+          readOnly: true
+        certificateMatch:
+          type: string
+          description: Outcome of the comparison between the signer's declared full name and the name contained in the signing certificate. This field is populated only after the signer has successfully signed the process. If the signing was performed without authentication or using mobile OTP authentication, the value is set to `UNCHECKED`. Otherwise, the result is either `MATCH` or `MISMATCH`, depending on the comparison outcome.
+          enum:
+          - UNCHECKED
+          - MATCH
+          - MISMATCH
+          example: MATCH
+          readOnly: true
+      required:
+      - firstName
+      - lastName
+      - type
+      title: Signer
     ProcessSetupRequest:
       type: object
       description: Request model for the setup endpoint of a signing process.
@@ -1011,6 +1320,69 @@ components:
           - DEFAULT
           - EMBEDDED
           example: DEFAULT
+    Verification:
+      type: object
+      description: "Online identity verification (GwG) for a signer.\n\nOnly available for clients of type `Corporate`. Providing this object in non-corporate context will cause\nthe create request to be rejected with a validation error.\n\nUsage (input):\n- To enforce GwG identification, include this object in the signer when creating the process.\n  Presence of this object (even as an empty object) enables the online identification requirement.\n- `residentPermit` configures the verification flow. If omitted, the system defaults to `true`.\n\nOutcome (read-only):\n- Pending: both `verifiedOn` and `rejectedOn` are null.\n- Approved: `verifiedOn` is set and result artifacts may be available.\n- Rejected: `rejectedOn` is set. In this case, typically only `payload` is present.\n\nResult artifacts (read-only):\n- `payload` contains the provider result as a JSON string (system integrators only).\n- `files` may contain references to a PDF report and a ZIP bundle provided by the verification provider.\n  Files can be downloaded via `GET /api/process/{processId}/file/{fileId}`.\n  The PDF is additionally attached to the process as a document and must be signed together with the other documents.\n"
+      properties:
+        processId:
+          type: string
+          description: Verification process identifier at the provider (read-only).
+          example: 43c2f3cc-e263-40c9-b458-79c014a153a1
+          maxLength: 36
+          minLength: 0
+          readOnly: true
+        verifiedOn:
+          type: string
+          format: date-time
+          description: Timestamp when verification was approved (UTC, read-only). Mutually exclusive with `rejectedOn`.
+          example: '2025-09-24T14:32:07Z'
+          readOnly: true
+        rejectedOn:
+          type: string
+          format: date-time
+          description: Timestamp when verification was rejected (UTC, read-only). Mutually exclusive with `verifiedOn`.
+          example: '2025-09-24T15:10:22Z'
+          readOnly: true
+        payload:
+          type: string
+          description: 'Provider result payload as JSON string (read-only).
+
+            Present for approved or rejected verifications. Intended for system integrators.
+
+            '
+          example:
+            result: APPROVED
+            score: 0.98
+          maxLength: 20000
+          minLength: 0
+          readOnly: true
+        files:
+          type: array
+          description: 'File references created by the verification provider (read-only), e.g. PDF report and/or ZIP bundle.
+
+            Download via `GET /api/process/{processId}/file/{fileId}`.
+
+            '
+          items:
+            type: string
+            format: uuid
+            description: File identifier (UUID) provided by the verification provider.
+            example: 4ac2f3cc-e263-40c9-b458-79c014a153a1
+            readOnly: true
+          readOnly: true
+        residentPermit:
+          type: boolean
+          default: true
+          description: 'Whether a Swiss residence permit is required for the signer.
+
+
+            Input parameter used to configure the online identification flow.
+
+            If omitted, the system defaults to `true`.
+
+            '
+          example: true
+      title: Verification
     ProcessReleaseRequest:
       type: object
       description: 'Optional configuration for the release operation.
@@ -1135,65 +1507,48 @@ components:
             - PASSKEY
             - OSS
           uniqueItems: true
-    FileSignaturePosition:
+    ReleaseResponse:
       type: object
-      description: Represents the position of a signature in a file attachment.
+      description: 'Response returned after successfully releasing a signing process.
+
+
+        Contains the process identifier, its current lifecycle status, and
+
+        participant-specific access URLs that can be used to redirect users
+
+        to the signing UI.
+
+        '
       properties:
-        signer:
+        id:
           type: string
-          description: 'Identifier of the signer. Either:
-
-            - the internal `identification` (UUID as string), e.g. `02c2f3cc-e263-40c9-b458-79c014a153a2`
-
-            - or the `externalIdentifier` from your system (string, up to 128 characters)
-
-            '
-          example: 02c2f3cc-e263-40c9-b458-79c014a153a2
-          maxLength: 128
-          minLength: 0
-        pageNumber:
-          type: integer
-          format: int32
-          description: 'Zero-based index of the page. Negative values count backwards. Examples:
-
-            - `0` = first page
-
-            - `1` = second page
-
-            - `2` = third page
-
-            - ...
-
-            - `-2` = second to last page
-
-            - `-1` = last page
-
-            '
-          example: -1
-        positionX:
-          type: integer
-          format: int32
-          description: X-coordinate (in pixels) of the top-left corner of the signature field.
-          example: 150
-          minimum: 0
-        positionY:
-          type: integer
-          format: int32
-          description: Y-coordinate (in pixels) of the top-left corner of the signature field.
-          example: 300
-          minimum: 0
-        stickerProvider:
+          format: uuid
+          description: System-assigned identifier of the released process.
+          example: 6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a
+          readOnly: true
+        status:
           type: string
-          description: Specifies which sticker renderer to use for this signature position. Default is VISUAL_SIGNATURE_PROVIDER.
+          description: Lifecycle status after release. Typically `PENDING` (waiting for signatures).
           enum:
-          - VISUAL_SIGNATURE_PROVIDER
-          - CUSTOM_VISUAL_SIGNATURE_PROVIDER
-          example: CUSTOM_VISUAL_SIGNATURE_PROVIDER
-      required:
-      - pageNumber
-      - positionX
-      - positionY
-      - signer
+          - CREATED
+          - PENDING
+          - COMPLETED
+          - EXPIRED
+          example: PENDING
+          readOnly: true
+        participants:
+          type: array
+          description: 'List of participants with their personalized access URLs.
+
+
+            Each participant receives a unique URL that can be used to redirect them
+
+            to the Swisscom Sign UI for signing. URLs are permanent and do not expire.
+
+            '
+          items:
+            $ref: '#/components/schemas/ReleasedParticipant'
+          readOnly: true
     FileAttachment:
       type: object
       description: Represents the configuration for attaching a PDF to a Process
@@ -1243,361 +1598,6 @@ components:
       - content
       - contentType
       - name
-    Property:
-      type: object
-      description: 'A single property (key/value) that can be attached to the process.
-
-        Keys must be unique within the process.
-
-        '
-      example:
-        key: contractType
-        value: NDA
-      properties:
-        key:
-          type: string
-          description: Unique property key (case-sensitive).
-          example: contractType
-          maxLength: 64
-          minLength: 0
-        value:
-          type: string
-          description: Property value.
-          example: NDA
-          maxLength: 64
-          minLength: 0
-      required:
-      - key
-      - value
-    Verification:
-      type: object
-      description: "Online identity verification (GwG) for a signer.\n\nOnly available for clients of type `Corporate`. Providing this object in non-corporate context will cause\nthe create request to be rejected with a validation error.\n\nUsage (input):\n- To enforce GwG identification, include this object in the signer when creating the process.\n  Presence of this object (even as an empty object) enables the online identification requirement.\n- `residentPermit` configures the verification flow. If omitted, the system defaults to `true`.\n\nOutcome (read-only):\n- Pending: both `verifiedOn` and `rejectedOn` are null.\n- Approved: `verifiedOn` is set and result artifacts may be available.\n- Rejected: `rejectedOn` is set. In this case, typically only `payload` is present.\n\nResult artifacts (read-only):\n- `payload` contains the provider result as a JSON string (system integrators only).\n- `files` may contain references to a PDF report and a ZIP bundle provided by the verification provider.\n  Files can be downloaded via `GET /api/process/{processId}/file/{fileId}`.\n  The PDF is additionally attached to the process as a document and must be signed together with the other documents.\n"
-      properties:
-        processId:
-          type: string
-          description: Verification process identifier at the provider (read-only).
-          example: 43c2f3cc-e263-40c9-b458-79c014a153a1
-          maxLength: 36
-          minLength: 0
-          readOnly: true
-        verifiedOn:
-          type: string
-          format: date-time
-          description: Timestamp when verification was approved (UTC, read-only). Mutually exclusive with `rejectedOn`.
-          example: '2025-09-24T14:32:07Z'
-          readOnly: true
-        rejectedOn:
-          type: string
-          format: date-time
-          description: Timestamp when verification was rejected (UTC, read-only). Mutually exclusive with `verifiedOn`.
-          example: '2025-09-24T15:10:22Z'
-          readOnly: true
-        payload:
-          type: string
-          description: 'Provider result payload as JSON string (read-only).
-
-            Present for approved or rejected verifications. Intended for system integrators.
-
-            '
-          example:
-            result: APPROVED
-            score: 0.98
-          maxLength: 20000
-          minLength: 0
-          readOnly: true
-        files:
-          type: array
-          description: 'File references created by the verification provider (read-only), e.g. PDF report and/or ZIP bundle.
-
-            Download via `GET /api/process/{processId}/file/{fileId}`.
-
-            '
-          items:
-            type: string
-            format: uuid
-            description: File identifier (UUID) provided by the verification provider.
-            example: 4ac2f3cc-e263-40c9-b458-79c014a153a1
-            readOnly: true
-          readOnly: true
-        residentPermit:
-          type: boolean
-          default: true
-          description: 'Whether a Swiss residence permit is required for the signer.
-
-
-            Input parameter used to configure the online identification flow.
-
-            If omitted, the system defaults to `true`.
-
-            '
-          example: true
-      title: Verification
-    NonPerson:
-      allOf:
-      - $ref: '#/components/schemas/Participant'
-      - type: object
-        properties:
-          type:
-            type: string
-            default: NON_PERSON
-            description: Discriminator value. Must be 'NON_PERSON'.
-            example: NON_PERSON
-          identification:
-            type: string
-            format: uuid
-            description: System-assigned identifier of this participant.
-            readOnly: true
-          externalIdentifier:
-            type: string
-            description: External reference from your system for correlation.
-            example: ext-crm
-            maxLength: 50
-            minLength: 0
-            pattern: '[a-zA-Z0-9._~-]+'
-          name:
-            type: string
-            description: Display name of the technical system.
-            example: Swisscom Sign Orchestrator
-            maxLength: 50
-            minLength: 0
-      description: Technical participant (non-human). The 'type' discriminator must be 'NON_PERSON'.
-      required:
-      - name
-      - type
-      title: NonPerson
-    FileAttachResponse:
-      type: object
-      description: Response object returned when a file is attached to a process.
-      example:
-        fileId: 6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a
-      properties:
-        fileId:
-          type: string
-          format: uuid
-          description: System-assigned identifier of the attached file.
-          example: 6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a
-    ReleaseResponse:
-      type: object
-      description: 'Response returned after successfully releasing a signing process.
-
-
-        Contains the process identifier, its current lifecycle status, and
-
-        participant-specific access URLs that can be used to redirect users
-
-        to the signing UI.
-
-        '
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: System-assigned identifier of the released process.
-          example: 6f1a5c4d-2d9a-4f12-a1c5-bc6e2bcb2d6a
-          readOnly: true
-        status:
-          type: string
-          description: Lifecycle status after release. Typically `PENDING` (waiting for signatures).
-          enum:
-          - CREATED
-          - PENDING
-          - COMPLETED
-          - EXPIRED
-          example: PENDING
-          readOnly: true
-        participants:
-          type: array
-          description: 'List of participants with their personalized access URLs.
-
-
-            Each participant receives a unique URL that can be used to redirect them
-
-            to the Swisscom Sign UI for signing. URLs are permanent and do not expire.
-
-            '
-          items:
-            $ref: '#/components/schemas/ReleasedParticipant'
-          readOnly: true
-    FileSignaturePositionInput:
-      description: "Polymorphic signature position for the attach request (write-only).\n\nThe 'locator' field selects the concrete shape:\n  - COORDINATES (default): place the signature at an explicit page and coordinate.\n  - TAG: resolve the position at runtime by searching for a tag string in the PDF\n    (e.g. \\s1\\ for the first signer).\n\nWhen 'locator' is omitted the request is treated as COORDINATES.\n"
-      discriminator:
-        propertyName: locator
-        mapping:
-          COORDINATES: '#/components/schemas/CoordinateSignaturePosition'
-          TAG: '#/components/schemas/TagSignaturePosition'
-      properties:
-        locator:
-          type: string
-      required:
-      - locator
-    Signer:
-      type: object
-      description: Human participant who signs. The 'type' discriminator must be 'SIGNER'.
-      properties:
-        type:
-          type: string
-          default: SIGNER
-          description: Discriminator value. Must be 'SIGNER'.
-          example: SIGNER
-        identification:
-          type: string
-          format: uuid
-          description: System-assigned identifier of this signer.
-          readOnly: true
-        externalIdentifier:
-          type: string
-          description: External reference from your system.
-          example: crm-4711
-          maxLength: 50
-          minLength: 0
-          pattern: '[a-zA-Z0-9._~-]+'
-        firstName:
-          type: string
-          description: First name.
-          example: John
-          maxLength: 64
-          minLength: 0
-        lastName:
-          type: string
-          description: Last name.
-          example: Doe
-          maxLength: 64
-          minLength: 0
-        email:
-          type: string
-          format: email
-          description: Email address (RFC 5322).
-          example: john.doe@example.com
-          maxLength: 254
-          minLength: 0
-        mobile:
-          type: string
-          description: 'Mobile number in E.164 format (no spaces or dashes).
-
-            - Authorization behavior: If a mobile number is provided, the fallback code authorization uses an SMS code.
-
-            - Signing behavior: If the number is a Swiss mobile (+41…), it will be preselected for ADVANCED signatures and cannot be changed in the UI.
-
-            '
-          example: '+41791234567'
-          maxLength: 16
-        role:
-          type: string
-          description: Role or function of the signer.
-          example: Chief Signing Officer (CSO)
-          maxLength: 256
-          minLength: 0
-        verification:
-          $ref: '#/components/schemas/Verification'
-          description: 'Optional online identity verification requirement (GwG).
-
-            If provided when creating the process, the signer must complete an online identification step before signing.
-
-            Verification results (payload/files/timestamps) are generated by the system and are read-only.
-
-
-            Only available for corporate tenants. Providing this attribute on a non-corporate tenant will cause the create
-
-            request to be rejected with a validation error.
-
-            '
-        status:
-          type: string
-          description: Current signer status.
-          enum:
-          - WAITING
-          - PENDING
-          - SIGNED
-          - CANCELED
-          - DECLINED
-          - REMOVED
-          - REPLACED
-          example: PENDING
-          readOnly: true
-        signedOn:
-          type: string
-          format: date-time
-          description: Timestamp when the signer completed signing (UTC). Only present if status is SIGNED.
-          example: '2025-09-24T14:32:07Z'
-          readOnly: true
-        discontinuedOn:
-          type: string
-          format: date-time
-          deprecated: true
-          description: 'Timestamp when the signer has been discontinued (UTC). Only present if status is `CANCELED`. Deprecated: use `canceledOn` instead.'
-          example: '2025-09-24T14:32:07Z'
-          readOnly: true
-        canceledOn:
-          type: string
-          format: date-time
-          description: Timestamp when the signer has been canceled (UTC). Only present if status is `CANCELED`.
-          example: '2025-09-24T14:32:07Z'
-          readOnly: true
-        certificateName:
-          type: string
-          description: Full name extracted from the signing certificate. This field is populated only after the signer has successfully signed the process.It is absent if the signer has not signed yet or if the signing was performed without authentication or using mobile OTP authentication.
-          readOnly: true
-        certificateMatch:
-          type: string
-          description: Outcome of the comparison between the signer's declared full name and the name contained in the signing certificate. This field is populated only after the signer has successfully signed the process. If the signing was performed without authentication or using mobile OTP authentication, the value is set to `UNCHECKED`. Otherwise, the result is either `MATCH` or `MISMATCH`, depending on the comparison outcome.
-          enum:
-          - UNCHECKED
-          - MATCH
-          - MISMATCH
-          example: MATCH
-          readOnly: true
-      required:
-      - firstName
-      - lastName
-      - type
-      title: Signer
-    FileReference:
-      type: object
-      description: Reference to an uploaded file with its versions and signature positions.
-      properties:
-        externalIdentifier:
-          type: string
-          description: External reference identifier provided by the client system for correlation.
-          example: contract-2025-Q1
-          maxLength: 50
-          minLength: 0
-          pattern: '[a-zA-Z0-9._~-]+'
-        initialFileId:
-          type: string
-          format: uuid
-          description: System-generated UUID of the initial file uploaded to the process.
-          example: 11111111-2222-3333-4444-555555555555
-        lastSignedFileId:
-          type: string
-          format: uuid
-          description: System-generated UUID of the last signed file (after the most recent signature).
-          example: 66666666-7777-8888-9999-aaaaaaaaaaaa
-        signaturePositions:
-          type: array
-          description: List of positions where signatures are placed in the file.
-          example:
-          - signer: 02c2f3cc-e263-40c9-b458-79c014a153a2
-            pageNumber: -1
-            positionX: 150
-            positionY: 300
-          items:
-            $ref: '#/components/schemas/FileSignaturePosition'
-    ReminderSettings:
-      type: object
-      description: Automatic reminder configuration for pending participants.
-      properties:
-        interval:
-          type: string
-          description: 'Interval between recurring reminders as ISO 8601 duration. Minimum: P1D, Maximum: P30D.'
-          example: P3D
-        beforeExpiry:
-          type: array
-          description: One or more points in time before expiry at which to send a reminder, expressed as ISO 8601 durations. Each value must be between P1D and P30D.
-          example:
-          - P5D
-          - P1D
-          items:
-            type: string
   securitySchemes:
     SwisscomSignOAuth2:
       type: oauth2
