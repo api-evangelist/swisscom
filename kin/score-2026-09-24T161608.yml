@@ -1,21 +1,19 @@
-# Kin Score artifact — swisscom — 2026-08-29T230545
+# Kin Score artifact — swisscom — 2026-09-24T161608
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: swisscom
-  schema_version: 0.16.0
-  scored_at: '2026-08-29'
-  run_ts: 2026-08-29T230545
-  composite: 66.4
+  schema_version: 0.22.0
+  scored_at: '2026-09-24'
+  run_ts: 2026-09-24T161608
+  composite: 64.9
   band: strong
   facets:
-    discoverability: 92.6
-    contract_quality: 68.1
-    governance: 18.2
+    discoverability: 87.0
+    contract_quality: 67.2
+    contract_governance: 18.2
     operational_transparency: 52.6
     developer_ergonomics: 75.6
-    commercial_clarity: 39.5
-    contract_governance: 18.2
     access_clarity: 39.5
   agent_readiness:
     score: 45.9
@@ -53,7 +51,7 @@ kin_score:
     agentic_access: derived
     conformance: first-party
     contracts:
-      total: 1
+      total: 3
       derived: 0
       coverage: 0.0
       callable: 100.0
