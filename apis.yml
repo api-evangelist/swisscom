@@ -85,7 +85,7 @@ tags_raw:
 - eSIM
 - Artificial Intelligence
 created: '2026-07-25'
-modified: '2026-07-25'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: swisscom:swisscom-text-messaging-api
@@ -407,6 +407,10 @@ apis:
   - type: CLI
     url: cli/swisscom-cli.yml
 common:
+- url: https://www.swisscom.ch/de/privatkunden/blog/
+  type: Blog
+- url: https://www.swisscom.ch/de/privatkunden/blog/feed/
+  type: BlogRSS
 - type: Overlay
   url: overlays/swisscom-sign-integration-api-overlay.yaml
 - type: Overlay
