@@ -36,6 +36,6 @@
   channel: distribution
   evidence: https://azuremarketplace.microsoft.com/en-us/marketplace/apps?search=Swisscom%20%28Schweiz%29%20AG
   source: edge
-  relationship: platform-app
+  relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
