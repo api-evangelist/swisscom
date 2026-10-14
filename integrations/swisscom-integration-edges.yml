@@ -34,9 +34,40 @@ edges:
   seller_name: Swisscom (Schweiz) AG
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: EU Trusted List (eIDAS)
+  partner: null
+  partner_match: register
+  type: contract
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.signatur.rtr.at/vertrauensliste.xml
+  contract_reference:
+    register: EU List of Trusted Lists (eIDAS qualified trust service providers)
+    spec_file: null
+    role: qualified-trust-service-provider
+    registered_name: Swisscom IT Services Finance S.E.
+    member_state: AT
+    trusted_list: https://www.signatur.rtr.at/vertrauensliste.xml
+    services:
+    - QES-certificates
+    - QSeal-certificates
+    - qualified-remote-signing-device
+    - qualified-timestamp
+    lotl: https://ec.europa.eu/tools/lotl/eu-lotl.xml
+    matched_domain: swissdigicert.ch
+    detected_by: sweep-legal.py
+    detected: '2026-10-14'
+  source: eutl
+  detected_by: sweep-legal.py
+  first_seen: '2026-10-14'
 generated: '2026-10-12'
 method: searched
 checked:
 - https://azuremarketplace.microsoft.com/
+- https://ec.europa.eu/tools/lotl/eu-lotl.xml
 - https://raw.githubusercontent.com/camaraproject/camara-landscape/main/landscape.yml
+- https://www.signatur.rtr.at/vertrauensliste.xml
 marketplace_apps: []
+source:
+- https://www.signatur.rtr.at/vertrauensliste.xml

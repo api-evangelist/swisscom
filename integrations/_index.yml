@@ -39,3 +39,29 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: swisscom-eu-trusted-list-eidas
+  label: EU Trusted List (eIDAS)
+  partner_name: EU Trusted List (eIDAS)
+  type: contract
+  channel: regulator-register
+  evidence: https://www.signatur.rtr.at/vertrauensliste.xml
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: EU List of Trusted Lists (eIDAS qualified trust service providers)
+    spec_file: null
+    role: qualified-trust-service-provider
+    registered_name: Swisscom IT Services Finance S.E.
+    member_state: AT
+    trusted_list: https://www.signatur.rtr.at/vertrauensliste.xml
+    services:
+    - QES-certificates
+    - QSeal-certificates
+    - qualified-remote-signing-device
+    - qualified-timestamp
+    lotl: https://ec.europa.eu/tools/lotl/eu-lotl.xml
+    matched_domain: swissdigicert.ch
+    detected_by: sweep-legal.py
+    detected: '2026-10-14'
+  status: not-a-workflow
+  arazzo: null
