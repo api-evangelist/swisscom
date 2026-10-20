@@ -39,6 +39,19 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: swisscom-zoom-own
+  label: Zoom (own)
+  partner: zoom
+  partner_name: Zoom (own)
+  category: Zoom app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.zoom.us/apps/ND_emM12Sd-dpmM-Wh7AWg
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
 - slug: swisscom-eu-trusted-list-eidas
   label: EU Trusted List (eIDAS)
   partner_name: EU Trusted List (eIDAS)
@@ -62,7 +75,7 @@
     lotl: https://ec.europa.eu/tools/lotl/eu-lotl.xml
     matched_domain: swissdigicert.ch
     detected_by: sweep-legal.py
-    detected: '2026-10-14'
+    detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
 - slug: swisscom-cncf-cloud-native-landscape
@@ -72,11 +85,11 @@
   category: Cloud native landscape
   type: register
   channel: standard-directory
-  evidence: https://github.com/cncf/landscape/blob/3a7d378b1824b82e729a453bb03fa6f1e37557e1/landscape.yml
+  evidence: https://github.com/cncf/landscape/blob/42dd4cd91dad8ec8558ac02467a43f0805b9957a/landscape.yml
   source: edge
   relationship: standard-participant
   contract_reference:
-    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @3a7d378b18)
+    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @42dd4cd91d)
     spec_file: null
     standard: Cloud Native (CNCF)
     role: cncf-member (Silver)
@@ -97,7 +110,7 @@
     signal_note: 'participation only: a landscape listing is standard-participant evidence, not depth. Entries,
       categories, tier and projects are CONTEXT, never read (breadth is not credit)'
     detected_by: sweep-cloud-native.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
 - slug: swisscom-cncf-certified-kubernetes
@@ -107,11 +120,11 @@
   category: Certified Kubernetes
   type: register
   channel: standard-directory
-  evidence: https://github.com/cncf/k8s-conformance/tree/85d26a419e7df96137e66817b61cb22a616ce1e9/v1.35/swisscom-kubernetes-service
+  evidence: https://github.com/cncf/k8s-conformance/tree/621a55d41c23eab137118626e941b72fb8d32f89/v1.35/swisscom-kubernetes-service
   source: edge
   relationship: standard-participant
   contract_reference:
-    register: CNCF Certified Kubernetes (github.com/cncf/k8s-conformance @85d26a419e)
+    register: CNCF Certified Kubernetes (github.com/cncf/k8s-conformance @621a55d41c)
     spec_file: null
     standard: Kubernetes conformance
     role: certified-kubernetes
@@ -134,19 +147,6 @@
     signal_note: certified_products = one entry per product TYPE (distribution/hosted/installer), lapsed when its
       newest certified minor is outside the current window; products and versions are context, never read
     detected_by: sweep-cloud-native.py
-    detected: '2026-10-15'
-  status: not-a-workflow
-  arazzo: null
-- slug: swisscom-zoom-own
-  label: Zoom (own)
-  partner: zoom
-  partner_name: Zoom (own)
-  category: Zoom app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://marketplace.zoom.us/apps/ND_emM12Sd-dpmM-Wh7AWg
-  source: edge
-  relationship: platform-app
+    detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
