@@ -175,6 +175,36 @@ edges:
     detected: '2026-10-19'
   detected_by: sweep-cloud-native.py
   first_seen: '2026-10-15'
+- partner_name: Adobe Approved Trust List (AATL)
+  partner: null
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://helpx.adobe.com/acrobat/kb/approved-trust-list1.html
+  category: PDF document-signing trust list
+  contract_reference:
+    register: Adobe Approved Trust List members (helpx.adobe.com/acrobat/kb/approved-trust-list1.html)
+    standard: Adobe Approved Trust List
+    spec_file: null
+    role: aatl-member
+    registered_name: Swisscom
+    register_country: CH
+    register_id: https://www.swisscom.ch/en/business/enterprise/offer/security.html
+    matched_domain: swisscom.ch
+    matched_by: domain
+    certified_products:
+    - product: AATL trusted document-signing root
+      product_type: AATL member
+      lapsed: false
+    signal_note: 'certified_products = ONE entry: Adobe verified the member against the AATL Technical Requirements
+      and ships its root in the signed trust list Acrobat / Reader download; never per root or per credential; the
+      CSC TSP mark is a self-declared commitment, a badge only'
+    detected_by: sweep-pdf-document-standards.py
+    detected: '2026-10-21'
+  detected_by: sweep-pdf-document-standards.py
+  first_seen: '2026-10-21'
 generated: '2026-10-12'
 method: searched
 checked:
@@ -186,8 +216,11 @@ checked:
 - https://raw.githubusercontent.com/camaraproject/camara-landscape/main/landscape.yml
 - https://www.signatur.rtr.at/vertrauensliste.xml
 - zoom/integrations/zoom-integration-edges.yml
+- https://eidas.ec.europa.eu/efda/trust-services/browse/eidas/tls
+- https://helpx.adobe.com/acrobat/kb/approved-trust-list1.html
+- https://helpx.adobe.com/acrobat/kb/approved-trust-list2.html
+- https://pdfa.org/members/
+- https://verapdf.org/
 marketplace_apps: []
 source:
-- https://www.signatur.rtr.at/vertrauensliste.xml
-- https://www.signatur.rtr.at/vertrauensliste.xml
 - https://www.signatur.rtr.at/vertrauensliste.xml

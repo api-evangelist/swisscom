@@ -150,3 +150,33 @@
     detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
+- slug: swisscom-adobe-approved-trust-list-aatl
+  label: Adobe Approved Trust List (AATL)
+  partner_name: Adobe Approved Trust List (AATL)
+  category: PDF document-signing trust list
+  type: register
+  channel: standard-directory
+  evidence: https://helpx.adobe.com/acrobat/kb/approved-trust-list1.html
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Adobe Approved Trust List members (helpx.adobe.com/acrobat/kb/approved-trust-list1.html)
+    standard: Adobe Approved Trust List
+    spec_file: null
+    role: aatl-member
+    registered_name: Swisscom
+    register_country: CH
+    register_id: https://www.swisscom.ch/en/business/enterprise/offer/security.html
+    matched_domain: swisscom.ch
+    matched_by: domain
+    certified_products:
+    - product: AATL trusted document-signing root
+      product_type: AATL member
+      lapsed: false
+    signal_note: 'certified_products = ONE entry: Adobe verified the member against the AATL Technical Requirements
+      and ships its root in the signed trust list Acrobat / Reader download; never per root or per credential; the
+      CSC TSP mark is a self-declared commitment, a badge only'
+    detected_by: sweep-pdf-document-standards.py
+    detected: '2026-10-21'
+  status: not-a-workflow
+  arazzo: null
