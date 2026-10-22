@@ -205,6 +205,42 @@ edges:
     detected: '2026-10-21'
   detected_by: sweep-pdf-document-standards.py
   first_seen: '2026-10-21'
+- partner_name: Swiss Trusted List (ZertES)
+  partner: null
+  partner_match: register
+  type: contract
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://trustedlist.tsl-switzerland.ch/tsl-ch.xml
+  contract_reference:
+    register: Swiss Trusted List (ZertES recognised certification service providers)
+    standard: ZertES (SR 943.03) qualified trust services, Swiss Trusted List (ETSI TS 119 612)
+    spec_file: null
+    role: qualified-trust-service-provider
+    registered_name: Swisscom (Switzerland) Ltd
+    member_state: CH
+    trusted_list: https://trustedlist.tsl-switzerland.ch/tsl-ch.xml
+    services:
+    - QES-certificates
+    - QSeal-certificates
+    - qualified-timestamp
+    certified_products:
+    - product: QES-certificates
+      product_type: QES-certificates
+      lapsed: false
+    - product: QSeal-certificates
+      product_type: QSeal-certificates
+      lapsed: false
+    - product: qualified-timestamp
+      product_type: qualified-timestamp
+      lapsed: false
+    matched_domain: swisscom.com
+    detected_by: sweep-eu-eidas-trust-services.py
+    detected: '2026-10-21'
+  source: ch-tl
+  detected_by: sweep-eu-eidas-trust-services.py
+  first_seen: '2026-10-21'
 generated: '2026-10-12'
 method: searched
 checked:
@@ -221,6 +257,8 @@ checked:
 - https://helpx.adobe.com/acrobat/kb/approved-trust-list2.html
 - https://pdfa.org/members/
 - https://verapdf.org/
+- https://trustedlist.tsl-switzerland.ch/tsl-ch.xml
 marketplace_apps: []
 source:
 - https://www.signatur.rtr.at/vertrauensliste.xml
+- https://trustedlist.tsl-switzerland.ch/tsl-ch.xml

@@ -180,3 +180,38 @@
     detected: '2026-10-21'
   status: not-a-workflow
   arazzo: null
+- slug: swisscom-swiss-trusted-list-zertes
+  label: Swiss Trusted List (ZertES)
+  partner_name: Swiss Trusted List (ZertES)
+  type: contract
+  channel: regulator-register
+  evidence: https://trustedlist.tsl-switzerland.ch/tsl-ch.xml
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Swiss Trusted List (ZertES recognised certification service providers)
+    standard: ZertES (SR 943.03) qualified trust services, Swiss Trusted List (ETSI TS 119 612)
+    spec_file: null
+    role: qualified-trust-service-provider
+    registered_name: Swisscom (Switzerland) Ltd
+    member_state: CH
+    trusted_list: https://trustedlist.tsl-switzerland.ch/tsl-ch.xml
+    services:
+    - QES-certificates
+    - QSeal-certificates
+    - qualified-timestamp
+    certified_products:
+    - product: QES-certificates
+      product_type: QES-certificates
+      lapsed: false
+    - product: QSeal-certificates
+      product_type: QSeal-certificates
+      lapsed: false
+    - product: qualified-timestamp
+      product_type: qualified-timestamp
+      lapsed: false
+    matched_domain: swisscom.com
+    detected_by: sweep-eu-eidas-trust-services.py
+    detected: '2026-10-21'
+  status: not-a-workflow
+  arazzo: null
