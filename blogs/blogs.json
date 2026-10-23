@@ -5,7 +5,7 @@
       "source": "https://www.swisscom.ch/de/privatkunden/blog/",
       "feed_url": "https://www.swisscom.ch/de/privatkunden/blog/feed/",
       "title": "",
-      "saved": 2,
+      "saved": 0,
       "method": "discovered"
     },
     {
@@ -19,8 +19,15 @@
       "source": "https://trustservices.swisscom.com/en/esignature-hub/trust-blog",
       "feed_url": "https://trustservices.swisscom.com/en/esignature-hub/trust-blog/rss.xml",
       "title": "",
-      "saved": 1,
+      "saved": 0,
       "method": "discovered"
+    },
+    {
+      "source": "https://trustservices.swisscom.com/en/esignature-hub/trust-blog/rss.xml",
+      "feed_url": "https://trustservices.swisscom.com/en/esignature-hub/trust-blog/rss.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     },
     {
       "source": "https://trustservices.swisscom.com/en/support",
@@ -30,6 +37,6 @@
       "method": "none"
     }
   ],
-  "post_count": 3,
-  "fetched": "2026-10-10T13:15:00Z"
+  "post_count": 60,
+  "fetched": "2026-10-17T14:53:57Z"
 }

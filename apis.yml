@@ -407,6 +407,8 @@ apis:
   - type: CLI
     url: cli/swisscom-cli.yml
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/swisscom/overview
 - url: https://www.swisscom.ch/de/privatkunden/blog/
   type: Blog
 - url: https://www.swisscom.ch/de/privatkunden/blog/feed/
