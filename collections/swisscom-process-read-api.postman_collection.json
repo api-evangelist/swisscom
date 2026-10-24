@@ -1,0 +1,2060 @@
+{
+  "info": {
+    "_postman_id": "ec7bc9c2-a387-480d-911f-9348a6476f3b",
+    "name": "Swisscom Sign Integration Process: read API",
+    "description": "# Purpose\n\nThe Swisscom Sign *Integration API* enables backend systems to create, configure, release, and monitor digital signing processes end-to-end with minimal manual interaction.\n\nContact Support:\n Name: Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T20:32:25.000Z",
+    "updatedAt": "2026-10-21T20:32:26.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ec7bc9c2-a387-480d-911f-9348a6476f3b"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "process",
+          "item": [
+            {
+              "name": "{processId}",
+              "item": [
+                {
+                  "name": "open",
+                  "item": [
+                    {
+                      "name": "{personId}",
+                      "item": [
+                        {
+                          "name": "Generate participant access URL",
+                          "id": "447f71ae-c78c-4ada-90bd-557dcc73206b",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "client_credentials",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"language\": \"<string>\",\n  \"lifecycle\": \"TEMPORARY\",\n  \"skipAuthorization\": false,\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSA\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/open/:personId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "open",
+                                ":personId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "f4bec2d3-b192-496e-a56b-7a34683a1f7f",
+                                  "key": "processId",
+                                  "value": "<uuid>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "8430d0b6-59fd-4ca1-a4f4-2ffe50b95d2c",
+                                  "key": "personId",
+                                  "value": "<string>",
+                                  "description": "(Required) The system-assigned identifier or the external reference from your system can be used to identify the person."
+                                }
+                              ]
+                            },
+                            "description": "Generate an URL for a specific participant that can be used to open the process in the Swisscom Sign UI. Optional return URLs can be used to redirect the user back to the calling third party system. If an unreleased process is opened, an error is returned. For unreleased processes, /process/{processId}/setup can be used.\n\nPreconditions:\n* The service can only be used if the process has already been released via /processId/{processId}/release."
+                          },
+                          "response": [
+                            {
+                              "id": "e28e8e7b-e7c4-4cdf-88c5-6ab73d15e5a6",
+                              "name": "You receive an URL specific to the subscriber with a defined validity period.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"language\": \"<string>\",\n  \"lifecycle\": \"TEMPORARY\",\n  \"skipAuthorization\": false,\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSA\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/open/:personId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "open",
+                                    ":personId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "personId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<uuid>\",\n  \"url\": \"<uri>\"\n}",
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-e28e8e7b-e7c4-4cdf-88c5-6ab73d15e5a6"
+                            },
+                            {
+                              "id": "1d2a3ee6-52d6-4c9e-abde-1e72af3f328f",
+                              "name": "Authorization information is missing or invalid.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"language\": \"<string>\",\n  \"lifecycle\": \"TEMPORARY\",\n  \"skipAuthorization\": false,\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSA\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/open/:personId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "open",
+                                    ":personId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "personId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-1d2a3ee6-52d6-4c9e-abde-1e72af3f328f"
+                            },
+                            {
+                              "id": "f92f6e3e-5263-4bce-81ee-6f05e8eb8d29",
+                              "name": "Occurs when there is a general error.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"language\": \"<string>\",\n  \"lifecycle\": \"TEMPORARY\",\n  \"skipAuthorization\": false,\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSA\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/open/:personId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "open",
+                                    ":personId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "personId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Conflict",
+                              "code": 409,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-f92f6e3e-5263-4bce-81ee-6f05e8eb8d29"
+                            }
+                          ],
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-447f71ae-c78c-4ada-90bd-557dcc73206b"
+                        }
+                      ],
+                      "id": "9376d94d-b0a2-4991-83a0-bd5628d15057",
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-9376d94d-b0a2-4991-83a0-bd5628d15057"
+                    }
+                  ],
+                  "id": "955a4966-89c2-440e-be0f-105fc272dbf4",
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-955a4966-89c2-440e-be0f-105fc272dbf4"
+                },
+                {
+                  "name": "status",
+                  "item": [
+                    {
+                      "name": "Get process status",
+                      "id": "1b656302-e3e1-4593-922b-abeda7a03477",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "client_credentials",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "id": "74ddb98e-0d05-43e0-935d-427abfcff9c8",
+                              "key": "processId",
+                              "value": "<uuid>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Returns the current status of the process. Requires that the process exists and the caller is authorized."
+                      },
+                      "response": [
+                        {
+                          "id": "4943adbd-102a-4fd1-8600-6668941089b4",
+                          "name": "Returns the state of the desired document.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/status",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "status"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"status\": \"PENDING\"\n}",
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-4943adbd-102a-4fd1-8600-6668941089b4"
+                        },
+                        {
+                          "id": "564c7e8c-1c64-480e-9619-0cefc0223fe5",
+                          "name": "Authorization information is missing or invalid.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/status",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "status"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-564c7e8c-1c64-480e-9619-0cefc0223fe5"
+                        },
+                        {
+                          "id": "1684af10-0834-411a-928d-067a1f735645",
+                          "name": "Process not found.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/status",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "status"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-1684af10-0834-411a-928d-067a1f735645"
+                        },
+                        {
+                          "id": "5b5fdd08-3de1-4382-adb9-8fce9e130af3",
+                          "name": "Occurs when there is a general error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/status",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "status"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-5b5fdd08-3de1-4382-adb9-8fce9e130af3"
+                        }
+                      ],
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-1b656302-e3e1-4593-922b-abeda7a03477"
+                    }
+                  ],
+                  "id": "9d93f76b-4e78-4f20-80ae-a6cb3f65a1fd",
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-9d93f76b-4e78-4f20-80ae-a6cb3f65a1fd"
+                },
+                {
+                  "name": "record",
+                  "item": [
+                    {
+                      "name": "Get auditing records",
+                      "id": "09181e1b-88fe-4a71-8e99-575e679efe29",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "client_credentials",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId/record",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId",
+                            "record"
+                          ],
+                          "variable": [
+                            {
+                              "id": "40936df4-40cd-4401-a1da-04a110c26d9d",
+                              "key": "processId",
+                              "value": "<uuid>",
+                              "description": "(Required) Unique identifier of the process."
+                            }
+                          ]
+                        },
+                        "description": "This service can be used only with a valid process. All created auditing records are returned in descending order of creation date. Thus, the first record is the most recent."
+                      },
+                      "response": [
+                        {
+                          "id": "dce57ab8-9cd5-46ee-b3a6-ab261cf44fc1",
+                          "name": "Returns a list of auditing records.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/record",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "record"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"records\": [\n    {\n      \"id\": \"<uuid>\",\n      \"createdDate\": \"<dateTime>\",\n      \"action\": \"<string>\",\n      \"status\": \"UNKNOWN\",\n      \"extras\": {\n        \"dolora8\": \"<string>\",\n        \"incididunt2\": \"<string>\",\n        \"ullamco082\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"createdDate\": \"<dateTime>\",\n      \"action\": \"<string>\",\n      \"status\": \"UNKNOWN\",\n      \"extras\": {\n        \"do_97\": \"<string>\",\n        \"cillumf_\": \"<string>\"\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-dce57ab8-9cd5-46ee-b3a6-ab261cf44fc1"
+                        },
+                        {
+                          "id": "f9f27250-2e76-433b-b666-1df89faf99f8",
+                          "name": "Authorization information is missing or invalid.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/record",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "record"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-f9f27250-2e76-433b-b666-1df89faf99f8"
+                        },
+                        {
+                          "id": "a61a7a30-022d-4aca-bf65-b787b0a4702b",
+                          "name": "Occurs when there is a general error or the process is missing.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/record",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "record"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-a61a7a30-022d-4aca-bf65-b787b0a4702b"
+                        }
+                      ],
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-09181e1b-88fe-4a71-8e99-575e679efe29"
+                    }
+                  ],
+                  "id": "382db857-c8ee-434a-bf85-a6ce6507e536",
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-382db857-c8ee-434a-bf85-a6ce6507e536"
+                },
+                {
+                  "name": "file",
+                  "item": [
+                    {
+                      "name": "{fileId}",
+                      "item": [
+                        {
+                          "name": "content",
+                          "item": [
+                            {
+                              "name": "Download process file content",
+                              "id": "05985a01-6d30-4e03-badd-db5912569652",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "client_credentials",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/pdf"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/file/:fileId/content",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "file",
+                                    ":fileId",
+                                    "content"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "e3f05999-a399-49b3-b634-4e9b8c9ebeb5",
+                                      "key": "processId",
+                                      "value": "<uuid>",
+                                      "description": "(Required) System-assigned process identifier (UUID)."
+                                    },
+                                    {
+                                      "id": "efc93c38-a689-43e9-b48d-00e70d6f5c53",
+                                      "key": "fileId",
+                                      "value": "<string>",
+                                      "description": "(Required) Identifier of the file within the process.\n\nCan be either:\n- The internal UUID assigned by the system\n- The externalIdentifier provided during upload\n"
+                                    }
+                                  ]
+                                },
+                                "description": "Retrieves the raw binary content of a file that belongs to the specified process.\n\nUnlike the parent resource, which returns the file as Base64 within a JSON document,\nthis endpoint streams the file content directly as binary data.\n\nPossible file types:\n- Attached original documents (PDF)\n- Signed or partially signed documents (PDF, available as soon as at least one signer has signed)\n- Verification documents (ZIP, if online verification was performed)\n\nThe Content-Type of the response reflects the actual file type.\n\nFiles are only available until the process has been archived (archivedOn is set)."
+                              },
+                              "response": [
+                                {
+                                  "id": "c3693dc5-5980-46c7-a0a3-c17984caeff8",
+                                  "name": "Returns the raw binary content of the file.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/pdf"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/process/:processId/file/:fileId/content",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "process",
+                                        ":processId",
+                                        "file",
+                                        ":fileId",
+                                        "content"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "processId"
+                                        },
+                                        {
+                                          "key": "fileId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/pdf"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "<binary>",
+                                  "createdAt": "2026-10-21T20:32:26.000Z",
+                                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                                  "uid": "35240-c3693dc5-5980-46c7-a0a3-c17984caeff8"
+                                },
+                                {
+                                  "id": "e92e7f3a-b3c7-4cfa-b054-0985b71f34e3",
+                                  "name": "Authorization information is missing or invalid.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/process/:processId/file/:fileId/content",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "process",
+                                        ":processId",
+                                        "file",
+                                        ":fileId",
+                                        "content"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "processId"
+                                        },
+                                        {
+                                          "key": "fileId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-10-21T20:32:26.000Z",
+                                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                                  "uid": "35240-e92e7f3a-b3c7-4cfa-b054-0985b71f34e3"
+                                },
+                                {
+                                  "id": "0e6fb1d7-7da9-4480-8524-d718b6dd050c",
+                                  "name": "Occurs when there is a general error.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/process/:processId/file/:fileId/content",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "process",
+                                        ":processId",
+                                        "file",
+                                        ":fileId",
+                                        "content"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "processId"
+                                        },
+                                        {
+                                          "key": "fileId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Conflict",
+                                  "code": 409,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                                  "createdAt": "2026-10-21T20:32:26.000Z",
+                                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                                  "uid": "35240-0e6fb1d7-7da9-4480-8524-d718b6dd050c"
+                                },
+                                {
+                                  "id": "81b72cd2-3f15-4a70-bb94-c805de888aa6",
+                                  "name": "The document process was archived and the file has been deleted.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/process/:processId/file/:fileId/content",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "process",
+                                        ":processId",
+                                        "file",
+                                        ":fileId",
+                                        "content"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "processId"
+                                        },
+                                        {
+                                          "key": "fileId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Gone",
+                                  "code": 410,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                                  "createdAt": "2026-10-21T20:32:26.000Z",
+                                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                                  "uid": "35240-81b72cd2-3f15-4a70-bb94-c805de888aa6"
+                                },
+                                {
+                                  "id": "421df66c-efb1-4927-ad15-ca45ba9a4bff",
+                                  "name": "The file cannot be downloaded yet because the document is not in the appropriate state.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/process/:processId/file/:fileId/content",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "process",
+                                        ":processId",
+                                        "file",
+                                        ":fileId",
+                                        "content"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "processId"
+                                        },
+                                        {
+                                          "key": "fileId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Precondition Failed",
+                                  "code": 412,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                                  "createdAt": "2026-10-21T20:32:26.000Z",
+                                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                                  "uid": "35240-421df66c-efb1-4927-ad15-ca45ba9a4bff"
+                                }
+                              ],
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-05985a01-6d30-4e03-badd-db5912569652"
+                            }
+                          ],
+                          "id": "29c89670-2f1c-43dd-9c8b-b2f62b61a4f2",
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-29c89670-2f1c-43dd-9c8b-b2f62b61a4f2"
+                        },
+                        {
+                          "name": "Download process file",
+                          "id": "c4cc5898-0b6b-49a0-8ac6-99d6a5ba8c54",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "client_credentials",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/file/:fileId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "file",
+                                ":fileId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "a5b8431d-8fcd-4537-87bf-0e87e7fa8763",
+                                  "key": "processId",
+                                  "value": "<uuid>",
+                                  "description": "(Required) System-assigned process identifier (UUID)."
+                                },
+                                {
+                                  "id": "090134cb-3d7f-47fe-8287-9b181348fcb8",
+                                  "key": "fileId",
+                                  "value": "<string>",
+                                  "description": "(Required) Identifier of the file within the process.\n\nCan be either:\n- The internal UUID assigned by the system\n- The externalIdentifier provided during upload\n"
+                                }
+                              ]
+                            },
+                            "description": "Retrieves a file that belongs to the specified process.\n\nPossible file types:\n- Attached original documents\n- Signed or partially signed documents (available as soon as at least one signer has signed)\n- Verification documents (if online verification was performed)\n\nFiles are only available until the process has been archived (archivedOn is set)."
+                          },
+                          "response": [
+                            {
+                              "id": "fb310ffb-4ff1-4a8f-aa2b-73adaf86f8d9",
+                              "name": "Returns a file attached to the document.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/file/:fileId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "file",
+                                    ":fileId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "fileId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"content\": \"<string>\",\n  \"contentType\": \"application/pdf\",\n  \"name\": \"<string>\",\n  \"id\": \"<uuid>\",\n  \"externalIdentifier\": \"-P1h\",\n  \"signaturePositions\": [\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    },\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    }\n  ]\n}",
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-fb310ffb-4ff1-4a8f-aa2b-73adaf86f8d9"
+                            },
+                            {
+                              "id": "57299dfd-9c16-4a1f-bc6c-2eef7c616412",
+                              "name": "Authorization information is missing or invalid.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/file/:fileId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "file",
+                                    ":fileId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "fileId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-57299dfd-9c16-4a1f-bc6c-2eef7c616412"
+                            },
+                            {
+                              "id": "c3ca30f1-ffbe-4dd5-8e00-60a53a2b9ef3",
+                              "name": "Occurs when there is a general error.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/file/:fileId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "file",
+                                    ":fileId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "fileId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Conflict",
+                              "code": 409,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-c3ca30f1-ffbe-4dd5-8e00-60a53a2b9ef3"
+                            },
+                            {
+                              "id": "2655c6d2-7c3a-4a28-90d4-3276ea84e2a2",
+                              "name": "The document process was archived and the file has been deleted.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/file/:fileId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "file",
+                                    ":fileId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "fileId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Gone",
+                              "code": 410,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-2655c6d2-7c3a-4a28-90d4-3276ea84e2a2"
+                            },
+                            {
+                              "id": "e862a038-21fc-46d5-bbc0-6c844c04e140",
+                              "name": "The file cannot be downloaded yet because the document is not in the appropriate state.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/process/:processId/file/:fileId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "process",
+                                    ":processId",
+                                    "file",
+                                    ":fileId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "processId"
+                                    },
+                                    {
+                                      "key": "fileId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Precondition Failed",
+                              "code": 412,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                              "createdAt": "2026-10-21T20:32:26.000Z",
+                              "updatedAt": "2026-10-21T20:32:26.000Z",
+                              "uid": "35240-e862a038-21fc-46d5-bbc0-6c844c04e140"
+                            }
+                          ],
+                          "createdAt": "2026-10-21T20:32:26.000Z",
+                          "updatedAt": "2026-10-21T20:32:26.000Z",
+                          "uid": "35240-c4cc5898-0b6b-49a0-8ac6-99d6a5ba8c54"
+                        }
+                      ],
+                      "id": "cfdc218d-f42a-4b45-9ecd-35dd0b1efcd8",
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-cfdc218d-f42a-4b45-9ecd-35dd0b1efcd8"
+                    }
+                  ],
+                  "id": "90288f3c-3be9-4cc2-bb44-e1680bee4455",
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-90288f3c-3be9-4cc2-bb44-e1680bee4455"
+                },
+                {
+                  "name": "Get process details",
+                  "id": "8b79eb06-b06a-45b9-95ea-78101db89e27",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "client_credentials",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process/:processId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process",
+                        ":processId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8fd098cd-bb57-46af-9127-98d8bac0982e",
+                          "key": "processId",
+                          "value": "<uuid>",
+                          "description": "(Required) Unique identifier of the process."
+                        }
+                      ]
+                    },
+                    "description": "Returns the full process object including participants, documents, properties,\nand current status.\n\nCan only be accessed if the process has been initiated and the caller is authorized."
+                  },
+                  "response": [
+                    {
+                      "id": "b9926646-09f6-4371-af16-d1ffb3261f59",
+                      "name": "Returns the full document.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "processId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"initiator\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"identification\": \"<uuid>\",\n    \"externalIdentifier\": \"yn1~mm3\"\n  },\n  \"id\": \"<uuid>\",\n  \"status\": \"EXPIRED\",\n  \"signatureLevel\": \"QUALIFIED\",\n  \"invitees\": {\n    \"personalMessage\": \"<string>\",\n    \"signers\": [\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"TgqwU\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"CANCELED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      },\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"xtvJv\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"DECLINED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      }\n    ]\n  },\n  \"teamId\": \"<uuid>\",\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"payload\": \"<string>\",\n  \"validUntil\": \"<dateTime>\",\n  \"createdDate\": \"<dateTime>\",\n  \"lastModifiedDate\": \"<dateTime>\",\n  \"archiveOn\": \"<dateTime>\",\n  \"archivedOn\": \"<dateTime>\",\n  \"fileReferences\": [\n    {\n      \"externalIdentifier\": \"3C\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    },\n    {\n      \"externalIdentifier\": \"tNPYX9M0q\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    }\n  ],\n  \"partnerId\": \"<string>\",\n  \"authorization\": \"CODE\"\n}",
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-b9926646-09f6-4371-af16-d1ffb3261f59"
+                    },
+                    {
+                      "id": "0b3d174b-cc84-4361-9bb5-dd24552dc185",
+                      "name": "Authorization information is missing or invalid.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "processId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-0b3d174b-cc84-4361-9bb5-dd24552dc185"
+                    },
+                    {
+                      "id": "b957190c-5865-4485-aea9-7f7f0a0b4853",
+                      "name": "Process not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "processId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-b957190c-5865-4485-aea9-7f7f0a0b4853"
+                    },
+                    {
+                      "id": "85cbb6e9-5f43-4e2f-8325-c0281b9cf937",
+                      "name": "Occurs when there is a general error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "processId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Conflict",
+                      "code": 409,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                      "createdAt": "2026-10-21T20:32:26.000Z",
+                      "updatedAt": "2026-10-21T20:32:26.000Z",
+                      "uid": "35240-85cbb6e9-5f43-4e2f-8325-c0281b9cf937"
+                    }
+                  ],
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-8b79eb06-b06a-45b9-95ea-78101db89e27"
+                }
+              ],
+              "id": "8905c419-743b-42a4-9c01-c196315262dc",
+              "createdAt": "2026-10-21T20:32:26.000Z",
+              "updatedAt": "2026-10-21T20:32:26.000Z",
+              "uid": "35240-8905c419-743b-42a4-9c01-c196315262dc"
+            },
+            {
+              "name": "Get all processes (paginated)",
+              "id": "bbcb9f9a-edaf-4e39-9e62-6c25e41bb529",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "client_credentials",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/process?status=CREATED&teamId=<uuid>&validUntilWithin=<string>&page=0&size=20&sort=createdDate,DESC",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "process"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by status.",
+                      "key": "status",
+                      "value": "CREATED"
+                    },
+                    {
+                      "description": "Filter by team ID.",
+                      "key": "teamId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "description": "Filter by validUntil within the given ISO 8601 duration (e.g. P30D, PT12H).",
+                      "key": "validUntilWithin",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Zero-based page index (0..N)",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The size of the page to be returned",
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+                      "key": "sort",
+                      "value": "createdDate,DESC"
+                    }
+                  ]
+                },
+                "description": "Returns a paginated list of processes.\n\nSupports optional filtering by `status`, `teamId`, and `validUntilWithin` (ISO 8601 duration).\nThe page size is limited to a maximum of 20 items.\nSorting is strictly performed on 'createdDate', but the direction (ASC/DESC) can be defined."
+              },
+              "response": [
+                {
+                  "id": "00e47ce0-ca74-4f7e-86d1-16fb95ccb6ea",
+                  "name": "Returns a page of processes.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process?status=CREATED&teamId=<uuid>&validUntilWithin=<string>&page=0&size=20&sort=createdDate,DESC",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by status.",
+                          "key": "status",
+                          "value": "CREATED"
+                        },
+                        {
+                          "description": "Filter by team ID.",
+                          "key": "teamId",
+                          "value": "<uuid>"
+                        },
+                        {
+                          "description": "Filter by validUntil within the given ISO 8601 duration (e.g. P30D, PT12H).",
+                          "key": "validUntilWithin",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Zero-based page index (0..N)",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The size of the page to be returned",
+                          "key": "size",
+                          "value": "20"
+                        },
+                        {
+                          "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+                          "key": "sort",
+                          "value": "createdDate,DESC"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"content\": [\n    {\n      \"initiator\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"xbwv\"\n      },\n      \"id\": \"<uuid>\",\n      \"status\": \"CREATED\",\n      \"signatureLevel\": \"QUALIFIED\",\n      \"invitees\": {\n        \"personalMessage\": \"<string>\",\n        \"signers\": [\n          {\n            \"firstName\": \"<string>\",\n            \"lastName\": \"<string>\",\n            \"type\": \"SIGNER\",\n            \"identification\": \"<uuid>\",\n            \"externalIdentifier\": \"6\",\n            \"email\": \"<email>\",\n            \"mobile\": \"<string>\",\n            \"role\": \"<string>\",\n            \"verification\": {\n              \"processId\": \"<string>\",\n              \"verifiedOn\": \"<dateTime>\",\n              \"rejectedOn\": \"<dateTime>\",\n              \"payload\": \"<string>\",\n              \"files\": [\n                \"<uuid>\",\n                \"<uuid>\"\n              ],\n              \"residentPermit\": true\n            },\n            \"status\": \"SIGNED\",\n            \"signedOn\": \"<dateTime>\",\n            \"discontinuedOn\": \"<dateTime>\",\n            \"canceledOn\": \"<dateTime>\",\n            \"certificateName\": \"<string>\",\n            \"certificateMatch\": \"MISMATCH\"\n          },\n          {\n            \"firstName\": \"<string>\",\n            \"lastName\": \"<string>\",\n            \"type\": \"SIGNER\",\n            \"identification\": \"<uuid>\",\n            \"externalIdentifier\": \"Niy82ab7S\",\n            \"email\": \"<email>\",\n            \"mobile\": \"<string>\",\n            \"role\": \"<string>\",\n            \"verification\": {\n              \"processId\": \"<string>\",\n              \"verifiedOn\": \"<dateTime>\",\n              \"rejectedOn\": \"<dateTime>\",\n              \"payload\": \"<string>\",\n              \"files\": [\n                \"<uuid>\",\n                \"<uuid>\"\n              ],\n              \"residentPermit\": true\n            },\n            \"status\": \"REPLACED\",\n            \"signedOn\": \"<dateTime>\",\n            \"discontinuedOn\": \"<dateTime>\",\n            \"canceledOn\": \"<dateTime>\",\n            \"certificateName\": \"<string>\",\n            \"certificateMatch\": \"MISMATCH\"\n          }\n        ]\n      },\n      \"teamId\": \"<uuid>\",\n      \"properties\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"payload\": \"<string>\",\n      \"validUntil\": \"<dateTime>\",\n      \"createdDate\": \"<dateTime>\",\n      \"lastModifiedDate\": \"<dateTime>\",\n      \"archiveOn\": \"<dateTime>\",\n      \"archivedOn\": \"<dateTime>\",\n      \"fileReferences\": [\n        {\n          \"externalIdentifier\": \"opn\",\n          \"initialFileId\": \"<uuid>\",\n          \"lastSignedFileId\": \"<uuid>\",\n          \"signaturePositions\": [\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n            },\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n            }\n          ]\n        },\n        {\n          \"externalIdentifier\": \"u-L~WX1Bze\",\n          \"initialFileId\": \"<uuid>\",\n          \"lastSignedFileId\": \"<uuid>\",\n          \"signaturePositions\": [\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n            },\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n            }\n          ]\n        }\n      ],\n      \"partnerId\": \"<string>\",\n      \"authorization\": \"CODE\"\n    },\n    {\n      \"initiator\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"u\"\n      },\n      \"id\": \"<uuid>\",\n      \"status\": \"PENDING\",\n      \"signatureLevel\": \"QUALIFIED\",\n      \"invitees\": {\n        \"personalMessage\": \"<string>\",\n        \"signers\": [\n          {\n            \"firstName\": \"<string>\",\n            \"lastName\": \"<string>\",\n            \"type\": \"SIGNER\",\n            \"identification\": \"<uuid>\",\n            \"externalIdentifier\": \"Wg1r\",\n            \"email\": \"<email>\",\n            \"mobile\": \"<string>\",\n            \"role\": \"<string>\",\n            \"verification\": {\n              \"processId\": \"<string>\",\n              \"verifiedOn\": \"<dateTime>\",\n              \"rejectedOn\": \"<dateTime>\",\n              \"payload\": \"<string>\",\n              \"files\": [\n                \"<uuid>\",\n                \"<uuid>\"\n              ],\n              \"residentPermit\": true\n            },\n            \"status\": \"WAITING\",\n            \"signedOn\": \"<dateTime>\",\n            \"discontinuedOn\": \"<dateTime>\",\n            \"canceledOn\": \"<dateTime>\",\n            \"certificateName\": \"<string>\",\n            \"certificateMatch\": \"UNCHECKED\"\n          },\n          {\n            \"firstName\": \"<string>\",\n            \"lastName\": \"<string>\",\n            \"type\": \"SIGNER\",\n            \"identification\": \"<uuid>\",\n            \"externalIdentifier\": \"W\",\n            \"email\": \"<email>\",\n            \"mobile\": \"<string>\",\n            \"role\": \"<string>\",\n            \"verification\": {\n              \"processId\": \"<string>\",\n              \"verifiedOn\": \"<dateTime>\",\n              \"rejectedOn\": \"<dateTime>\",\n              \"payload\": \"<string>\",\n              \"files\": [\n                \"<uuid>\",\n                \"<uuid>\"\n              ],\n              \"residentPermit\": true\n            },\n            \"status\": \"REMOVED\",\n            \"signedOn\": \"<dateTime>\",\n            \"discontinuedOn\": \"<dateTime>\",\n            \"canceledOn\": \"<dateTime>\",\n            \"certificateName\": \"<string>\",\n            \"certificateMatch\": \"MISMATCH\"\n          }\n        ]\n      },\n      \"teamId\": \"<uuid>\",\n      \"properties\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"payload\": \"<string>\",\n      \"validUntil\": \"<dateTime>\",\n      \"createdDate\": \"<dateTime>\",\n      \"lastModifiedDate\": \"<dateTime>\",\n      \"archiveOn\": \"<dateTime>\",\n      \"archivedOn\": \"<dateTime>\",\n      \"fileReferences\": [\n        {\n          \"externalIdentifier\": \"zlFJLvvrxXt\",\n          \"initialFileId\": \"<uuid>\",\n          \"lastSignedFileId\": \"<uuid>\",\n          \"signaturePositions\": [\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n            },\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n            }\n          ]\n        },\n        {\n          \"externalIdentifier\": \"8LRhasJ4CqJ\",\n          \"initialFileId\": \"<uuid>\",\n          \"lastSignedFileId\": \"<uuid>\",\n          \"signaturePositions\": [\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n            },\n            {\n              \"pageNumber\": \"<integer>\",\n              \"positionX\": \"<integer>\",\n              \"positionY\": \"<integer>\",\n              \"signer\": \"<string>\",\n              \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n            }\n          ]\n        }\n      ],\n      \"partnerId\": \"<string>\",\n      \"authorization\": \"CODE\"\n    }\n  ],\n  \"page\": {\n    \"totalElements\": \"<long>\",\n    \"totalPages\": \"<integer>\",\n    \"size\": \"<integer>\",\n    \"number\": \"<integer>\"\n  },\n  \"totalElements\": \"<long>\",\n  \"totalPages\": \"<integer>\",\n  \"number\": \"<integer>\",\n  \"size\": \"<integer>\",\n  \"first\": \"<boolean>\",\n  \"last\": \"<boolean>\"\n}",
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-00e47ce0-ca74-4f7e-86d1-16fb95ccb6ea"
+                },
+                {
+                  "id": "04151552-a0f1-4f73-8328-ccba6570c0df",
+                  "name": "Invalid pagination parameters (e.g. size > 20) or invalid sort direction.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process?status=CREATED&teamId=<uuid>&validUntilWithin=<string>&page=0&size=20&sort=createdDate,DESC",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by status.",
+                          "key": "status",
+                          "value": "CREATED"
+                        },
+                        {
+                          "description": "Filter by team ID.",
+                          "key": "teamId",
+                          "value": "<uuid>"
+                        },
+                        {
+                          "description": "Filter by validUntil within the given ISO 8601 duration (e.g. P30D, PT12H).",
+                          "key": "validUntilWithin",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Zero-based page index (0..N)",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The size of the page to be returned",
+                          "key": "size",
+                          "value": "20"
+                        },
+                        {
+                          "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+                          "key": "sort",
+                          "value": "createdDate,DESC"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-04151552-a0f1-4f73-8328-ccba6570c0df"
+                },
+                {
+                  "id": "da33a172-220e-4ba0-8a1c-97b0be28bae6",
+                  "name": "Authorization information is missing or invalid.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process?status=CREATED&teamId=<uuid>&validUntilWithin=<string>&page=0&size=20&sort=createdDate,DESC",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by status.",
+                          "key": "status",
+                          "value": "CREATED"
+                        },
+                        {
+                          "description": "Filter by team ID.",
+                          "key": "teamId",
+                          "value": "<uuid>"
+                        },
+                        {
+                          "description": "Filter by validUntil within the given ISO 8601 duration (e.g. P30D, PT12H).",
+                          "key": "validUntilWithin",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Zero-based page index (0..N)",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The size of the page to be returned",
+                          "key": "size",
+                          "value": "20"
+                        },
+                        {
+                          "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+                          "key": "sort",
+                          "value": "createdDate,DESC"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-21T20:32:26.000Z",
+                  "updatedAt": "2026-10-21T20:32:26.000Z",
+                  "uid": "35240-da33a172-220e-4ba0-8a1c-97b0be28bae6"
+                }
+              ],
+              "createdAt": "2026-10-21T20:32:26.000Z",
+              "updatedAt": "2026-10-21T20:32:26.000Z",
+              "uid": "35240-bbcb9f9a-edaf-4e39-9e62-6c25e41bb529"
+            }
+          ],
+          "id": "9c0c613d-904d-4c7e-a9cb-c1ff730d9ee9",
+          "createdAt": "2026-10-21T20:32:26.000Z",
+          "updatedAt": "2026-10-21T20:32:26.000Z",
+          "uid": "35240-9c0c613d-904d-4c7e-a9cb-c1ff730d9ee9"
+        }
+      ],
+      "id": "2ad7cbc5-0976-4e20-bd54-ecb5cc686329",
+      "createdAt": "2026-10-21T20:32:26.000Z",
+      "updatedAt": "2026-10-21T20:32:26.000Z",
+      "uid": "35240-2ad7cbc5-0976-4e20-bd54-ecb5cc686329"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://sign.swisscom.ch/system"
+    }
+  ]
+}

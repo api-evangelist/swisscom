@@ -1,0 +1,239 @@
+{
+  "info": {
+    "_postman_id": "159ce1dd-d2ec-4193-a827-d5e9af6a0cae",
+    "name": "All-in Signing Service REST Application Signatures API",
+    "description": "All-in Signing Service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T20:32:30.000Z",
+    "updatedAt": "2026-10-21T20:32:30.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-159ce1dd-d2ec-4193-a827-d5e9af6a0cae"
+  },
+  "item": [
+    {
+      "name": "signatures",
+      "item": [
+        {
+          "name": "signDoc",
+          "item": [
+            {
+              "name": "Request creation of AdES signatures",
+              "id": "b415e008-966d-4a62-9263-a9f4aac54bbc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"SAD\": \"<string>\",\n  \"credentialID\": \"<string>\",\n  \"signatureFormat\": \"P\",\n  \"profile\": \"<string>\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"<string>\",\n    \"hashes\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"conformanceLevel\": \"AdES-B-B\",\n  \"requestID\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/signatures/signDoc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "signatures",
+                    "signDoc"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "ee7bf4f1-28c7-42eb-aa32-c9e7d724a786",
+                  "name": "Result of the signature creation",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"SAD\": \"<string>\",\n  \"credentialID\": \"<string>\",\n  \"signatureFormat\": \"P\",\n  \"profile\": \"<string>\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"<string>\",\n    \"hashes\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"conformanceLevel\": \"AdES-B-B\",\n  \"requestID\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/signatures/signDoc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "signatures",
+                        "signDoc"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"SignatureObject\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"responseID\": \"<string>\",\n  \"validationData\": {\n    \"ocsp\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"crl\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "createdAt": "2026-10-21T20:32:30.000Z",
+                  "updatedAt": "2026-10-21T20:32:30.000Z",
+                  "uid": "35240-ee7bf4f1-28c7-42eb-aa32-c9e7d724a786"
+                },
+                {
+                  "id": "5700ba4b-597e-4f62-9af8-e7503343d66e",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"SAD\": \"<string>\",\n  \"credentialID\": \"<string>\",\n  \"signatureFormat\": \"P\",\n  \"profile\": \"<string>\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"<string>\",\n    \"hashes\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"conformanceLevel\": \"AdES-B-B\",\n  \"requestID\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/signatures/signDoc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "signatures",
+                        "signDoc"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"error_description\": \"<string>\"\n}",
+                  "createdAt": "2026-10-21T20:32:30.000Z",
+                  "updatedAt": "2026-10-21T20:32:30.000Z",
+                  "uid": "35240-5700ba4b-597e-4f62-9af8-e7503343d66e"
+                },
+                {
+                  "id": "62c34116-fd1c-472c-a670-64aa9a9dbfe6",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"SAD\": \"<string>\",\n  \"credentialID\": \"<string>\",\n  \"signatureFormat\": \"P\",\n  \"profile\": \"<string>\",\n  \"documentDigests\": {\n    \"hashAlgorithmOID\": \"<string>\",\n    \"hashes\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"conformanceLevel\": \"AdES-B-B\",\n  \"requestID\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/signatures/signDoc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "signatures",
+                        "signDoc"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"error_description\": \"<string>\"\n}",
+                  "createdAt": "2026-10-21T20:32:30.000Z",
+                  "updatedAt": "2026-10-21T20:32:30.000Z",
+                  "uid": "35240-62c34116-fd1c-472c-a670-64aa9a9dbfe6"
+                }
+              ],
+              "createdAt": "2026-10-21T20:32:30.000Z",
+              "updatedAt": "2026-10-21T20:32:30.000Z",
+              "uid": "35240-b415e008-966d-4a62-9263-a9f4aac54bbc"
+            }
+          ],
+          "id": "229f2b50-4261-47d9-985b-7d951b93743b",
+          "createdAt": "2026-10-21T20:32:30.000Z",
+          "updatedAt": "2026-10-21T20:32:30.000Z",
+          "uid": "35240-229f2b50-4261-47d9-985b-7d951b93743b"
+        }
+      ],
+      "id": "ffb06e29-309a-4cd6-bd26-4d17aa614153",
+      "createdAt": "2026-10-21T20:32:30.000Z",
+      "updatedAt": "2026-10-21T20:32:30.000Z",
+      "uid": "35240-ffb06e29-309a-4cd6-bd26-4d17aa614153"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://ais.swisscom.com/AIS-Server/rs/v1.0"
+    }
+  ]
+}

@@ -1,0 +1,1273 @@
+{
+  "info": {
+    "_postman_id": "51a1e716-30f6-4c5b-948b-d3f5cb77d44a",
+    "name": "Swisscom Sign Integration Process: create API",
+    "description": "# Purpose\n\nThe Swisscom Sign *Integration API* enables backend systems to create, configure, release, and monitor digital signing processes end-to-end with minimal manual interaction.\n\nContact Support:\n Name: Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T20:32:19.000Z",
+    "updatedAt": "2026-10-21T20:32:20.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-51a1e716-30f6-4c5b-948b-d3f5cb77d44a"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "process",
+          "item": [
+            {
+              "name": "{processId}",
+              "item": [
+                {
+                  "name": "setup",
+                  "item": [
+                    {
+                      "name": "Finalize process in Swisscom Sign UI",
+                      "id": "6d813b96-443c-4a55-bfe4-02188f615aa4",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "client_credentials",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"language\": \"<string>\",\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSAINT\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId/setup",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId",
+                            "setup"
+                          ],
+                          "variable": [
+                            {
+                              "id": "6713654c-2fe4-4bf7-b391-1d332a4a5fc2",
+                              "key": "processId",
+                              "value": "<uuid>",
+                              "description": "(Required) Unique identifier of the process to finalize via UI."
+                            }
+                          ]
+                        },
+                        "description": "Launches the Swisscom Sign web interface for the initiator to complete the process setup.\nThis includes defining visual elements and participant data.\n\nOnce setup is complete, the process is automatically released and notifications are handled by Swisscom Sign.\n\n**Preconditions:**\n- A process was created via `/process`.\n- The process has not yet been released."
+                      },
+                      "response": [
+                        {
+                          "id": "52b2f513-9dd0-4ef0-8fc7-caf4374aba06",
+                          "name": "The setup request has been accepted. Please redirect to the provided URL.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"language\": \"<string>\",\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSAINT\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/setup",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "setup"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Accepted",
+                          "code": 202,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"url\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-52b2f513-9dd0-4ef0-8fc7-caf4374aba06"
+                        },
+                        {
+                          "id": "9db851f4-8d2d-43b0-9621-6986dc3d67ac",
+                          "name": "Authorization information is missing or invalid.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"language\": \"<string>\",\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSAINT\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/setup",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "setup"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-9db851f4-8d2d-43b0-9621-6986dc3d67ac"
+                        },
+                        {
+                          "id": "4c325ae3-7b45-444b-b182-4029b4f72b0d",
+                          "name": "Occurs when there is a general error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"language\": \"<string>\",\n  \"backUrl\": \"<string>\",\n  \"successUrl\": \"<string>\",\n  \"authentication\": {\n    \"identity\": \"<uuid>\",\n    \"namespace\": \"MSAINT\"\n  },\n  \"scope\": \"<string>\",\n  \"mode\": \"DEFAULT\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/setup",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "setup"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-4c325ae3-7b45-444b-b182-4029b4f72b0d"
+                        }
+                      ],
+                      "createdAt": "2026-10-21T20:32:20.000Z",
+                      "updatedAt": "2026-10-21T20:32:20.000Z",
+                      "uid": "35240-6d813b96-443c-4a55-bfe4-02188f615aa4"
+                    }
+                  ],
+                  "id": "a5a32a15-ab10-4351-9871-34a0c1dc21d2",
+                  "createdAt": "2026-10-21T20:32:20.000Z",
+                  "updatedAt": "2026-10-21T20:32:20.000Z",
+                  "uid": "35240-a5a32a15-ab10-4351-9871-34a0c1dc21d2"
+                },
+                {
+                  "name": "release",
+                  "item": [
+                    {
+                      "name": "Release process and notify participants",
+                      "id": "a10ff1fe-9386-4849-ad13-4aaf9f909f2b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "client_credentials",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId/release",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId",
+                            "release"
+                          ],
+                          "variable": [
+                            {
+                              "id": "26970581-b5bf-4960-81a3-10912f96b5a4",
+                              "key": "processId",
+                              "value": "<uuid>",
+                              "description": "(Required) Unique identifier of the process to be released."
+                            }
+                          ]
+                        },
+                        "description": "Releases a previously created and fully configured process. Personal access URLs are returned for each participant.\nThese can be used for asynchronous execution, typically via email.\n\nOptionally, you may include email parameters to notify participants directly.\nOptionally, you may configure automatic reminder emails for pending participants.\nOptionally, you may restrict the allowed signature methods (`APP`, `CLICK`, `OSS`, `PASSKEY`, `SMS`) via `signatureMethods`.\nIf omitted, the tenant defaults apply. Methods are validated against the document's signature level.\n\nPreconditions:\n- A process was created via `/process` with at least one participant.\n- At least one document was attached using `/process/{processId}/attach`.\n- Every signer must be placed on at least one document.\n- At least one document must have all signers placed on it.\n- All visual signatures are placed within the visible area."
+                      },
+                      "response": [
+                        {
+                          "id": "b642466c-2e91-4298-a657-b66ded243d6d",
+                          "name": "Process released; participant URLs returned (permanently valid).",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/release",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "release"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"status\": \"PENDING\",\n  \"participants\": [\n    {\n      \"id\": \"<uuid>\",\n      \"externalIdentifier\": \"JgVQkP\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"externalIdentifier\": \"eZnzrU6OBn\",\n      \"url\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-b642466c-2e91-4298-a657-b66ded243d6d"
+                        },
+                        {
+                          "id": "4bdd87d0-3bdf-4ce8-a25e-09845629d9c0",
+                          "name": "Process was already released; participant URLs returned (permanently valid).",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/release",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "release"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Already Reported (WebDAV) (RFC 5842)",
+                          "code": 208,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"status\": \"PENDING\",\n  \"participants\": [\n    {\n      \"id\": \"<uuid>\",\n      \"externalIdentifier\": \"JgVQkP\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"externalIdentifier\": \"eZnzrU6OBn\",\n      \"url\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-4bdd87d0-3bdf-4ce8-a25e-09845629d9c0"
+                        },
+                        {
+                          "id": "b86cde9c-6ff9-4c68-8ff6-8515a84d8915",
+                          "name": "Authorization information is missing or invalid.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/release",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "release"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-b86cde9c-6ff9-4c68-8ff6-8515a84d8915"
+                        },
+                        {
+                          "id": "886d3617-e92f-494e-ba1e-6261b79d2ae5",
+                          "name": "Forbidden \u2013 caller not allowed to release this process.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/release",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "release"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-886d3617-e92f-494e-ba1e-6261b79d2ae5"
+                        },
+                        {
+                          "id": "b85ec976-b937-4137-9cd6-e2f0f13228ea",
+                          "name": "Process not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/release",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "release"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-b85ec976-b937-4137-9cd6-e2f0f13228ea"
+                        },
+                        {
+                          "id": "be149d0a-a3a8-4f90-a1ee-796427bdffa7",
+                          "name": "Conflict \u2013 e.g. reminders configured but all notifications are suppressed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"validUntil\": \"<dateTime>\",\n  \"language\": \"<string>\",\n  \"notification\": {\n    \"locale\": \"fr-CH\",\n    \"suppress\": [\n      \"COMPLETION\",\n      \"INVITE\"\n    ],\n    \"reminder\": {\n      \"interval\": \"<string>\",\n      \"beforeExpiry\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"signatureMethods\": [\n    \"APP\",\n    \"OSS\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/release",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "release"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-be149d0a-a3a8-4f90-a1ee-796427bdffa7"
+                        }
+                      ],
+                      "createdAt": "2026-10-21T20:32:20.000Z",
+                      "updatedAt": "2026-10-21T20:32:20.000Z",
+                      "uid": "35240-a10ff1fe-9386-4849-ad13-4aaf9f909f2b"
+                    }
+                  ],
+                  "id": "e286b84c-2e3c-4b59-bf77-945bbd82bbb5",
+                  "createdAt": "2026-10-21T20:32:20.000Z",
+                  "updatedAt": "2026-10-21T20:32:20.000Z",
+                  "uid": "35240-e286b84c-2e3c-4b59-bf77-945bbd82bbb5"
+                },
+                {
+                  "name": "attach",
+                  "item": [
+                    {
+                      "name": "Attach documents to process",
+                      "id": "83486b47-7d3d-44ed-a33f-4b3262e607c9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "client_credentials",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"content\": \"<string>\",\n  \"contentType\": \"application/pdf\",\n  \"name\": \"<string>\",\n  \"id\": \"<uuid>\",\n  \"externalIdentifier\": \"42-w2tv_H\",\n  \"signaturePositions\": [\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    },\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/process/:processId/attach",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "process",
+                            ":processId",
+                            "attach"
+                          ],
+                          "variable": [
+                            {
+                              "id": "262b6ec7-2d07-480d-8598-b8058bba2580",
+                              "key": "processId",
+                              "value": "<uuid>",
+                              "description": "(Required) ID of the process to which the PDF will be attached."
+                            }
+                          ]
+                        },
+                        "description": "Attaches one or more PDF files to the specified process. You may repeat this call up to a maximum of 100 files.\nOnly `application/pdf` is supported, and each file must not exceed 40MB in size.\n\n**Preconditions:**\n- The process status must be `CREATED`."
+                      },
+                      "response": [
+                        {
+                          "id": "b19df80b-97d9-45cb-8bf7-47eb7a3ee905",
+                          "name": "The file has been attached successfully.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"content\": \"<string>\",\n  \"contentType\": \"application/pdf\",\n  \"name\": \"<string>\",\n  \"id\": \"<uuid>\",\n  \"externalIdentifier\": \"42-w2tv_H\",\n  \"signaturePositions\": [\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    },\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/attach",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "attach"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"fileId\": \"<uuid>\"\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-b19df80b-97d9-45cb-8bf7-47eb7a3ee905"
+                        },
+                        {
+                          "id": "066bcc71-2bb1-485f-a452-4a59c39db923",
+                          "name": "Authorization information is missing or invalid.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"content\": \"<string>\",\n  \"contentType\": \"application/pdf\",\n  \"name\": \"<string>\",\n  \"id\": \"<uuid>\",\n  \"externalIdentifier\": \"42-w2tv_H\",\n  \"signaturePositions\": [\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    },\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/attach",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "attach"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-066bcc71-2bb1-485f-a452-4a59c39db923"
+                        },
+                        {
+                          "id": "658f5847-eaac-49e0-a79d-4948888aad3b",
+                          "name": "Occurs when there is a general error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"content\": \"<string>\",\n  \"contentType\": \"application/pdf\",\n  \"name\": \"<string>\",\n  \"id\": \"<uuid>\",\n  \"externalIdentifier\": \"42-w2tv_H\",\n  \"signaturePositions\": [\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    },\n    {\n      \"locator\": \"<string>\",\n      \"pageNumber\": \"<integer>\",\n      \"positionX\": \"<integer>\",\n      \"positionY\": \"<integer>\",\n      \"signer\": \"<string>\",\n      \"stickerProvider\": \"CUSTOM_VISUAL_SIGNATURE_PROVIDER\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/process/:processId/attach",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "process",
+                                ":processId",
+                                "attach"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "processId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Conflict",
+                          "code": 409,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                          "createdAt": "2026-10-21T20:32:20.000Z",
+                          "updatedAt": "2026-10-21T20:32:20.000Z",
+                          "uid": "35240-658f5847-eaac-49e0-a79d-4948888aad3b"
+                        }
+                      ],
+                      "createdAt": "2026-10-21T20:32:20.000Z",
+                      "updatedAt": "2026-10-21T20:32:20.000Z",
+                      "uid": "35240-83486b47-7d3d-44ed-a33f-4b3262e607c9"
+                    }
+                  ],
+                  "id": "06c8c8d7-86ed-4d02-812f-5e4b925f4f35",
+                  "createdAt": "2026-10-21T20:32:20.000Z",
+                  "updatedAt": "2026-10-21T20:32:20.000Z",
+                  "uid": "35240-06c8c8d7-86ed-4d02-812f-5e4b925f4f35"
+                }
+              ],
+              "id": "242e7b2a-1eb2-4c83-866f-984cbaacb654",
+              "createdAt": "2026-10-21T20:32:20.000Z",
+              "updatedAt": "2026-10-21T20:32:20.000Z",
+              "uid": "35240-242e7b2a-1eb2-4c83-866f-984cbaacb654"
+            },
+            {
+              "name": "Create a process",
+              "id": "53e28f7d-8a6b-4d6b-900b-3fb461e5476c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "client_credentials",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"initiator\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"identification\": \"<uuid>\",\n    \"externalIdentifier\": \"54CGTDt3w\"\n  },\n  \"id\": \"<uuid>\",\n  \"status\": \"COMPLETED\",\n  \"signatureLevel\": \"QUALIFIED\",\n  \"invitees\": {\n    \"personalMessage\": \"<string>\",\n    \"signers\": [\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"F\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"SIGNED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MISMATCH\"\n      },\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"AE5zprDF\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"PENDING\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      }\n    ]\n  },\n  \"teamId\": \"<uuid>\",\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"payload\": \"<string>\",\n  \"validUntil\": \"<dateTime>\",\n  \"createdDate\": \"<dateTime>\",\n  \"lastModifiedDate\": \"<dateTime>\",\n  \"archiveOn\": \"<dateTime>\",\n  \"archivedOn\": \"<dateTime>\",\n  \"fileReferences\": [\n    {\n      \"externalIdentifier\": \"TS0KYM\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    },\n    {\n      \"externalIdentifier\": \"XIe5\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    }\n  ],\n  \"partnerId\": \"<string>\",\n  \"authorization\": \"CODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/process",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "process"
+                  ]
+                },
+                "description": "Creates a new signing process.\n- Non-interactive (API release): Provide all required data (documents, signers, options) up front.\n- Setup (handover to Swisscom Sign UI): You can submit a minimal process and adjust metadata later in the UI."
+              },
+              "response": [
+                {
+                  "id": "cbe2708b-efd0-4a69-816b-d5ec822ba21b",
+                  "name": "The process was created successfully.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"initiator\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"identification\": \"<uuid>\",\n    \"externalIdentifier\": \"54CGTDt3w\"\n  },\n  \"id\": \"<uuid>\",\n  \"status\": \"COMPLETED\",\n  \"signatureLevel\": \"QUALIFIED\",\n  \"invitees\": {\n    \"personalMessage\": \"<string>\",\n    \"signers\": [\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"F\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"SIGNED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MISMATCH\"\n      },\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"AE5zprDF\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"PENDING\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      }\n    ]\n  },\n  \"teamId\": \"<uuid>\",\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"payload\": \"<string>\",\n  \"validUntil\": \"<dateTime>\",\n  \"createdDate\": \"<dateTime>\",\n  \"lastModifiedDate\": \"<dateTime>\",\n  \"archiveOn\": \"<dateTime>\",\n  \"archivedOn\": \"<dateTime>\",\n  \"fileReferences\": [\n    {\n      \"externalIdentifier\": \"TS0KYM\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    },\n    {\n      \"externalIdentifier\": \"XIe5\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    }\n  ],\n  \"partnerId\": \"<string>\",\n  \"authorization\": \"CODE\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"initiator\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"identification\": \"<uuid>\",\n    \"externalIdentifier\": \"54CGTDt3w\"\n  },\n  \"id\": \"<uuid>\",\n  \"status\": \"COMPLETED\",\n  \"signatureLevel\": \"QUALIFIED\",\n  \"invitees\": {\n    \"personalMessage\": \"<string>\",\n    \"signers\": [\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"F\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"SIGNED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MISMATCH\"\n      },\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"AE5zprDF\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"PENDING\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      }\n    ]\n  },\n  \"teamId\": \"<uuid>\",\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"payload\": \"<string>\",\n  \"validUntil\": \"<dateTime>\",\n  \"createdDate\": \"<dateTime>\",\n  \"lastModifiedDate\": \"<dateTime>\",\n  \"archiveOn\": \"<dateTime>\",\n  \"archivedOn\": \"<dateTime>\",\n  \"fileReferences\": [\n    {\n      \"externalIdentifier\": \"TS0KYM\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    },\n    {\n      \"externalIdentifier\": \"XIe5\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    }\n  ],\n  \"partnerId\": \"<string>\",\n  \"authorization\": \"CODE\"\n}",
+                  "createdAt": "2026-10-21T20:32:20.000Z",
+                  "updatedAt": "2026-10-21T20:32:20.000Z",
+                  "uid": "35240-cbe2708b-efd0-4a69-816b-d5ec822ba21b"
+                },
+                {
+                  "id": "3a82ae41-c93e-4162-9f7d-2372c36f9454",
+                  "name": "Authorization information is missing or invalid.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"initiator\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"identification\": \"<uuid>\",\n    \"externalIdentifier\": \"54CGTDt3w\"\n  },\n  \"id\": \"<uuid>\",\n  \"status\": \"COMPLETED\",\n  \"signatureLevel\": \"QUALIFIED\",\n  \"invitees\": {\n    \"personalMessage\": \"<string>\",\n    \"signers\": [\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"F\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"SIGNED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MISMATCH\"\n      },\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"AE5zprDF\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"PENDING\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      }\n    ]\n  },\n  \"teamId\": \"<uuid>\",\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"payload\": \"<string>\",\n  \"validUntil\": \"<dateTime>\",\n  \"createdDate\": \"<dateTime>\",\n  \"lastModifiedDate\": \"<dateTime>\",\n  \"archiveOn\": \"<dateTime>\",\n  \"archivedOn\": \"<dateTime>\",\n  \"fileReferences\": [\n    {\n      \"externalIdentifier\": \"TS0KYM\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    },\n    {\n      \"externalIdentifier\": \"XIe5\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    }\n  ],\n  \"partnerId\": \"<string>\",\n  \"authorization\": \"CODE\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-21T20:32:20.000Z",
+                  "updatedAt": "2026-10-21T20:32:20.000Z",
+                  "uid": "35240-3a82ae41-c93e-4162-9f7d-2372c36f9454"
+                },
+                {
+                  "id": "f9d946d6-dc95-4466-b18d-fcdf779fb9a4",
+                  "name": "Occurs when there is a general error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"initiator\": {\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"identification\": \"<uuid>\",\n    \"externalIdentifier\": \"54CGTDt3w\"\n  },\n  \"id\": \"<uuid>\",\n  \"status\": \"COMPLETED\",\n  \"signatureLevel\": \"QUALIFIED\",\n  \"invitees\": {\n    \"personalMessage\": \"<string>\",\n    \"signers\": [\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"F\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"SIGNED\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MISMATCH\"\n      },\n      {\n        \"firstName\": \"<string>\",\n        \"lastName\": \"<string>\",\n        \"type\": \"SIGNER\",\n        \"identification\": \"<uuid>\",\n        \"externalIdentifier\": \"AE5zprDF\",\n        \"email\": \"<email>\",\n        \"mobile\": \"<string>\",\n        \"role\": \"<string>\",\n        \"verification\": {\n          \"processId\": \"<string>\",\n          \"verifiedOn\": \"<dateTime>\",\n          \"rejectedOn\": \"<dateTime>\",\n          \"payload\": \"<string>\",\n          \"files\": [\n            \"<uuid>\",\n            \"<uuid>\"\n          ],\n          \"residentPermit\": true\n        },\n        \"status\": \"PENDING\",\n        \"signedOn\": \"<dateTime>\",\n        \"discontinuedOn\": \"<dateTime>\",\n        \"canceledOn\": \"<dateTime>\",\n        \"certificateName\": \"<string>\",\n        \"certificateMatch\": \"MATCH\"\n      }\n    ]\n  },\n  \"teamId\": \"<uuid>\",\n  \"properties\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"payload\": \"<string>\",\n  \"validUntil\": \"<dateTime>\",\n  \"createdDate\": \"<dateTime>\",\n  \"lastModifiedDate\": \"<dateTime>\",\n  \"archiveOn\": \"<dateTime>\",\n  \"archivedOn\": \"<dateTime>\",\n  \"fileReferences\": [\n    {\n      \"externalIdentifier\": \"TS0KYM\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    },\n    {\n      \"externalIdentifier\": \"XIe5\",\n      \"initialFileId\": \"<uuid>\",\n      \"lastSignedFileId\": \"<uuid>\",\n      \"signaturePositions\": [\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        },\n        {\n          \"pageNumber\": \"<integer>\",\n          \"positionX\": \"<integer>\",\n          \"positionY\": \"<integer>\",\n          \"signer\": \"<string>\",\n          \"stickerProvider\": \"VISUAL_SIGNATURE_PROVIDER\"\n        }\n      ]\n    }\n  ],\n  \"partnerId\": \"<string>\",\n  \"authorization\": \"CODE\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/process",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "process"
+                      ]
+                    }
+                  },
+                  "status": "Conflict",
+                  "code": 409,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"message\": \"<string>\",\n  \"path\": \"<string>\",\n  \"httpStatus\": \"<integer>\",\n  \"clientSubject\": \"<string>\",\n  \"clientBody\": \"<string>\"\n}",
+                  "createdAt": "2026-10-21T20:32:20.000Z",
+                  "updatedAt": "2026-10-21T20:32:20.000Z",
+                  "uid": "35240-f9d946d6-dc95-4466-b18d-fcdf779fb9a4"
+                }
+              ],
+              "createdAt": "2026-10-21T20:32:20.000Z",
+              "updatedAt": "2026-10-21T20:32:20.000Z",
+              "uid": "35240-53e28f7d-8a6b-4d6b-900b-3fb461e5476c"
+            }
+          ],
+          "id": "b4f91b0c-4b02-4603-8d6b-a22d9bbe22b8",
+          "createdAt": "2026-10-21T20:32:20.000Z",
+          "updatedAt": "2026-10-21T20:32:20.000Z",
+          "uid": "35240-b4f91b0c-4b02-4603-8d6b-a22d9bbe22b8"
+        }
+      ],
+      "id": "0da9fa9d-4707-4ea8-967a-5813551381c9",
+      "createdAt": "2026-10-21T20:32:20.000Z",
+      "updatedAt": "2026-10-21T20:32:20.000Z",
+      "uid": "35240-0da9fa9d-4707-4ea8-967a-5813551381c9"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "sswp:process:create sswp:process:read sswp:process:read:all",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://sign.swisscom.ch/realms/swisscom-public/protocol/openid-connect/token",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://sign.swisscom.ch/system"
+    }
+  ]
+}
